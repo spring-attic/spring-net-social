@@ -1,0 +1,12 @@
+*ReSharper*
+*.sln.cache
+*.suo
+*.user
+*.xap
+*.snk
+bin
+Bin
+obj
+buildlog.txt
+build
+package

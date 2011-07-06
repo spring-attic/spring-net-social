@@ -1,0 +1,28 @@
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spring.Social.Core.2008-NET35", "src\Spring.Social.Core\Spring.Social.Core.2008-NET35.csproj", "{1C6A09B3-607D-4A06-8D59-C723CBBBF77D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spring.Social.Core.Tests.2008-NET35", "test\Spring.Social.Core.Tests\Spring.Social.Core.Tests.2008-NET35.csproj", "{EF04CE18-1597-A3B9-41BF-453747594B21}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1C6A09B3-607D-4A06-8D59-C723CBBBF77D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C6A09B3-607D-4A06-8D59-C723CBBBF77D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C6A09B3-607D-4A06-8D59-C723CBBBF77D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C6A09B3-607D-4A06-8D59-C723CBBBF77D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF04CE18-1597-A3B9-41BF-453747594B21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF04CE18-1597-A3B9-41BF-453747594B21}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF04CE18-1597-A3B9-41BF-453747594B21}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF04CE18-1597-A3B9-41BF-453747594B21}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		NAntAddinLastFileName = Spring.build
+	EndGlobalSection
+EndGlobal

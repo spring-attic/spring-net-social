@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE book[
+  <!ENTITY overview                 SYSTEM "overview.xml">
+]>
+<book xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://docbook.org/ns/docbook/xi" version="5.0" xml:lang="en">
+  <bookinfo>
+    <!-- auto-generated -->
+    <title>Spring.NET Social Framework</title>
+    <subtitle>Reference Documentation</subtitle>
+    <!-- auto-generated -->
+    <releaseinfo>1.0.0</releaseinfo>
+    <!-- auto-generated -->
+    <copyright>Copyright 2011 SpringSource</copyright>
+    <!-- auto-generated -->
+    <pubdate>Last Updated 7/6/2011</pubdate>
+    <authorgroup>
+      <author>
+        <firstname>Craig</firstname>
+        <surname>Walls (Java)</surname>
+      </author>
+      <author>
+        <firstname>Keith</firstname>
+        <surname>Donald (Java)</surname>
+      </author>
+      <author>
+        <firstname>Bruno</firstname>
+        <surname>Baia</surname>
+      </author>
+    </authorgroup>
+    <legalnotice>
+      <para>
+        Copies of this document may be made for your own use and for distribution
+        to others, provided that you do not charge any fee for such copies and
+        further provided that each copy contains this Copyright Notice, whether
+        distributed in print or electronically.
+      </para>
+    </legalnotice>
+  </bookinfo>
+  <toc />&overview;</book>
