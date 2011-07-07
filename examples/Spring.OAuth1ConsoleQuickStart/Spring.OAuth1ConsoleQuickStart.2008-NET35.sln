@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spring.Social.Core.2008-NET35", "..\..\src\Spring.Social.Core\Spring.Social.Core.2008-NET35.csproj", "{1C6A09B3-607D-4A06-8D59-C723CBBBF77D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spring.OAuth1ConsoleQuickStart.2008-NET35", "src\Spring.OAuth1ConsoleQuickStart\Spring.OAuth1ConsoleQuickStart.2008-NET35.csproj", "{097DB6A8-5DBF-2FDC-85AE-FAD4F27D6179}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1C6A09B3-607D-4A06-8D59-C723CBBBF77D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C6A09B3-607D-4A06-8D59-C723CBBBF77D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C6A09B3-607D-4A06-8D59-C723CBBBF77D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C6A09B3-607D-4A06-8D59-C723CBBBF77D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{097DB6A8-5DBF-2FDC-85AE-FAD4F27D6179}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{097DB6A8-5DBF-2FDC-85AE-FAD4F27D6179}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{097DB6A8-5DBF-2FDC-85AE-FAD4F27D6179}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{097DB6A8-5DBF-2FDC-85AE-FAD4F27D6179}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
