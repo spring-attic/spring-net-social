@@ -49,6 +49,19 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Social\IApiBinding.cs" />
+    <Compile Include="Social\IServiceProvider.cs" />
+    <Compile Include="Social\OAuth1\AbstractOAuth1ApiBinding.cs" />
+    <Compile Include="Social\OAuth1\AbstractOAuth1ServiceProvider.cs" />
+    <Compile Include="Social\OAuth1\AuthorizedRequestToken.cs" />
+    <Compile Include="Social\OAuth1\IOAuth1Operations.cs" />
+    <Compile Include="Social\OAuth1\IOAuth1ServiceProvider.cs" />
+    <Compile Include="Social\OAuth1\OAuth1Parameters.cs" />
+    <Compile Include="Social\OAuth1\OAuth1RequestInterceptor.cs" />
+    <Compile Include="Social\OAuth1\OAuth1Template.cs" />
+    <Compile Include="Social\OAuth1\OAuth1Version.cs" />
+    <Compile Include="Social\OAuth1\OAuth1Token.cs" />
+    <Compile Include="Social\OAuth1\SigningSupport.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

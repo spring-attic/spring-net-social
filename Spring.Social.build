@@ -190,6 +190,9 @@
         <include name="**\Spring.Social.Core.dll"/>
         <include name="**\Spring.Social.Core.pdb"/>
         <include name="**\Spring.Social.Core.xml"/>
+        <include name="**\Spring.Rest.dll"/>
+        <include name="**\Spring.Rest.pdb"/>
+        <include name="**\Spring.Rest.xml"/>
         <include name="**\Common.Logging.dll"/>
         <include name="**\Common.Logging.xml"/>
       </fileset>

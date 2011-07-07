@@ -10,3 +10,5 @@ obj
 buildlog.txt
 build
 package
+
+/src/Spring.Social.Core/Spring.Social.Core.xml

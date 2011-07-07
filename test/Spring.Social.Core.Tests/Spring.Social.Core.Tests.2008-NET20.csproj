@@ -87,9 +87,12 @@
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Social\OAuth1\SigningSupportTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Spring.Social.Core.Tests.dll.config">
