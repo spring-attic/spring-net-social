@@ -28,25 +28,25 @@ namespace Spring.Social.Twitter.Api.Impl
     // See spring-net-social-twitter project : https://github.com/SpringSource/spring-net-social-twitter
 
     // This is the central class for interacting with Twitter.
-    public class TwitterTemplate : AbstractOAuth1ApiBinding, ITwitter 
+    public class TwitterTemplate : AbstractOAuth1ApiBinding, ITwitter
     {
         private static readonly Uri API_URI_BASE = new Uri("https://api.twitter.com/1/");
         private const string TWEET_URL = "statuses/update.json";
 
         // Create a new instance of TwitterTemplate.
         // This constructor creates a new TwitterTemplate able to perform unauthenticated operations against Twitter's API.
-	    public TwitterTemplate() 
+        public TwitterTemplate()
             : base()
         {
             this.RestTemplate.BaseAddress = API_URI_BASE;
-	    }
+        }
 
-	    // Create a new instance of TwitterTemplate.
-	    public TwitterTemplate(String consumerKey, String consumerSecret, String accessToken, String accessTokenSecret) 
+        // Create a new instance of TwitterTemplate.
+        public TwitterTemplate(String consumerKey, String consumerSecret, String accessToken, String accessTokenSecret)
             : base(consumerKey, consumerSecret, accessToken, accessTokenSecret)
         {
             this.RestTemplate.BaseAddress = API_URI_BASE;
-	    }
+        }
 
         #region ITwitter Membres
 

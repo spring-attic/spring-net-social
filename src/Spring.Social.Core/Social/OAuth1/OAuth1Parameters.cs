@@ -33,13 +33,13 @@ namespace Spring.Social.OAuth1
     /// <author>Bruno Baia (.NET)</author>
     public class OAuth1Parameters
     {
-	    private string callbackUrl;
-	    private NameValueCollection additionalParameters;
+        private string callbackUrl;
+        private NameValueCollection additionalParameters;
 
-	    /// <summary>
-	    /// Shared instance for passing zero authorization parameters (accepted for OAuth 1.0a-based flows).
-	    /// </summary>
-	    public static OAuth1Parameters NONE = new OAuth1Parameters(null, null);
+        /// <summary>
+        /// Shared instance for passing zero authorization parameters (accepted for OAuth 1.0a-based flows).
+        /// </summary>
+        public static OAuth1Parameters NONE = new OAuth1Parameters(null, null);
 
         /// <summary>
         /// Creates a new OAuth1Parameters instance. 
@@ -47,10 +47,10 @@ namespace Spring.Social.OAuth1
         /// <param name="callbackUrl">
         /// The authorization callback url; this value must be included for OAuth 1.0 providers (and NOT for OAuth 1.0a).
         /// </param>
-	    public OAuth1Parameters(string callbackUrl) 
-		    : this(callbackUrl, null)
+        public OAuth1Parameters(string callbackUrl)
+            : this(callbackUrl, null)
         {
-	    }
+        }
 
         /// <summary>
         /// Creates a new OAuth1Parameters instance.
@@ -59,26 +59,26 @@ namespace Spring.Social.OAuth1
         /// The authorization callback url; this value must be included for OAuth 1.0 providers (and NOT for OAuth 1.0a).
         /// </param>
         /// <param name="additionalParameters">Additional supported parameters to pass to the provider.</param>
-	    public OAuth1Parameters(string callbackUrl, NameValueCollection additionalParameters) 
+        public OAuth1Parameters(string callbackUrl, NameValueCollection additionalParameters)
         {
-		    this.callbackUrl = callbackUrl;
-		    this.additionalParameters = additionalParameters;
-	    }
+            this.callbackUrl = callbackUrl;
+            this.additionalParameters = additionalParameters;
+        }
 
-	    /// <summary>
+        /// <summary>
         /// Gets the authorization callback url; this value must be included for OAuth 1.0 providers (and NOT for OAuth 1.0a).
-	    /// </summary>
-	    public string CallbackUrl 
+        /// </summary>
+        public string CallbackUrl
         {
             get { return callbackUrl; }
-	    }
+        }
 
-	    /// <summary>
+        /// <summary>
         /// Gets the additional supported parameters to pass to the provider.
-	    /// </summary>
-	    public NameValueCollection AdditionalParameters 
+        /// </summary>
+        public NameValueCollection AdditionalParameters
         {
             get { return additionalParameters; }
-	    }
+        }
     }
 }

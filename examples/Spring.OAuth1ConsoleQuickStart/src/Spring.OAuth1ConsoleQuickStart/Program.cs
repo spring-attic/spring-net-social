@@ -22,10 +22,10 @@ namespace Spring.OAuth2ConsoleQuickStart
                 // OAuth 'dance'
                 // Authentication using Out-of-band/PIN Code Authentication
                 Console.Write("Getting request token...");
-                OAuth1Token oauth1Token = twitterServiceProvider.OAuthOperations.FetchRequestToken("oob", null);
+                OAuthToken oauthToken = twitterServiceProvider.OAuthOperations.FetchRequestToken("oob", null);
                 Console.WriteLine("Done");
 
-                string authenticateUrl = twitterServiceProvider.OAuthOperations.BuildAuthenticateUrl(oauth1Token.Value, OAuth1Parameters.NONE);
+                string authenticateUrl = twitterServiceProvider.OAuthOperations.BuildAuthenticateUrl(oauthToken.Value, OAuth1Parameters.NONE);
                 Console.WriteLine("Redirect user for authentication: " + authenticateUrl);
                 Process.Start(authenticateUrl);
 
@@ -33,8 +33,8 @@ namespace Spring.OAuth2ConsoleQuickStart
                 string pinCode = Console.ReadLine();
 
                 Console.Write("Getting access token...");
-                AuthorizedRequestToken requestToken = new AuthorizedRequestToken(oauth1Token, pinCode);
-                OAuth1Token oauthAccessToken = twitterServiceProvider.OAuthOperations.ExchangeForAccessToken(requestToken, null);
+                AuthorizedRequestToken requestToken = new AuthorizedRequestToken(oauthToken, pinCode);
+                OAuthToken oauthAccessToken = twitterServiceProvider.OAuthOperations.ExchangeForAccessToken(requestToken, null);
                 Console.WriteLine("Done");
 
                 // API
@@ -52,11 +52,11 @@ namespace Spring.OAuth2ConsoleQuickStart
             {
                 Console.WriteLine(ex);
             }
-			finally
-			{
-				Console.WriteLine("--- hit <return> to quit ---");
-				Console.ReadLine();
-			}
+            finally
+            {
+                Console.WriteLine("--- hit <return> to quit ---");
+                Console.ReadLine();
+            }
         }
     }
 }

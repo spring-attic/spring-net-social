@@ -29,8 +29,8 @@ namespace Spring.Social.OAuth1
     /// <typeparam name="T">The service API type</typeparam>
     public abstract class AbstractOAuth1ServiceProvider<T> : IOAuth1ServiceProvider<T> where T : IApiBinding
     {
-    	private string consumerKey;
-	    private string consumerSecret;
+        private string consumerKey;
+        private string consumerSecret;
         private IOAuth1Operations oauth1Operations;
 
         /// <summary>
@@ -39,10 +39,10 @@ namespace Spring.Social.OAuth1
         /// <remarks>
         /// Exposed to subclasses to support constructing service API instances.
         /// </remarks>
-	    protected string ConsumerKey
+        protected string ConsumerKey
         {
-		    get { return this.consumerKey; }
-	    }
+            get { return this.consumerKey; }
+        }
 
         /// <summary>
         /// Gets the consumer (or client) secret assigned to the application by the provider.
@@ -50,10 +50,10 @@ namespace Spring.Social.OAuth1
         /// <remarks>
         /// Exposed to subclasses to support constructing service API instances.
         /// </remarks>
-	    protected string ConsumerSecret
+        protected string ConsumerSecret
         {
-		    get { return this.consumerSecret; }
-	    }
+            get { return this.consumerSecret; }
+        }
 
         /// <summary>
         /// Creates a new AbstractOAuth1ServiceProvider.
@@ -63,10 +63,10 @@ namespace Spring.Social.OAuth1
         /// <param name="oauth1Operations">
         /// The OAuth2Operations template for conducting the OAuth 2 flow with the provider.
         /// </param>
-        public AbstractOAuth1ServiceProvider(string consumerKey, string consumerSecret, IOAuth1Operations oauth1Operations) 
+        public AbstractOAuth1ServiceProvider(string consumerKey, string consumerSecret, IOAuth1Operations oauth1Operations)
         {
-		    this.consumerKey = consumerKey;
-		    this.consumerSecret = consumerSecret;
+            this.consumerKey = consumerKey;
+            this.consumerSecret = consumerSecret;
             this.oauth1Operations = oauth1Operations;
         }
 

@@ -60,7 +60,7 @@
     <Compile Include="Social\OAuth1\OAuth1RequestInterceptor.cs" />
     <Compile Include="Social\OAuth1\OAuth1Template.cs" />
     <Compile Include="Social\OAuth1\OAuth1Version.cs" />
-    <Compile Include="Social\OAuth1\OAuth1Token.cs" />
+    <Compile Include="Social\OAuth1\OAuthToken.cs" />
     <Compile Include="Social\OAuth1\SigningSupport.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

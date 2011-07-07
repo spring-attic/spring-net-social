@@ -23,7 +23,7 @@ using System;
 namespace Spring.Social.OAuth1
 {
     /// <summary>
-    /// Holds an OAuth1 token and secret. 
+    /// Holds an OAuth token and secret. 
     /// Used for both the request token and access token.
     /// </summary>
     /// <author>Keith Donald</author>
@@ -31,17 +31,17 @@ namespace Spring.Social.OAuth1
 #if !SILVERLIGHT
     [Serializable]
 #endif
-    public class OAuth1Token
+    public class OAuthToken
     {
         private string value;
         private string secret;
 
         /// <summary>
-        /// Create a new OAuth1 token with a token value and secret.
+        /// Creates a new OAuth token with a token value and secret.
         /// </summary>
         /// <param name="value">The token value.</param>
         /// <param name="secret">The token secret.</param>
-        public OAuth1Token(string value, string secret)
+        public OAuthToken(string value, string secret)
         {
             this.value = value;
             this.secret = secret;

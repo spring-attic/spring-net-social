@@ -134,9 +134,9 @@ namespace Spring.Social.OAuth1
         /// <summary>
         /// Gets the version of OAuth1 implemented by this operations instance.
         /// </summary>
-        public OAuth1Version Version 
+        public OAuth1Version Version
         {
-            get { return this.version;  }
+            get { return this.version; }
         }
 
 #if !SILVERLIGHT
@@ -154,7 +154,7 @@ namespace Spring.Social.OAuth1
         /// Any additional query parameters to be sent when fetching the request token
         /// </param>
         /// <returns>A temporary request token use for authorization and exchanged for an access token</returns>
-        public OAuth1Token FetchRequestToken(string callbackUrl, NameValueCollection additionalParameters)
+        public OAuthToken FetchRequestToken(string callbackUrl, NameValueCollection additionalParameters)
         {
             IDictionary<string, string> oauthParameters = new Dictionary<string, string>(1);
             if (version == OAuth1Version.CORE_10_REVISION_A)
@@ -185,7 +185,7 @@ namespace Spring.Social.OAuth1
         /// <returns>
         /// A <see cref="RestOperationCanceler"/> instance that allows to cancel the asynchronous operation.
         /// </returns>
-        public RestOperationCanceler FetchRequestTokenAsync(string callbackUrl, NameValueCollection additionalParameters, Action<RestOperationCompletedEventArgs<OAuth1Token>> operationCompleted)
+        public RestOperationCanceler FetchRequestTokenAsync(string callbackUrl, NameValueCollection additionalParameters, Action<RestOperationCompletedEventArgs<OAuthToken>> operationCompleted)
         {
             IDictionary<string, string> oauthParameters = new Dictionary<string, string>(1);
             if (version == OAuth1Version.CORE_10_REVISION_A)
@@ -243,9 +243,9 @@ namespace Spring.Social.OAuth1
         /// Any additional query parameters to be sent when fetching the access token
         /// </param>
         /// <returns>The access token.</returns>
-        public OAuth1Token ExchangeForAccessToken(AuthorizedRequestToken requestToken, NameValueCollection additionalParameters)
+        public OAuthToken ExchangeForAccessToken(AuthorizedRequestToken requestToken, NameValueCollection additionalParameters)
         {
-            IDictionary<string, string> tokenParameters = new Dictionary<string,string>(2);
+            IDictionary<string, string> tokenParameters = new Dictionary<string, string>(2);
             tokenParameters.Add("oauth_token", requestToken.Value);
             if (version == OAuth1Version.CORE_10_REVISION_A)
             {
@@ -271,7 +271,7 @@ namespace Spring.Social.OAuth1
         /// <returns>
         /// A <see cref="RestOperationCanceler"/> instance that allows to cancel the asynchronous operation.
         /// </returns>
-        public RestOperationCanceler ExchangeForAccessTokenAsync(AuthorizedRequestToken requestToken, NameValueCollection additionalParameters, Action<RestOperationCompletedEventArgs<OAuth1Token>> operationCompleted)
+        public RestOperationCanceler ExchangeForAccessTokenAsync(AuthorizedRequestToken requestToken, NameValueCollection additionalParameters, Action<RestOperationCompletedEventArgs<OAuthToken>> operationCompleted)
         {
             IDictionary<string, string> tokenParameters = new Dictionary<string, string>(2);
             tokenParameters.Add("oauth_token", requestToken.Value);
@@ -295,16 +295,16 @@ namespace Spring.Social.OAuth1
         }
 
         /// <summary>
-        /// Creates an <see cref="OAuth1Token"/> given the response from the request token or access token exchange with the provider. 
-        /// May be overridden to create a custom <see cref="OAuth1Token"/>.
+        /// Creates an <see cref="OAuthToken"/> given the response from the request token or access token exchange with the provider. 
+        /// May be overridden to create a custom <see cref="OAuthToken"/>.
         /// </summary>
         /// <param name="tokenValue">The token value received from the provider.</param>
         /// <param name="tokenSecret">The token secret received from the provider.</param>
         /// <param name="response">All parameters from the response received in the request/access token exchange.</param>
-        /// <returns>An <see cref="OAuth1Token"/></returns>
-        protected virtual OAuth1Token CreateOAuthToken(string tokenValue, string tokenSecret, NameValueCollection response)
+        /// <returns>An <see cref="OAuthToken"/></returns>
+        protected virtual OAuthToken CreateOAuthToken(string tokenValue, string tokenSecret, NameValueCollection response)
         {
-            return new OAuth1Token(tokenValue, tokenSecret);
+            return new OAuthToken(tokenValue, tokenSecret);
         }
 
         /// <summary>
@@ -322,7 +322,7 @@ namespace Spring.Social.OAuth1
         {
             RestTemplate restTemplate = new RestTemplate();
             //((WebClientHttpRequestFactory)this.restTemplate.RequestFactory).Expect100Continue = false;
-            
+
             IList<IHttpMessageConverter> converters = new List<IHttpMessageConverter>(1);
             // Some service providers returns form-encoded results with a content type of "text/plain"
             FormHttpMessageConverter formConverter = new FormHttpMessageConverter();
@@ -335,7 +335,7 @@ namespace Spring.Social.OAuth1
         }
 
 #if !SILVERLIGHT
-        private OAuth1Token ExchangeForToken(Uri tokenUrl, IDictionary<string, string> tokenParameters, NameValueCollection additionalParameters, string tokenSecret) 
+        private OAuthToken ExchangeForToken(Uri tokenUrl, IDictionary<string, string> tokenParameters, NameValueCollection additionalParameters, string tokenSecret)
         {
             HttpHeaders headers = new HttpHeaders();
             headers.Add("Authorization", this.signingSupport.BuildAuthorizationHeaderValue(
@@ -350,7 +350,7 @@ namespace Spring.Social.OAuth1
         }
 #endif
 
-        private RestOperationCanceler ExchangeForTokenAsync(Uri tokenUrl, IDictionary<string, string> tokenParameters, NameValueCollection additionalParameters, string tokenSecret, Action<RestOperationCompletedEventArgs<OAuth1Token>> operationCompleted)
+        private RestOperationCanceler ExchangeForTokenAsync(Uri tokenUrl, IDictionary<string, string> tokenParameters, NameValueCollection additionalParameters, string tokenSecret, Action<RestOperationCompletedEventArgs<OAuthToken>> operationCompleted)
         {
             HttpHeaders headers = new HttpHeaders();
             headers.Add("Authorization", this.signingSupport.BuildAuthorizationHeaderValue(
@@ -365,12 +365,12 @@ namespace Spring.Social.OAuth1
                 {
                     if (r.Error == null)
                     {
-                        OAuth1Token token = this.CreateOAuthToken(r.Response.Body["oauth_token"], r.Response.Body["oauth_token_secret"], r.Response.Body);
-                        operationCompleted(new RestOperationCompletedEventArgs<OAuth1Token>(token, null, false, r.UserState));
+                        OAuthToken token = this.CreateOAuthToken(r.Response.Body["oauth_token"], r.Response.Body["oauth_token_secret"], r.Response.Body);
+                        operationCompleted(new RestOperationCompletedEventArgs<OAuthToken>(token, null, false, r.UserState));
                     }
                     else
                     {
-                        operationCompleted(new RestOperationCompletedEventArgs<OAuth1Token>(null, r.Error, r.Cancelled, r.UserState));
+                        operationCompleted(new RestOperationCompletedEventArgs<OAuthToken>(null, r.Error, r.Cancelled, r.UserState));
                     }
                 });
         }

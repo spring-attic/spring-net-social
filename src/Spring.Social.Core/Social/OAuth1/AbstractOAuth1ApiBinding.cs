@@ -71,7 +71,7 @@ namespace Spring.Social.OAuth1
         /// <param name="consumerSecret">The application's consumer secret.</param>
         /// <param name="accessToken">The access token.</param>
         /// <param name="accessTokenSecret">The access token secret.</param>
-        protected AbstractOAuth1ApiBinding(String consumerKey, String consumerSecret, String accessToken, String accessTokenSecret) 
+        protected AbstractOAuth1ApiBinding(String consumerKey, String consumerSecret, String accessToken, String accessTokenSecret)
         {
             this.isAuthorized = false;
             this.restTemplate = new RestTemplate();

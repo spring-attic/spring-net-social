@@ -21,7 +21,6 @@
 using System;
 #if SILVERLIGHT
 using Spring.Collections.Specialized;
-using System;
 #else
 using System.Collections.Specialized;
 #endif
@@ -58,7 +57,7 @@ namespace Spring.Social.OAuth1
         /// Any additional query parameters to be sent when fetching the request token.
         /// </param>
         /// <returns>A temporary request token use for authorization and exchanged for an access token.</returns>
-        OAuth1Token FetchRequestToken(string callbackUrl, NameValueCollection additionalParameters);
+        OAuthToken FetchRequestToken(string callbackUrl, NameValueCollection additionalParameters);
 #endif
 
         /// <summary>
@@ -81,7 +80,7 @@ namespace Spring.Social.OAuth1
         /// <returns>
         /// A <see cref="RestOperationCanceler"/> instance that allows to cancel the asynchronous operation.
         /// </returns>
-        RestOperationCanceler FetchRequestTokenAsync(string callbackUrl, NameValueCollection additionalParameters, Action<RestOperationCompletedEventArgs<OAuth1Token>> operationCompleted);       
+        RestOperationCanceler FetchRequestTokenAsync(string callbackUrl, NameValueCollection additionalParameters, Action<RestOperationCompletedEventArgs<OAuthToken>> operationCompleted);
 
         /// <summary>
         /// Construct the URL to redirect the user to for authorization.
@@ -118,7 +117,7 @@ namespace Spring.Social.OAuth1
         /// Any additional query parameters to be sent when fetching the access token.
         /// </param>
         /// <returns></returns>
-        OAuth1Token ExchangeForAccessToken(AuthorizedRequestToken requestToken, NameValueCollection additionalParameters);
+        OAuthToken ExchangeForAccessToken(AuthorizedRequestToken requestToken, NameValueCollection additionalParameters);
 #endif
 
         /// <summary>
@@ -137,6 +136,6 @@ namespace Spring.Social.OAuth1
         /// <returns>
         /// A <see cref="RestOperationCanceler"/> instance that allows to cancel the asynchronous operation.
         /// </returns>
-        RestOperationCanceler ExchangeForAccessTokenAsync(AuthorizedRequestToken requestToken, NameValueCollection additionalParameters, Action<RestOperationCompletedEventArgs<OAuth1Token>> operationCompleted);
+        RestOperationCanceler ExchangeForAccessTokenAsync(AuthorizedRequestToken requestToken, NameValueCollection additionalParameters, Action<RestOperationCompletedEventArgs<OAuthToken>> operationCompleted);
     }
 }
