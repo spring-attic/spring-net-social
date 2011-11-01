@@ -18,8 +18,8 @@
     </dependencies>
   </metadata>
   <files>
-    <file src=".\content\App_Readme\Spring.Social.Core.txt" target="content\App_Readme" />
-    <file src=".\tools\Install.ps1" target="tools" />
+    <file src="content\App_Readme\Spring.Social.Core.txt" target="content\App_Readme" />
+    <file src="tools\Install.ps1" target="tools" />
     <file src="..\..\..\bin\net\2.0\Release\Spring.Social.Core.dll" target="lib\net20" />
     <file src="..\..\..\bin\net\2.0\Release\Spring.Social.Core.pdb" target="lib\net20" />
     <file src="..\..\..\bin\net\2.0\Release\Spring.Social.Core.xml" target="lib\net20" />
