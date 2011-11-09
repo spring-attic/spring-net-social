@@ -693,6 +693,11 @@
             Gets or sets a boolean value that controls whether default credentials are sent with this request.
             </summary>
         </member>
+        <member name="P:Spring.Http.Client.WebClientHttpRequestFactory.CookieContainer">
+            <summary>
+            Gets or sets the cookies for the request.
+            </summary>
+        </member>
         <member name="P:Spring.Http.Client.WebClientHttpRequestFactory.Credentials">
             <summary>
             Gets or sets authentication information for the request.
@@ -1428,8 +1433,8 @@
         </member>
         <member name="M:Spring.Http.Converters.StringHttpMessageConverter.#ctor">
             <summary>
-            Creates a new instance of the <see cref="T:Spring.Http.Converters.ByteArrayHttpMessageConverter"/> 
-            with 'text/plain; charset=ISO-8859-1', and '*/*' media types.
+            Creates a new instance of the <see cref="T:Spring.Http.Converters.StringHttpMessageConverter"/> 
+            with 'text/plain; charset=utf-8', and '*/*' media types.
             </summary>
         </member>
         <member name="M:Spring.Http.Converters.StringHttpMessageConverter.Supports(System.Type)">

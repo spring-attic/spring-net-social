@@ -677,6 +677,11 @@
             Gets or sets a boolean value that controls whether default credentials are sent with this request.
             </summary>
         </member>
+        <member name="P:Spring.Http.Client.WebClientHttpRequestFactory.CookieContainer">
+            <summary>
+            Gets or sets the cookies for the request.
+            </summary>
+        </member>
         <member name="P:Spring.Http.Client.WebClientHttpRequestFactory.Credentials">
             <summary>
             Gets or sets authentication information for the request.
@@ -710,6 +715,11 @@
             <remarks>
             The default value is <see langword="true"/>.
             </remarks>
+        </member>
+        <member name="P:Spring.Http.Client.WebClientHttpRequestFactory.AutomaticDecompression">
+            <summary>
+            Gets or sets the type of decompression that is automatically used for the response result of this request.
+            </summary>
         </member>
         <member name="T:Spring.Http.Client.WebClientHttpResponse">
             <summary>
@@ -2204,7 +2214,7 @@
         </member>
         <member name="M:Spring.Http.Converters.StringHttpMessageConverter.#ctor">
             <summary>
-            Creates a new instance of the <see cref="T:Spring.Http.Converters.ByteArrayHttpMessageConverter"/> 
+            Creates a new instance of the <see cref="T:Spring.Http.Converters.StringHttpMessageConverter"/> 
             with 'text/plain; charset=ISO-8859-1', and '*/*' media types.
             </summary>
         </member>
