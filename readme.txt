@@ -18,7 +18,7 @@ Spring.NET Social supports
 	* .NET 2.0
 	* .NET Client Profile 3.5 and 4.0
 	* Silverlight 4.0
-	* Windows Phone 7.0
+	* Windows Phone 7.0 and 7.1
 
 
 3. KNOWN ISSUES
