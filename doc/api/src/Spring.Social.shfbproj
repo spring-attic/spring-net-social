@@ -33,6 +33,7 @@
             <version label=".NET Framework" version="3.5 Client Profile" helpFileProject="Spring.Social-net-3.5.shfbproj" />
             <version label="Silverlight" version="4.0" helpFileProject="Spring.Social-sl-4.0.shfbproj" />
             <version label="Windows Phone" version="7.0" helpFileProject="Spring.Social-wp-7.0.shfbproj" />
+            <version label="Windows Phone" version="7.1" helpFileProject="Spring.Social-wp-7.1.shfbproj" />
           </versions>
         </configuration>
       </PlugInConfig>
