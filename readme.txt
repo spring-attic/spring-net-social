@@ -1,6 +1,6 @@
 The Spring.NET Social project, Release 1.0.0
 --------------------------------------------
-http://www.springframework.net/
+http://www.springframework.net/social/
 
 
 1. INTRODUCTION
@@ -50,6 +50,7 @@ The "bin" directory contains the following distinct dll files for use in applica
 Dependencies are those other than on the .NET BCL.
 
 	* "Spring.Social.Core" for all supported Framework versions
+	* "Spring.Rest" for all supported Framework versions
 	* Dependencies: Common.Logging for .NET 3.5 and 4.0
 
 Debug build is done using /DEBUG:full and release build using /DEBUG:pdbonly flags.
@@ -69,6 +70,7 @@ There is a Visual Studio solution file for each supported version
 	* Spring.Social.2010-NET40.sln for use with VS.NET 2010 and .NET 4.0
 	* Spring.Social.2010-SL40.sln  for use with VS.NET 2010 and Silverlight 4.0 (Requires Silverlight tools)
 	* Spring.Social.2010-WP70.sln  for use with VS.NET 2010 and Windows Phone 7.0  (Requires Windows Phone tools)
+	* Spring.Social.2010-WP70.sln  for use with VS.NET 2010 and Windows Phone 7.1  (Requires Windows Phone tools)
 
 
 8. SUPPORT

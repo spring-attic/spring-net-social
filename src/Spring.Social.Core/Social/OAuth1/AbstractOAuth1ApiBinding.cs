@@ -62,6 +62,7 @@ namespace Spring.Social.OAuth1
             ((WebClientHttpRequestFactory)restTemplate.RequestFactory).Expect100Continue = false;
 #endif
             this.restTemplate.MessageConverters = this.GetMessageConverters();
+            this.ConfigureRestTemplate(this.restTemplate);
         }
 
         /// <summary>
@@ -73,13 +74,14 @@ namespace Spring.Social.OAuth1
         /// <param name="accessTokenSecret">The access token secret.</param>
         protected AbstractOAuth1ApiBinding(String consumerKey, String consumerSecret, String accessToken, String accessTokenSecret)
         {
-            this.isAuthorized = false;
+            this.isAuthorized = true;
             this.restTemplate = new RestTemplate();
 #if !SILVERLIGHT
             ((WebClientHttpRequestFactory)restTemplate.RequestFactory).Expect100Continue = false;
 #endif
             this.restTemplate.RequestInterceptors.Add(new OAuth1RequestInterceptor(consumerKey, consumerSecret, accessToken, accessTokenSecret));
             this.restTemplate.MessageConverters = this.GetMessageConverters();
+            this.ConfigureRestTemplate(this.restTemplate);
         }
 
         #region IApiBinding Membres
@@ -110,11 +112,22 @@ namespace Spring.Social.OAuth1
         /// </returns>
         protected virtual IList<IHttpMessageConverter> GetMessageConverters()
         {
-            IList<IHttpMessageConverter> messageConverters = new List<IHttpMessageConverter>(2);
+            IList<IHttpMessageConverter> messageConverters = new List<IHttpMessageConverter>();
             messageConverters.Add(new StringHttpMessageConverter());
             messageConverters.Add(new FormHttpMessageConverter());
-            //TODO: Json converter
             return messageConverters;
+        }
+
+        /// <summary>
+        /// Enables customization of the RestTemplate used to consume provider API resources.
+        /// </summary>
+        /// <remarks>
+        /// An example use case might be to configure a custom error handler. 
+        /// Note that this method is called after the RestTemplate has been configured with the message converters returned from GetMessageConverters().
+        /// </remarks>
+        /// <param name="restTemplate">The RestTemplate to configure</param>
+        protected virtual void ConfigureRestTemplate(RestTemplate restTemplate)
+        {
         }
     }
 }

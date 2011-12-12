@@ -156,7 +156,7 @@ namespace Spring.Social.OAuth1
 
         private static string CalculateSignature(string baseString, string consumerSecret, string tokenSecret)
         {
-            string key = consumerSecret + "&" + (tokenSecret != null ? tokenSecret : "");
+            string key = OAuthEncode(consumerSecret) + "&" + (tokenSecret != null ? OAuthEncode(tokenSecret) : "");
             return Sign(baseString, key);
         }
 

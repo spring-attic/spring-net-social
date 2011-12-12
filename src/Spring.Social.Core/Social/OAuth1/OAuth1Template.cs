@@ -51,7 +51,7 @@ namespace Spring.Social.OAuth1
         private RestTemplate restTemplate;
 
         /// <summary>
-        /// Gets a reference to the REST client used to perform OAuth2 calls. 
+        /// Gets a reference to the REST client used to perform OAuth1 calls. 
         /// </summary>
         public RestTemplate RestTemplate
         {

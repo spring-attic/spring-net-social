@@ -1,4 +1,4 @@
 Spring.NET Social Framework
 ---------------------------
 Download full package with sources, documentation and examples at 
-http://www.springsource.com/download/community?project=Spring.NET%20Social
+http://www.springframework.net/social/

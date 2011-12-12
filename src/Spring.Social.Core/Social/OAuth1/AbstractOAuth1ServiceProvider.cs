@@ -84,7 +84,7 @@ namespace Spring.Social.OAuth1
         /// <summary>
         /// Returns an API interface allowing the client application to access protected resources on behalf of a user.
         /// </summary>
-        /// <param name="accessToken">accessToken the API access token.</param>
+        /// <param name="accessToken">The API access token.</param>
         /// <param name="secret">The access token secret.</param>
         /// <returns>A binding to the service provider's API.</returns>
         public abstract T GetApi(string accessToken, string secret);
