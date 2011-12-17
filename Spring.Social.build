@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<project name="Spring.Social" default="build" xmlns="http://nant.sf.net/release/0.91-alpha2/nant.xsd">
+<project name="Spring.Social" default="build" xmlns="http://nant.sf.net/release/0.91/nant.xsd">
    
   <property name="datetime.now" value="${datetime::now()}" />
 
@@ -24,7 +24,7 @@
   <property name="product.fullname" value="${product.name} ${product.version}" if="${(product.releasetype == '')}" />
   <property name="product.fullname" value="${product.name} ${product.version} (${product.releasetype})" if="${(product.releasetype != '')}" />
 
-  <property name="project.buildnumber" value="${math::abs(math::floor(timespan::get-total-days(datetime::now() - datetime::parse('01/01/2011'))))}" />
+  <property name="project.buildnumber" value="${math::abs(math::floor(timespan::get-total-days(datetime::now() - datetime::parse('12/01/2011'))))}" />
   <property name="project.version" value="${product.version}.${project.buildnumber}" />
   <property name="project.buildtype" value="dev" />
   <property name="project.sign" value="false" overwrite="false" />
