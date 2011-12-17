@@ -19,8 +19,12 @@
 #endregion
 
 using System;
+#if NET_4_0
+using System.Threading.Tasks;
+#endif
 using System.Collections.Specialized;
 
+using Spring.Rest.Client;
 using Spring.Social.OAuth1;
 
 namespace Spring.Social.Twitter.Api.Impl
@@ -38,24 +42,38 @@ namespace Spring.Social.Twitter.Api.Impl
         public TwitterTemplate()
             : base()
         {
-            this.RestTemplate.BaseAddress = API_URI_BASE;
         }
 
         // Create a new instance of TwitterTemplate.
         public TwitterTemplate(String consumerKey, String consumerSecret, String accessToken, String accessTokenSecret)
             : base(consumerKey, consumerSecret, accessToken, accessTokenSecret)
+        {            
+        }
+
+        // Configure the REST client used to consume Twitter API resources
+        protected override void ConfigureRestTemplate(RestTemplate restTemplate)
         {
-            this.RestTemplate.BaseAddress = API_URI_BASE;
+            restTemplate.BaseAddress = API_URI_BASE;
         }
 
         #region ITwitter Membres
 
+#if NET_4_0
+        // Updates the user's status.
+        public Task UpdateStatusAsync(string status)
+        {
+            NameValueCollection tweetParams = new NameValueCollection(1);
+            tweetParams.Add("status", status);
+            return this.RestTemplate.PostForMessageAsync(TWEET_URL, tweetParams);
+        }
+#else
         public void UpdateStatus(string status)
         {
             NameValueCollection tweetParams = new NameValueCollection(1);
             tweetParams.Add("status", status);
             this.RestTemplate.PostForMessage(TWEET_URL, tweetParams);
         }
+#endif
 
         #endregion
     }

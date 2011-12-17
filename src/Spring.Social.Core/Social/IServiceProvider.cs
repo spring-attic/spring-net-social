@@ -29,7 +29,7 @@ namespace Spring.Social
     /// Defines a single parameterized type T representing a strongly-typed Java binding to the provider's API that can be obtained and invoked by the application.
     /// Does not define any operations since the provider authorization flow needed to construct an authorized API binding is protocol specific, for example, OAuth1 or OAuth2.
     /// </remarks>
-    /// <typeparam name="T">The service provider's API type</typeparam>
+    /// <typeparam name="T">The service provider's API type.</typeparam>
     /// <author>Keith Donald</author>
     /// <author>Bruno Baia (.NET)</author>
     public interface IServiceProvider<T> where T : IApiBinding

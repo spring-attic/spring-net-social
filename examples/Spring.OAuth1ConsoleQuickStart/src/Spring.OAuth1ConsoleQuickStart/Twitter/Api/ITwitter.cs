@@ -19,6 +19,9 @@
 #endregion
 
 using System;
+#if NET_4_0
+using System.Threading.Tasks;
+#endif
 
 namespace Spring.Social.Twitter.Api
 {
@@ -27,7 +30,12 @@ namespace Spring.Social.Twitter.Api
     // Interface specifying a basic set of operations for interacting with Twitter.
     public interface ITwitter : IApiBinding
     {
+#if NET_4_0
+        // Updates the user's status.
+        Task UpdateStatusAsync(string status);
+#else
         // Updates the user's status.
         void UpdateStatus(string status);
+#endif
     }
 }

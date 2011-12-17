@@ -21,6 +21,10 @@
 using System;
 using System.Text;
 using System.Collections.Generic;
+#if NET_4_0 || SILVERLIGHT_5
+using System.Threading;
+using System.Threading.Tasks;
+#endif
 #if SILVERLIGHT
 using Spring.Collections.Specialized;
 #else
@@ -139,62 +143,6 @@ namespace Spring.Social.OAuth1
             get { return this.version; }
         }
 
-#if !SILVERLIGHT
-        /// <summary>
-        /// Begin a new authorization flow by fetching a new request token from this service provider.
-        /// </summary>
-        /// <remarks>
-        /// The request token should be stored in the user's session up until the authorization callback is made 
-        /// and it's time to exchange it for an <see cref="M:ExchangeForAccessToken(AuthorizedRequestToken, NameValueCollection)">access token</see>.
-        /// </remarks>
-        /// <param name="callbackUrl">
-        /// The URL the provider should redirect to after the member authorizes the connection. Ignored for OAuth 1.0 providers
-        /// </param>
-        /// <param name="additionalParameters">
-        /// Any additional query parameters to be sent when fetching the request token
-        /// </param>
-        /// <returns>A temporary request token use for authorization and exchanged for an access token</returns>
-        public OAuthToken FetchRequestToken(string callbackUrl, NameValueCollection additionalParameters)
-        {
-            IDictionary<string, string> oauthParameters = new Dictionary<string, string>(1);
-            if (version == OAuth1Version.CORE_10_REVISION_A)
-            {
-                oauthParameters.Add("oauth_callback", callbackUrl);
-            }
-            return this.ExchangeForToken(this.requestTokenUrl, oauthParameters, additionalParameters, null);
-        }
-#endif
-
-        /// <summary>
-        /// Asynchronously begin a new authorization flow by fetching a new request token from this service provider.
-        /// </summary>
-        /// <remarks>
-        /// The request token should be stored in the user's session up until the authorization callback is made 
-        /// and it's time to exchange it for an <see cref="M:ExchangeForAccessToken(AuthorizedRequestToken, NameValueCollection)">access token</see>.
-        /// </remarks>
-        /// <param name="callbackUrl">
-        /// The URL the provider should redirect to after the member authorizes the connection. Ignored for OAuth 1.0 providers.
-        /// </param>
-        /// <param name="additionalParameters">
-        /// Any additional query parameters to be sent when fetching the request token.
-        /// </param>
-        /// <param name="operationCompleted">
-        /// The <code>Action&lt;T&gt;</code> to perform when the asynchronous request completes. 
-        /// Provides the temporary request token used for authorization and exchanged for an access token.
-        /// </param>
-        /// <returns>
-        /// A <see cref="RestOperationCanceler"/> instance that allows to cancel the asynchronous operation.
-        /// </returns>
-        public RestOperationCanceler FetchRequestTokenAsync(string callbackUrl, NameValueCollection additionalParameters, Action<RestOperationCompletedEventArgs<OAuthToken>> operationCompleted)
-        {
-            IDictionary<string, string> oauthParameters = new Dictionary<string, string>(1);
-            if (version == OAuth1Version.CORE_10_REVISION_A)
-            {
-                oauthParameters.Add("oauth_callback", callbackUrl);
-            }
-            return this.ExchangeForTokenAsync(this.requestTokenUrl, oauthParameters, additionalParameters, null, operationCompleted);
-        }
-
         /// <summary>
         /// Construct the URL to redirect the user to for authorization.
         /// </summary>
@@ -232,15 +180,102 @@ namespace Spring.Social.OAuth1
             }
         }
 
-#if !SILVERLIGHT
+#if NET_4_0 || SILVERLIGHT_5
         /// <summary>
-        /// Exchange the authorized request token for an access token.
+        /// Asynchronously begin a new authorization flow by fetching a new request token from this service provider.
+        /// </summary>
+        /// <remarks>
+        /// The request token should be stored in the user's session up until the authorization callback is made 
+        /// and it's time to exchange it for an <see cref="M:ExchangeForAccessToken(AuthorizedRequestToken, NameValueCollection)">access token</see>.
+        /// </remarks>
+        /// <param name="callbackUrl">
+        /// The URL the provider should redirect to after the member authorizes the connection. Ignored for OAuth 1.0 providers.
+        /// </param>
+        /// <param name="additionalParameters">
+        /// Any additional query parameters to be sent when fetching the request token.
+        /// </param>
+        /// <returns>
+        /// A <code>Task&lt;T&gt;</code> that represents the asynchronous operation that can return 
+        /// the temporary request token use for authorization and exchanged for an access token.
+        /// </returns>
+        public Task<OAuthToken> FetchRequestTokenAsync(string callbackUrl, NameValueCollection additionalParameters)
+        {
+            IDictionary<string, string> oauthParameters = new Dictionary<string, string>(1);
+            if (version == OAuth1Version.CORE_10_REVISION_A)
+            {
+                oauthParameters.Add("oauth_callback", callbackUrl);
+            }
+            HttpEntity request = CreateExchangeForTokenRequest(this.requestTokenUrl, oauthParameters, additionalParameters, null);
+            return this.restTemplate.PostForObjectAsync<NameValueCollection>(this.requestTokenUrl, request)
+                .ContinueWith<OAuthToken>(task =>
+                {
+                    return this.CreateOAuthToken(task.Result["oauth_token"], task.Result["oauth_token_secret"], task.Result);
+                });
+        }
+
+        /// <summary>
+        /// Asynchronously exchange the authorized request token for an access token.
         /// </summary>
         /// <param name="requestToken">
         /// An authorized request token and verifier. The verifier will be ignored for OAuth 1.0 providers
         /// </param>
         /// <param name="additionalParameters">
         /// Any additional query parameters to be sent when fetching the access token
+        /// </param>
+        /// <returns>
+        /// A <code>Task&lt;T&gt;</code> that represents the asynchronous operation that can return the access token.
+        /// </returns>
+        public Task<OAuthToken> ExchangeForAccessTokenAsync(AuthorizedRequestToken requestToken, NameValueCollection additionalParameters)
+        {
+            IDictionary<string, string> tokenParameters = new Dictionary<string, string>(2);
+            tokenParameters.Add("oauth_token", requestToken.Value);
+            if (version == OAuth1Version.CORE_10_REVISION_A)
+            {
+                tokenParameters.Add("oauth_verifier", requestToken.Verifier);
+            }
+            HttpEntity request = CreateExchangeForTokenRequest(this.accessTokenUrl, tokenParameters, additionalParameters, requestToken.Secret);
+            return this.restTemplate.PostForObjectAsync<NameValueCollection>(this.accessTokenUrl, request)
+                .ContinueWith<OAuthToken>(task =>
+                {
+                    return this.CreateOAuthToken(task.Result["oauth_token"], task.Result["oauth_token_secret"], task.Result);
+                });
+        }
+#else
+#if !SILVERLIGHT
+        /// <summary>
+        /// Begin a new authorization flow by fetching a new request token from this service provider.
+        /// </summary>
+        /// <remarks>
+        /// The request token should be stored in the user's session up until the authorization callback is made 
+        /// and it's time to exchange it for an <see cref="M:ExchangeForAccessToken(AuthorizedRequestToken, NameValueCollection)">access token</see>.
+        /// </remarks>
+        /// <param name="callbackUrl">
+        /// The URL the provider should redirect to after the member authorizes the connection. Ignored for OAuth 1.0 providers.
+        /// </param>
+        /// <param name="additionalParameters">
+        /// Any additional query parameters to be sent when fetching the request token.
+        /// </param>
+        /// <returns>The temporary request token use for authorization and exchanged for an access token.</returns>
+        public OAuthToken FetchRequestToken(string callbackUrl, NameValueCollection additionalParameters)
+        {
+            IDictionary<string, string> oauthParameters = new Dictionary<string, string>(1);
+            if (version == OAuth1Version.CORE_10_REVISION_A)
+            {
+                oauthParameters.Add("oauth_callback", callbackUrl);
+            }
+            HttpEntity request = CreateExchangeForTokenRequest(this.requestTokenUrl, oauthParameters, additionalParameters, null);
+            NameValueCollection response = this.restTemplate.PostForObject<NameValueCollection>(this.requestTokenUrl, request);
+            return this.CreateOAuthToken(response["oauth_token"], response["oauth_token_secret"], response);
+        }
+
+        /// <summary>
+        /// Exchange the authorized request token for an access token.
+        /// </summary>
+        /// <param name="requestToken">
+        /// An authorized request token and verifier. The verifier will be ignored for OAuth 1.0 providers.
+        /// </param>
+        /// <param name="additionalParameters">
+        /// Any additional query parameters to be sent when fetching the access token.
         /// </param>
         /// <returns>The access token.</returns>
         public OAuthToken ExchangeForAccessToken(AuthorizedRequestToken requestToken, NameValueCollection additionalParameters)
@@ -251,9 +286,53 @@ namespace Spring.Social.OAuth1
             {
                 tokenParameters.Add("oauth_verifier", requestToken.Verifier);
             }
-            return this.ExchangeForToken(accessTokenUrl, tokenParameters, additionalParameters, requestToken.Secret);
+            HttpEntity request = CreateExchangeForTokenRequest(this.accessTokenUrl, tokenParameters, additionalParameters, requestToken.Secret);
+            NameValueCollection response = this.restTemplate.PostForObject<NameValueCollection>(this.accessTokenUrl, request);
+            return this.CreateOAuthToken(response["oauth_token"], response["oauth_token_secret"], response);
         }
 #endif
+        /// <summary>
+        /// Asynchronously begin a new authorization flow by fetching a new request token from this service provider.
+        /// </summary>
+        /// <remarks>
+        /// The request token should be stored in the user's session up until the authorization callback is made 
+        /// and it's time to exchange it for an <see cref="M:ExchangeForAccessToken(AuthorizedRequestToken, NameValueCollection)">access token</see>.
+        /// </remarks>
+        /// <param name="callbackUrl">
+        /// The URL the provider should redirect to after the member authorizes the connection. Ignored for OAuth 1.0 providers.
+        /// </param>
+        /// <param name="additionalParameters">
+        /// Any additional query parameters to be sent when fetching the request token.
+        /// </param>
+        /// <param name="operationCompleted">
+        /// The <code>Action&lt;T&gt;</code> to perform when the asynchronous request completes. 
+        /// Provides the temporary request token used for authorization and exchanged for an access token.
+        /// </param>
+        /// <returns>
+        /// A <see cref="RestOperationCanceler"/> instance that allows to cancel the asynchronous operation.
+        /// </returns>
+        public RestOperationCanceler FetchRequestTokenAsync(string callbackUrl, NameValueCollection additionalParameters, Action<RestOperationCompletedEventArgs<OAuthToken>> operationCompleted)
+        {
+            IDictionary<string, string> oauthParameters = new Dictionary<string, string>(1);
+            if (version == OAuth1Version.CORE_10_REVISION_A)
+            {
+                oauthParameters.Add("oauth_callback", callbackUrl);
+            }
+            HttpEntity request = CreateExchangeForTokenRequest(this.requestTokenUrl, oauthParameters, additionalParameters, null);
+            return this.restTemplate.PostForObjectAsync<NameValueCollection>(this.requestTokenUrl, request,
+                r =>
+                {
+                    if (r.Error == null)
+                    {
+                        OAuthToken token = this.CreateOAuthToken(r.Response["oauth_token"], r.Response["oauth_token_secret"], r.Response);
+                        operationCompleted(new RestOperationCompletedEventArgs<OAuthToken>(token, null, false, r.UserState));
+                    }
+                    else
+                    {
+                        operationCompleted(new RestOperationCompletedEventArgs<OAuthToken>(null, r.Error, r.Cancelled, r.UserState));
+                    }
+                });
+        }
 
         /// <summary>
         /// Asynchronously exchange the authorized request token for an access token.
@@ -262,7 +341,7 @@ namespace Spring.Social.OAuth1
         /// An authorized request token and verifier. The verifier will be ignored for OAuth 1.0 providers
         /// </param>
         /// <param name="additionalParameters">
-        /// Any additional query parameters to be sent when fetching the access token
+        /// Any additional query parameters to be sent when fetching the access token.
         /// </param>
         /// <param name="operationCompleted">
         /// The <code>Action&lt;T&gt;</code> to perform when the asynchronous request completes. 
@@ -279,8 +358,22 @@ namespace Spring.Social.OAuth1
             {
                 tokenParameters.Add("oauth_verifier", requestToken.Verifier);
             }
-            return this.ExchangeForTokenAsync(accessTokenUrl, tokenParameters, additionalParameters, requestToken.Secret, operationCompleted);
+            HttpEntity request = CreateExchangeForTokenRequest(this.accessTokenUrl, tokenParameters, additionalParameters, requestToken.Secret);
+            return this.restTemplate.PostForObjectAsync<NameValueCollection>(this.accessTokenUrl, request,
+                r =>
+                {
+                    if (r.Error == null)
+                    {
+                        OAuthToken token = this.CreateOAuthToken(r.Response["oauth_token"], r.Response["oauth_token_secret"], r.Response);
+                        operationCompleted(new RestOperationCompletedEventArgs<OAuthToken>(token, null, false, r.UserState));
+                    }
+                    else
+                    {
+                        operationCompleted(new RestOperationCompletedEventArgs<OAuthToken>(null, r.Error, r.Cancelled, r.UserState));
+                    }
+                });
         }
+#endif
 
         #endregion
 
@@ -317,25 +410,31 @@ namespace Spring.Social.OAuth1
             return null;
         }
 
-        // Creates the REST Client used to communicate with the provider's OAuth1 API.
-        private RestTemplate CreateRestTemplate()
+        /// <summary>
+        /// Creates the <see cref="RestTemplate"/> used to communicate with the provider's OAuth1 API.
+        /// </summary>
+        /// <remarks>
+        /// This implementation creates a RestTemplate with a minimal set of HTTP message converters: <see cref="FormHttpMessageConverter"/>. 
+        /// May be overridden to customize how the RestTemplate is created. 
+        /// For example, if the provider returns data in some format other than JSON for form-encoded, you might override to register an appropriate message converter. 
+        /// </remarks>
+        /// <returns>The RestTemplate used to perform OAuth1 calls.</returns>
+        protected virtual RestTemplate CreateRestTemplate()
         {
             RestTemplate restTemplate = new RestTemplate();
             //((WebClientHttpRequestFactory)this.restTemplate.RequestFactory).Expect100Continue = false;
 
             IList<IHttpMessageConverter> converters = new List<IHttpMessageConverter>(1);
-            // Some service providers returns form-encoded results with a content type of "text/plain"
             FormHttpMessageConverter formConverter = new FormHttpMessageConverter();
-            formConverter.SupportedMediaTypes.Add(MediaType.TEXT_PLAIN);
-            formConverter.SupportedMediaTypes.Add(MediaType.TEXT_HTML);
+            // Always read NameValueCollection as 'application/x-www-form-urlencoded' even if contentType not set properly by provider
+            formConverter.SupportedMediaTypes.Add(MediaType.ALL);
             converters.Add(formConverter);
             restTemplate.MessageConverters = converters;
 
             return restTemplate;
         }
 
-#if !SILVERLIGHT
-        private OAuthToken ExchangeForToken(Uri tokenUrl, IDictionary<string, string> tokenParameters, NameValueCollection additionalParameters, string tokenSecret)
+        private HttpEntity CreateExchangeForTokenRequest(Uri tokenUrl, IDictionary<string, string> tokenParameters, NameValueCollection additionalParameters, string tokenSecret)
         {
             HttpHeaders headers = new HttpHeaders();
             headers.Add("Authorization", this.signingSupport.BuildAuthorizationHeaderValue(
@@ -344,35 +443,7 @@ namespace Spring.Social.OAuth1
             {
                 additionalParameters = new NameValueCollection();
             }
-            HttpEntity request = new HttpEntity(additionalParameters, headers);
-            HttpResponseMessage<NameValueCollection> response = this.restTemplate.Exchange<NameValueCollection>(tokenUrl, HttpMethod.POST, request);
-            return this.CreateOAuthToken(response.Body["oauth_token"], response.Body["oauth_token_secret"], response.Body);
-        }
-#endif
-
-        private RestOperationCanceler ExchangeForTokenAsync(Uri tokenUrl, IDictionary<string, string> tokenParameters, NameValueCollection additionalParameters, string tokenSecret, Action<RestOperationCompletedEventArgs<OAuthToken>> operationCompleted)
-        {
-            HttpHeaders headers = new HttpHeaders();
-            headers.Add("Authorization", this.signingSupport.BuildAuthorizationHeaderValue(
-                tokenUrl, tokenParameters, additionalParameters, this.consumerKey, this.consumerSecret, tokenSecret));
-            if (additionalParameters == null)
-            {
-                additionalParameters = new NameValueCollection();
-            }
-            HttpEntity request = new HttpEntity(additionalParameters, headers);
-            return this.restTemplate.ExchangeAsync<NameValueCollection>(tokenUrl, HttpMethod.POST, request,
-                r =>
-                {
-                    if (r.Error == null)
-                    {
-                        OAuthToken token = this.CreateOAuthToken(r.Response.Body["oauth_token"], r.Response.Body["oauth_token_secret"], r.Response.Body);
-                        operationCompleted(new RestOperationCompletedEventArgs<OAuthToken>(token, null, false, r.UserState));
-                    }
-                    else
-                    {
-                        operationCompleted(new RestOperationCompletedEventArgs<OAuthToken>(null, r.Error, r.Cancelled, r.UserState));
-                    }
-                });
+            return new HttpEntity(additionalParameters, headers);
         }
 
         private string BuildAuthUrl(string baseAuthUrl, string requestToken, OAuth1Parameters parameters)

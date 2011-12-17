@@ -1,4 +1,7 @@
 ﻿using System;
+#if NET_4_0
+using System.Threading.Tasks;
+#endif
 using System.Diagnostics;
 
 using Spring.Social.Twitter.Api;
@@ -10,8 +13,8 @@ namespace Spring.OAuth2ConsoleQuickStart
     {
         // Register your own Twitter app at https://dev.twitter.com/apps/new with "Read & Write" access type.
         // Set your consumer key & secret here
-        private const string TwitterConsumerKey = "TODO";
-        private const string TwitterConsumerSecret = "TODO";
+        private const string TwitterConsumerKey = TODO;
+        private const string TwitterConsumerSecret = TODO;
 
         static void Main(string[] args)
         {
@@ -22,7 +25,11 @@ namespace Spring.OAuth2ConsoleQuickStart
                 // OAuth 'dance'
                 // Authentication using Out-of-band/PIN Code Authentication
                 Console.Write("Getting request token...");
+#if NET_4_0
+                OAuthToken oauthToken = twitterServiceProvider.OAuthOperations.FetchRequestTokenAsync("oob", null).Result;
+#else
                 OAuthToken oauthToken = twitterServiceProvider.OAuthOperations.FetchRequestToken("oob", null);
+#endif
                 Console.WriteLine("Done");
 
                 string authenticateUrl = twitterServiceProvider.OAuthOperations.BuildAuthenticateUrl(oauthToken.Value, OAuth1Parameters.NONE);
@@ -34,14 +41,22 @@ namespace Spring.OAuth2ConsoleQuickStart
 
                 Console.Write("Getting access token...");
                 AuthorizedRequestToken requestToken = new AuthorizedRequestToken(oauthToken, pinCode);
+#if NET_4_0
+                OAuthToken oauthAccessToken = twitterServiceProvider.OAuthOperations.ExchangeForAccessTokenAsync(requestToken, null).Result;
+#else
                 OAuthToken oauthAccessToken = twitterServiceProvider.OAuthOperations.ExchangeForAccessToken(requestToken, null);
+#endif
                 Console.WriteLine("Done");
 
                 // API
                 ITwitter twitter = twitterServiceProvider.GetApi(oauthAccessToken.Value, oauthAccessToken.Secret);
                 Console.WriteLine("Enter your status message:");
                 string message = Console.ReadLine();
+#if NET_4_0
+                twitter.UpdateStatusAsync(message).Wait();
+#else
                 twitter.UpdateStatus(message);
+#endif
                 Console.WriteLine("Status updated!");
             }
             catch (Spring.Rest.Client.HttpResponseException ex)

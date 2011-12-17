@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spring.OAuth1ConsoleQuickStart.2010-NET40", "src\Spring.OAuth1ConsoleQuickStart\Spring.OAuth1ConsoleQuickStart.2010-NET40.csproj", "{A27D6FA8-12BF-9FAC-35CE-1DB6D4F09179}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spring.Social.Core.2010-NET40", "..\..\src\Spring.Social.Core\Spring.Social.Core.2010-NET40.csproj", "{04F79EC0-1F18-18D3-3F4B-01CFAE04EFBC}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,10 +13,6 @@ Global
 		{A27D6FA8-12BF-9FAC-35CE-1DB6D4F09179}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A27D6FA8-12BF-9FAC-35CE-1DB6D4F09179}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A27D6FA8-12BF-9FAC-35CE-1DB6D4F09179}.Release|Any CPU.Build.0 = Release|Any CPU
-		{04F79EC0-1F18-18D3-3F4B-01CFAE04EFBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{04F79EC0-1F18-18D3-3F4B-01CFAE04EFBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{04F79EC0-1F18-18D3-3F4B-01CFAE04EFBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{04F79EC0-1F18-18D3-3F4B-01CFAE04EFBC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
