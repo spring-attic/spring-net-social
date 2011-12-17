@@ -1,4 +1,4 @@
 Rhino.Mocks 3.6
 NUnit 2.5.10
 Common.Logging 2.0
-Spring.Rest 1.0.2
+Spring.Rest 1.1.0 (dev build)

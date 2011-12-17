@@ -669,12 +669,6 @@
             <see cref="T:Spring.Http.Client.WebClientHttpRequest"/>
             <author>Bruno Baia</author>
         </member>
-        <member name="F:Spring.Http.Client.WebClientHttpRequestFactory.httpWebRequest">
-            <summary>
-            The .NET <see cref="T:System.Net.HttpWebRequest"/> used by this factory 
-            or <see langword="null"/> if not created.
-            </summary>
-        </member>
         <member name="M:Spring.Http.Client.WebClientHttpRequestFactory.#ctor">
             <summary>
             Creates a new instance of <see cref="T:Spring.Http.Client.WebClientHttpRequestFactory"/>.
@@ -958,7 +952,7 @@
             Returns true if the given media type includes any of the <see cref="P:SupportedMediaTypes">supported media types</see>.
             </summary>
             <param name="mediaType">
-            The media type to write, can be {@code null} if not specified. Typically the value of an 'Accept' header.
+            The media type to write, can be null if not specified. Typically the value of an 'Accept' header.
             </param>
             <returns>
             <see langword="true"/> if the supported media types are compatible with the media type, or if the media type is null.
@@ -1373,9 +1367,10 @@
             The root exception that is being wrapped.
             </param>
         </member>
-        <member name="T:Spring.Http.Converters.Json.JsonHttpMessageConverter">
+        <member name="T:Spring.Http.Converters.Json.DataContractJsonHttpMessageConverter">
             <summary>
-            Implementation of <see cref="T:Spring.Http.Converters.IHttpMessageConverter"/> that can read and write JSON.
+            Implementation of <see cref="T:Spring.Http.Converters.IHttpMessageConverter"/> that can read and write JSON 
+            using <see cref="T:System.Runtime.Serialization.Json.DataContractJsonSerializer"/>.
             </summary>
             <remarks>
             By default, this converter supports 'application/json' media type. 
@@ -1383,20 +1378,20 @@
             </remarks>
             <author>Bruno Baia</author>
         </member>
-        <member name="F:Spring.Http.Converters.Json.JsonHttpMessageConverter.DEFAULT_CHARSET">
+        <member name="F:Spring.Http.Converters.Json.DataContractJsonHttpMessageConverter.DEFAULT_CHARSET">
             <summary>
             Default encoding for JSON.
             </summary>
         </member>
-        <member name="M:Spring.Http.Converters.Json.JsonHttpMessageConverter.#ctor">
+        <member name="M:Spring.Http.Converters.Json.DataContractJsonHttpMessageConverter.#ctor">
             <summary>
-            Creates a new instance of the <see cref="T:Spring.Http.Converters.Json.JsonHttpMessageConverter"/> 
+            Creates a new instance of the <see cref="T:Spring.Http.Converters.Json.DataContractJsonHttpMessageConverter"/> 
             with the media type 'application/json'. 
             </summary>
         </member>
-        <member name="M:Spring.Http.Converters.Json.JsonHttpMessageConverter.#ctor(System.Boolean)">
+        <member name="M:Spring.Http.Converters.Json.DataContractJsonHttpMessageConverter.#ctor(System.Boolean)">
             <summary>
-            Creates a new instance of the <see cref="T:Spring.Http.Converters.Json.JsonHttpMessageConverter"/> 
+            Creates a new instance of the <see cref="T:Spring.Http.Converters.Json.DataContractJsonHttpMessageConverter"/> 
             with the media type 'application/json'. 
             </summary>
             <param name="requiresAttribute">
@@ -1404,14 +1399,14 @@
             <see cref="T:System.Runtime.Serialization.DataContractAttribute"/> and <see cref="T:System.Runtime.Serialization.CollectionDataContractAttribute"/>. 
             </param>
         </member>
-        <member name="M:Spring.Http.Converters.Json.JsonHttpMessageConverter.Supports(System.Type)">
+        <member name="M:Spring.Http.Converters.Json.DataContractJsonHttpMessageConverter.Supports(System.Type)">
             <summary>
             Indicates whether the given class is supported by this converter.
             </summary>
             <param name="type">The type to test for support.</param>
             <returns><see langword="true"/> if supported; otherwise <see langword="false"/></returns>
         </member>
-        <member name="M:Spring.Http.Converters.Json.JsonHttpMessageConverter.ReadInternal``1(Spring.Http.IHttpInputMessage)">
+        <member name="M:Spring.Http.Converters.Json.DataContractJsonHttpMessageConverter.ReadInternal``1(Spring.Http.IHttpInputMessage)">
             <summary>
             Abstract template method that reads the actualy object. Invoked from <see cref="M:Read"/>.
             </summary>
@@ -1420,7 +1415,7 @@
             <returns>The converted object.</returns>
             <exception cref="T:Spring.Http.Converters.HttpMessageNotReadableException">In case of conversion errors</exception>
         </member>
-        <member name="M:Spring.Http.Converters.Json.JsonHttpMessageConverter.WriteInternal(System.Object,Spring.Http.IHttpOutputMessage)">
+        <member name="M:Spring.Http.Converters.Json.DataContractJsonHttpMessageConverter.WriteInternal(System.Object,Spring.Http.IHttpOutputMessage)">
             <summary>
             Abstract template method that writes the actual body. Invoked from <see cref="M:Write"/>.
             </summary>
@@ -1428,7 +1423,7 @@
             <param name="message">The HTTP message to write to.</param>
             <exception cref="T:Spring.Http.Converters.HttpMessageNotWritableException">In case of conversion errors</exception>
         </member>
-        <member name="M:Spring.Http.Converters.Json.JsonHttpMessageConverter.GetSerializer(System.Type)">
+        <member name="M:Spring.Http.Converters.Json.DataContractJsonHttpMessageConverter.GetSerializer(System.Type)">
             <summary>
             Creates an instance of <see cref="T:System.Runtime.Serialization.Json.DataContractJsonSerializer"/> to 
             serialize or deserialize an object of the specified type.
@@ -1436,17 +1431,96 @@
             <param name="type">The type of instances to serialize or deserialize.</param>
             <returns>The serializer to use.</returns>
         </member>
-        <member name="P:Spring.Http.Converters.Json.JsonHttpMessageConverter.KnownTypes">
+        <member name="P:Spring.Http.Converters.Json.DataContractJsonHttpMessageConverter.KnownTypes">
             <summary>
             Gets or sets types that may be present in the object graph.
             </summary>
         </member>
-        <member name="P:Spring.Http.Converters.Json.JsonHttpMessageConverter.RequiresAttribute">
+        <member name="P:Spring.Http.Converters.Json.DataContractJsonHttpMessageConverter.RequiresAttribute">
             <summary>
             Indicates whether this converter supports only classes decorated with 
             <see cref="T:System.Runtime.Serialization.DataContractAttribute"/> and <see cref="T:System.Runtime.Serialization.CollectionDataContractAttribute"/>. 
             Default value is <c>false</c>.
             </summary>
+        </member>
+        <member name="T:Spring.Http.Converters.Json.SpringJsonHttpMessageConverter">
+            <summary>
+            Implementation of <see cref="T:Spring.Http.Converters.IHttpMessageConverter"/> that can read and write JSON 
+            using the Spring.Json library.
+            </summary>
+            <remarks>
+            <para>
+            This implementation supports getting/setting values from JSON directly, 
+            without the need to deserialize/serialize to a .NET class.
+            </para>
+            <para>
+            By default, this converter supports 'application/json' media type. 
+            This can be overridden by setting the <see cref="P:SupportedMediaTypes"/> property.
+            </para>
+            </remarks>
+            <author>Bruno Baia</author>
+        </member>
+        <member name="F:Spring.Http.Converters.Json.SpringJsonHttpMessageConverter.DEFAULT_CHARSET">
+            <summary>
+            Default encoding for JSON strings.
+            </summary>
+        </member>
+        <member name="M:Spring.Http.Converters.Json.SpringJsonHttpMessageConverter.#ctor">
+            <summary>
+            Creates a new instance of the <see cref="T:Spring.Http.Converters.Json.SpringJsonHttpMessageConverter"/> 
+            with the media type 'application/json'.
+            </summary>
+        </member>
+        <member name="M:Spring.Http.Converters.Json.SpringJsonHttpMessageConverter.#ctor(Spring.Json.JsonMapper)">
+            <summary>
+            Creates a new instance of the <see cref="T:Spring.Http.Converters.Json.SpringJsonHttpMessageConverter"/> 
+            with the media type 'application/json'.
+            </summary>
+            <param name="mapper">A <see cref="T:Spring.Json.JsonMapper"/> to use for converting custom types.</param>
+        </member>
+        <member name="M:Spring.Http.Converters.Json.SpringJsonHttpMessageConverter.CanRead(System.Type,Spring.Http.MediaType)">
+            <summary>
+            Indicates whether the given class can be read by this converter.
+            </summary>
+            <param name="type">The class to test for readability</param>
+            <param name="mediaType">
+            The media type to read, can be null if not specified. Typically the value of a 'Content-Type' header.
+            </param>
+            <returns><see langword="true"/> if readable; otherwise <see langword="false"/></returns>
+        </member>
+        <member name="M:Spring.Http.Converters.Json.SpringJsonHttpMessageConverter.CanWrite(System.Type,Spring.Http.MediaType)">
+            <summary>
+            Indicates whether the given class can be written by this converter.
+            </summary>
+            <param name="type">The class to test for writability</param>
+            <param name="mediaType">
+            The media type to write, can be null if not specified. Typically the value of an 'Accept' header.
+            </param>
+            <returns><see langword="true"/> if writable; otherwise <see langword="false"/></returns>
+        </member>
+        <member name="M:Spring.Http.Converters.Json.SpringJsonHttpMessageConverter.Supports(System.Type)">
+            <summary>
+            Indicates whether the given class is supported by this converter.
+            </summary>
+            <param name="type">The type to test for support.</param>
+            <returns><see langword="true"/> if supported; otherwise <see langword="false"/></returns>
+        </member>
+        <member name="M:Spring.Http.Converters.Json.SpringJsonHttpMessageConverter.ReadInternal``1(Spring.Http.IHttpInputMessage)">
+            <summary>
+            Abstract template method that reads the actualy object. Invoked from <see cref="M:Read"/>.
+            </summary>
+            <typeparam name="T">The type of object to return.</typeparam>
+            <param name="message">The HTTP message to read from.</param>
+            <returns>The converted object.</returns>
+            <exception cref="T:Spring.Http.Converters.HttpMessageNotReadableException">In case of conversion errors</exception>
+        </member>
+        <member name="M:Spring.Http.Converters.Json.SpringJsonHttpMessageConverter.WriteInternal(System.Object,Spring.Http.IHttpOutputMessage)">
+            <summary>
+            Abstract template method that writes the actual body. Invoked from <see cref="M:Write"/>.
+            </summary>
+            <param name="content">The object to write to the HTTP message.</param>
+            <param name="message">The HTTP message to write to.</param>
+            <exception cref="T:Spring.Http.Converters.HttpMessageNotWritableException">In case of conversion errors</exception>
         </member>
         <member name="T:Spring.Http.Converters.StringHttpMessageConverter">
             <summary>
@@ -1642,7 +1716,7 @@
         </member>
         <member name="T:Spring.Http.HttpEntity">
             <summary>
-            Represents a HTTP entity message, as defined in the HTTP specification. 
+            Represents an HTTP entity message, as defined in the HTTP specification. 
             <a href="http://tools.ietf.org/html/rfc2616#section-7">HTTP 1.1, section 7</a>
             </summary>
             <author>Arjen Poutsma</author>
@@ -1813,11 +1887,13 @@
         </member>
         <member name="T:Spring.Http.HttpMethod">
             <summary>
-            Enumeration of HTTP request methods as defined in the HTTP specification. 
-            <a href="http://tools.ietf.org/html/rfc2616#section-5.1.1">HTTP 1.1, section 6</a>
+            Represents an HTTP request method as defined in the HTTP specification. 
+            <a href="http://tools.ietf.org/html/rfc2616#section-5.1.1">HTTP 1.1, section 5.1.1</a>
             </summary>
-            <author>Arjen Poutsma</author>
-            <author>Bruno Baia (.NET)</author>
+            <remarks>
+            HTTP method equality and hashing are case insensitive.
+            </remarks>
+            <author>Bruno Baia</author>
         </member>
         <member name="F:Spring.Http.HttpMethod.OPTIONS">
             <summary>
@@ -1859,9 +1935,72 @@
             The CONNECT method.
             </summary>
         </member>
+        <member name="M:Spring.Http.HttpMethod.#ctor(System.String)">
+            <summary>
+            Creates a new instance of <see cref="T:Spring.Http.HttpMethod"/> with the given HTTP method value.
+            </summary>
+            <param name="value">The HTTP method as a string value.</param>
+        </member>
+        <member name="M:Spring.Http.HttpMethod.Equals(Spring.Http.HttpMethod)">
+            <summary>
+            Indicates whether the current HTTP method is equal to another <see cref="T:Spring.Http.HttpMethod"/>.
+            </summary>
+            <param name="other">An <see cref="T:Spring.Http.HttpMethod"/> to compare with this HTTP method.</param>
+            <returns>
+            <see langword="true"/> if the specified <see cref="T:Spring.Http.HttpMethod"/> is equal to the current HTTP method; otherwise, <see langword="false"/>.
+            </returns>
+        </member>
+        <member name="M:Spring.Http.HttpMethod.Equals(System.Object)">
+            <summary>
+            Indicates whether the current HTTP method is equal to another <see cref="T:System.Object"/>.
+            </summary>
+            <param name="obj">An <see cref="T:System.Object"/> to compare with this HTTP method.</param>
+            <returns>
+            <see langword="true"/> if the specified <see cref="T:System.Object"/> is equal to the current HTTP method; otherwise, <see langword="false"/>.
+            </returns>
+        </member>
+        <member name="M:Spring.Http.HttpMethod.GetHashCode">
+            <summary>
+            Serves as a hash function for a particular type.
+            </summary>
+            <remarks>
+            This method is suitable for use in hashing algorithms and data structures like a hash table.
+            </remarks>
+            <returns>
+            A hash code for the current HTTP method.
+            </returns>
+        </member>
+        <member name="M:Spring.Http.HttpMethod.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current HTTP method.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current HTTP method.
+            </returns>
+        </member>
+        <member name="M:Spring.Http.HttpMethod.op_Equality(Spring.Http.HttpMethod,Spring.Http.HttpMethod)">
+            <summary>
+            Determines whether two specified HTTP methods have the same value.
+            </summary>
+            <param name="method1">The first HTTP method to compare, or <see langword="null"/>.</param>
+            <param name="method2">The second HTTP method to compare, or <see langword="null"/>.</param>
+            <returns>
+            <see langword="true"/> if values are the same; otherwise, <see langword="false"/>.
+            </returns>
+        </member>
+        <member name="M:Spring.Http.HttpMethod.op_Inequality(Spring.Http.HttpMethod,Spring.Http.HttpMethod)">
+            <summary>
+            Determines whether two specified HTTP methods have different values.
+            </summary>
+            <param name="method1">The first HTTP method to compare, or <see langword="null"/>.</param>
+            <param name="method2">The second HTTP method to compare, or <see langword="null"/>.</param>
+            <returns>
+            <see langword="true"/> if values are differents; otherwise, <see langword="false"/>.
+            </returns>
+        </member>
         <member name="T:Spring.Http.HttpResponseMessage">
             <summary>
-            Represents a HTTP response message, with no body, as defined in the HTTP specification. 
+            Represents an HTTP response message, with no body, as defined in the HTTP specification. 
             <a href="http://tools.ietf.org/html/rfc2616#section-6">HTTP 1.1, section 6</a>
             </summary>
             <author>Bruno Baia</author>
@@ -1898,7 +2037,7 @@
         </member>
         <member name="T:Spring.Http.HttpResponseMessage`1">
             <summary>
-            Represents a HTTP response message, as defined in the HTTP specification. 
+            Represents an HTTP response message, as defined in the HTTP specification. 
             <a href="http://tools.ietf.org/html/rfc2616#section-6">HTTP 1.1, section 6</a>
             </summary>
             <typeparam name="T">The type of the response body.</typeparam>
@@ -1932,9 +2071,8 @@
             <a href="http://tools.ietf.org/html/rfc2616#section-3.7">HTTP 1.1, section 3.7</a>
             </summary>
             <remarks>
-            Consists of a <see cref="P:Type"/> and a <see cref="P:SubType"/>. 
-            Also has functionality to parse media types from a string using <see cref="M:ParseMediaType(string)"/>, 
-            or multiple comma-separated media types using <see cref="M:ParseMediaTypes(string)"/>.
+            Consists of a <see cref="P:Type"/> and a <see cref="P:SubType"/>.  
+            Also has functionality to parse media types from a string using <see cref="M:Parse(string)"/>.
             </remarks>
             <author>Arjen Poutsma</author>
             <author>Juergen Hoeller</author>
@@ -1942,72 +2080,72 @@
         </member>
         <member name="F:Spring.Http.MediaType.ALL">
             <summary>
-            Public constant media type that includes all media ranges (i.e. '*/*').
+            The media type that includes all media ranges (i.e. '*/*').
             </summary>
         </member>
         <member name="F:Spring.Http.MediaType.APPLICATION_ATOM_XML">
             <summary>
-            Public constant media type for 'application/atom+xml'.
+            The media type for 'application/atom+xml'.
             </summary>
         </member>
         <member name="F:Spring.Http.MediaType.APPLICATION_FORM_URLENCODED">
             <summary>
-            Public constant media type for 'application/x-www-form-urlencoded'.
+            The media type for 'application/x-www-form-urlencoded'.
             </summary>
         </member>
         <member name="F:Spring.Http.MediaType.APPLICATION_JSON">
             <summary>
-            Public constant media type for 'application/json'.
+            The media type for 'application/json'.
             </summary>
         </member>
         <member name="F:Spring.Http.MediaType.APPLICATION_OCTET_STREAM">
             <summary>
-            Public constant media type for 'application/octet-stream'.
+            The media type for 'application/octet-stream'.
             </summary>
         </member>
         <member name="F:Spring.Http.MediaType.APPLICATION_XHTML_XML">
             <summary>
-            Public constant media type for 'application/xhtml+xml'.
+            The media type for 'application/xhtml+xml'.
             </summary>
         </member>
         <member name="F:Spring.Http.MediaType.IMAGE_GIF">
             <summary>
-            Public constant media type for 'image/gif'.
+            The media type for 'image/gif'.
             </summary>
         </member>
         <member name="F:Spring.Http.MediaType.IMAGE_JPEG">
             <summary>
-            Public constant media type for 'image/jpeg'.
+            The media type for 'image/jpeg'.
             </summary>
         </member>
         <member name="F:Spring.Http.MediaType.IMAGE_PNG">
             <summary>
-            Public constant media type for 'image/png'.
+            The media type for 'image/png'.
             </summary>
         </member>
         <member name="F:Spring.Http.MediaType.APPLICATION_XML">
             <summary>
-            Public constant media type for 'image/xml'.
+            The media type for 'image/xml'.
             </summary>
         </member>
         <member name="F:Spring.Http.MediaType.MULTIPART_FORM_DATA">
             <summary>
-            Public constant media type for 'multipart/form-data'.
+            The media type for 'multipart/form-data'.
             </summary>
         </member>
         <member name="F:Spring.Http.MediaType.TEXT_HTML">
             <summary>
-            Public constant media type for 'text/html'.
+            The media type for 'text/html'.
             </summary>
         </member>
         <member name="F:Spring.Http.MediaType.TEXT_PLAIN">
             <summary>
-            Public constant media type for 'text/plain'.
+            The media type for 'text/plain'.
             </summary>
         </member>
         <member name="F:Spring.Http.MediaType.TEXT_XML">
             <summary>
-            Public constant media type for 'text/xml'.
+            The media type for 'text/xml'.
             </summary>
         </member>
         <member name="M:Spring.Http.MediaType.#ctor(System.String)">
@@ -2065,15 +2203,22 @@
             <param name="subtype">The subtype.</param>
             <param name="parameters">The parameters, may be null.</param>
         </member>
+        <member name="M:Spring.Http.MediaType.Equals(Spring.Http.MediaType)">
+            <summary>
+            Indicates whether the current media type is equal to another <see cref="T:Spring.Http.MediaType"/>.
+            </summary>
+            <param name="other">A <see cref="T:Spring.Http.MediaType"/> to compare with this media type.</param>
+            <returns>
+            <see langword="true"/> if the specified <see cref="T:Spring.Http.MediaType"/> is equal to the current media type; otherwise, <see langword="false"/>.
+            </returns>
+        </member>
         <member name="M:Spring.Http.MediaType.Equals(System.Object)">
             <summary>
-            Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
+            Indicates whether the current media type is equal to another <see cref="T:System.Object"/>.
             </summary>
-            <param name="obj">
-            The <see cref="T:System.Object"/> to compare with the current <see cref="T:System.Object"/>.
-            </param>
+            <param name="obj">An <see cref="T:System.Object"/> to compare with this media type.</param>
             <returns>
-            true if the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>; otherwise, false.
+            <see langword="true"/> if the specified <see cref="T:System.Object"/> is equal to the current media type; otherwise, <see langword="false"/>.
             </returns>
         </member>
         <member name="M:Spring.Http.MediaType.GetHashCode">
@@ -2081,18 +2226,38 @@
             Serves as a hash function for a particular type.
             </summary>
             <remarks>
-            <see cref="M:System.Object.GetHashCode"/> is suitable for use in hashing algorithms and data structures like a hash table.
+            This method is suitable for use in hashing algorithms and data structures like a hash table.
             </remarks>
             <returns>
-            A hash code for the current <see cref="T:System.Object"/>.
+            A hash code for the current media type.
             </returns>
         </member>
         <member name="M:Spring.Http.MediaType.ToString">
             <summary>
-            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object."/>
+            Returns a <see cref="T:System.String"/> that represents the current media type.
             </summary>
             <returns>
-            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object."/>.
+            A <see cref="T:System.String"/> that represents the current media type.
+            </returns>
+        </member>
+        <member name="M:Spring.Http.MediaType.op_Equality(Spring.Http.MediaType,Spring.Http.MediaType)">
+            <summary>
+            Determines whether two specified media types have the same value.
+            </summary>
+            <param name="mediaType1">The first media type to compare, or <see langword="null"/>.</param>
+            <param name="mediaType2">The second media type to compare, or <see langword="null"/>.</param>
+            <returns>
+            <see langword="true"/> if values are the same; otherwise, <see langword="false"/>.
+            </returns>
+        </member>
+        <member name="M:Spring.Http.MediaType.op_Inequality(Spring.Http.MediaType,Spring.Http.MediaType)">
+            <summary>
+            Determines whether two specified media types have different values.
+            </summary>
+            <param name="mediaType1">The first media type to compare, or <see langword="null"/>.</param>
+            <param name="mediaType2">The second media type to compare, or <see langword="null"/>.</param>
+            <returns>
+            <see langword="true"/> if values are differents; otherwise, <see langword="false"/>.
             </returns>
         </member>
         <member name="M:Spring.Http.MediaType.GetParameter(System.String)">
@@ -2261,6 +2426,530 @@
             Defaults to '1.0'.
             </summary>
         </member>
+        <member name="T:Spring.Json.IJsonDeserializer">
+            <summary>
+            An interface to deserialize object of arbitrary type from JSON.
+            </summary>
+            <author>Bruno Baia</author>
+        </member>
+        <member name="M:Spring.Json.IJsonDeserializer.Deserialize(Spring.Json.JsonValue,Spring.Json.JsonMapper)">
+            <summary>
+            Deserialize the specified <paramref name="value"/> to a custom object.
+            </summary>
+            <param name="value">The <see cref="T:Spring.Json.JsonValue"/> to deserialize.</param>
+            <param name="mapper">The <see cref="T:Spring.Json.JsonMapper"/> to use.</param>
+            <returns>An object created from the passed <see cref="T:Spring.Json.JsonValue"/>.</returns>
+        </member>
+        <member name="T:Spring.Json.IJsonSerializer">
+            <summary>
+            An interface to serialize object of arbitrary type into JSON.
+            </summary>
+            <author>Bruno Baia</author>
+        </member>
+        <member name="M:Spring.Json.IJsonSerializer.Serialize(System.Object,Spring.Json.JsonMapper)">
+            <summary>
+            Serialize the specified <paramref name="obj"/> to a <see cref="T:Spring.Json.JsonValue"/>.
+            </summary>
+            <param name="obj">The object to serialize.</param>
+            <param name="mapper">The <see cref="T:Spring.Json.JsonMapper"/> to use.</param>
+            <returns>A <see cref="T:Spring.Json.JsonValue"/> object created from the passed objects.</returns>
+        </member>
+        <member name="T:Spring.Json.JsonArray">
+            <summary>
+            Defines a JSON array structure. 
+            A JSON array is a list of <see cref="T:Spring.Json.JsonValue"/>s.
+            </summary>
+            <remarks>
+            Specification details, see http://www.json.org/
+            </remarks>
+            <seealso cref="T:Spring.Json.JsonValue"/>
+            <author>Bruno Baia</author>
+        </member>
+        <member name="T:Spring.Json.JsonValue">
+            <summary>
+            A generic container for JSON content. 
+            Every JSON value types (object, array, string, number, true, false or null) can be accessed via the provided functions.
+            </summary>
+            <remarks>
+            Specification details, see http://www.json.org/
+            </remarks>
+            <seealso cref="T:Spring.Json.JsonObject"/>
+            <seealso cref="T:Spring.Json.JsonArray"/>
+            <author>Bruno Baia</author>
+        </member>
+        <member name="F:Spring.Json.JsonValue.value">
+            <summary>
+            The value held by this instance.
+            </summary>
+        </member>
+        <member name="F:Spring.Json.JsonValue.type">
+            <summary>
+            The JSON type of the value held by this instance.
+            </summary>
+        </member>
+        <member name="M:Spring.Json.JsonValue.#ctor">
+            <summary>
+            Creates a new instance of <see cref="T:Spring.Json.JsonValue"/> that holds a JSON null value.
+            </summary>
+        </member>
+        <member name="M:Spring.Json.JsonValue.#ctor(System.String)">
+            <summary>
+            Creates a new instance of <see cref="T:Spring.Json.JsonValue"/> that holds a JSON string value.
+            </summary>
+            <param name="value">The string value.</param>
+        </member>
+        <member name="M:Spring.Json.JsonValue.#ctor(System.Boolean)">
+            <summary>
+            Creates a new instance of <see cref="T:Spring.Json.JsonValue"/> that holds a JSON boolean value.
+            </summary>
+            <param name="value">The boolean value.</param>
+        </member>
+        <member name="M:Spring.Json.JsonValue.#ctor(System.Byte)">
+            <summary>
+            Creates a new instance of <see cref="T:Spring.Json.JsonValue"/> that holds a JSON number value.
+            </summary>
+            <param name="value">The number value.</param>
+        </member>
+        <member name="M:Spring.Json.JsonValue.#ctor(System.Decimal)">
+            <summary>
+            Creates a new instance of <see cref="T:Spring.Json.JsonValue"/> that holds a JSON number value.
+            </summary>
+            <param name="value">The number value.</param>
+        </member>
+        <member name="M:Spring.Json.JsonValue.#ctor(System.Double)">
+            <summary>
+            Creates a new instance of <see cref="T:Spring.Json.JsonValue"/> that holds a JSON number value.
+            </summary>
+            <param name="value">The number value.</param>
+        </member>
+        <member name="M:Spring.Json.JsonValue.#ctor(System.Single)">
+            <summary>
+            Creates a new instance of <see cref="T:Spring.Json.JsonValue"/> that holds a JSON number value.
+            </summary>
+            <param name="value">The number value.</param>
+        </member>
+        <member name="M:Spring.Json.JsonValue.#ctor(System.Int32)">
+            <summary>
+            Creates a new instance of <see cref="T:Spring.Json.JsonValue"/> that holds a JSON number value.
+            </summary>
+            <param name="value">The number value.</param>
+        </member>
+        <member name="M:Spring.Json.JsonValue.#ctor(System.Int64)">
+            <summary>
+            Creates a new instance of <see cref="T:Spring.Json.JsonValue"/> that holds a JSON number value.
+            </summary>
+            <param name="value">The number value.</param>
+        </member>
+        <member name="M:Spring.Json.JsonValue.#ctor(System.Int16)">
+            <summary>
+            Creates a new instance of <see cref="T:Spring.Json.JsonValue"/> that holds a JSON number value.
+            </summary>
+            <param name="value">The number value.</param>
+        </member>
+        <member name="M:Spring.Json.JsonValue.#ctor(Spring.Json.JsonValue.JsonValueType,System.Object)">
+            <summary>
+            Creates a new instance of <see cref="T:Spring.Json.JsonValue"/> with the the given value and type.
+            </summary>
+            <param name="type">The JSON type.</param>
+            <param name="value">The JSON value.</param>
+        </member>
+        <member name="M:Spring.Json.JsonValue.TryParse(System.String,Spring.Json.JsonValue@)">
+            <summary>
+            Parses the JSON string representation. A return value indicates whether the conversion succeeded.
+            </summary>
+            <param name="json">A JSON string to parse.</param>
+            <param name="result">
+            If the conversion succeed, contains the <see cref="T:Spring.Json.JsonValue"/> equivalent to the passed string, 
+            or null if the conversion failed. 
+            </param>
+            <returns>
+            <see langword="true"/> if the passed string was parsed successfully; 
+            otherwise, <see langword="false"/>.
+            </returns>
+        </member>
+        <member name="M:Spring.Json.JsonValue.Parse(System.String)">
+            <summary>
+            Parses the JSON string representation.
+            </summary>
+            <param name="json">A JSON string to parse.</param>
+            <returns>A <see cref="T:Spring.Json.JsonValue"/> equivalent to the passed string.</returns>
+            <exception cref="T:Spring.Json.JsonException"><paramref name="json"/> is not in the correct format.</exception>
+        </member>
+        <member name="M:Spring.Json.JsonValue.ToString">
+            <summary>
+            Converts this instance to its JSON string representation.
+            </summary>
+            <returns>The JSON string representation of this instance.</returns>
+        </member>
+        <member name="M:Spring.Json.JsonValue.GetValue``1">
+            <summary>
+            Returns the value held by this instance converted to type <typeparamref name="T"/>.
+            </summary>
+            <typeparam name="T">The type to convert the value to.</typeparam>
+            <returns>The value held by this instance.</returns>
+            <exception cref="T:Spring.Json.JsonException">If the value held by this instance could not be converted to type <typeparamref name="T"/>.</exception>
+        </member>
+        <member name="M:Spring.Json.JsonValue.GetValue(System.String)">
+            <summary>
+            Returns the <see cref="T:Spring.Json.JsonValue"/> associated with the specified entry name 
+            if the value held by this instance is a JSON object structure.
+            </summary>
+            <param name="name">The name of the entry that contains the value to get.</param>
+            <returns>
+            The <see cref="T:Spring.Json.JsonValue"/> associated with the specified name 
+            or <see langword="null"/> if the entry does not exists.
+            </returns>
+            <exception cref="T:Spring.Json.JsonException">If the value held by this instance is not a JSON object structure.</exception>
+        </member>
+        <member name="M:Spring.Json.JsonValue.GetValue(System.Int32)">
+            <summary>
+            Returns the <see cref="T:Spring.Json.JsonValue"/> at the specified entry index 
+            if the value held by this instance is a JSON array structure.
+            </summary>
+            <param name="index">The zero-based index of the entry that contains the value to get.</param>
+            <returns>
+            The <see cref="T:Spring.Json.JsonValue"/> at the specified index 
+            or <see langword="null"/> if the entry does not exists.
+            </returns>
+            <exception cref="T:Spring.Json.JsonException">If the value held by this instance is not a JSON array structure.</exception>
+        </member>
+        <member name="M:Spring.Json.JsonValue.GetValue``1(System.String)">
+            <summary>
+            Returns the value associated with the specified entry name 
+            if the value held by this instance is a JSON object structure.
+            </summary>
+            <remarks>
+            Equivalent to: <code>GetValue(name).Get&lt;T&gt;()</code>
+            </remarks>
+            <typeparam name="T">The type to convert the value to.</typeparam>
+            <param name="name">The name of the entry that contains the value to get.</param>
+            <returns>The value associated with the specified name.</returns>
+            <exception cref="T:Spring.Json.JsonException">
+            If the value held by this instance is not a JSON object structure or 
+            if the entry with the specified name does not exists.
+            </exception>
+        </member>
+        <member name="M:Spring.Json.JsonValue.GetValue``1(System.Int32)">
+            <summary>
+            Returns the value at the specified entry index 
+            if the value held by this instance is a JSON array structure.
+            </summary>
+            <remarks>
+            Equivalent to: <code>GetValue(index).Get&lt;T&gt;()</code>
+            </remarks>
+            <typeparam name="T">The type to convert the value to.</typeparam>
+            <param name="index">The zero-based index of the entry that contains the value to get.</param>
+            <returns>The value at the specified index.</returns>
+            <exception cref="T:Spring.Json.JsonException">
+            If the value held by this instance is not a JSON array structure or
+            if the entry at the specified index does not exists.
+            </exception>
+        </member>
+        <member name="M:Spring.Json.JsonValue.GetValues">
+            <summary>
+            Returns all <see cref="T:Spring.Json.JsonValue"/>s 
+            if the value held by this instance is a JSON object or array structure.
+            </summary>
+            <returns>The collection of <see cref="T:Spring.Json.JsonValue"/>s.</returns>
+            <exception cref="T:Spring.Json.JsonException">If the value held by this instance is not a JSON object or array structure.</exception>
+        </member>
+        <member name="M:Spring.Json.JsonValue.GetValues(System.String)">
+            <summary>
+            Returns all <see cref="T:Spring.Json.JsonValue"/>s associated with the specified entry name 
+            if the value held by this instance is a JSON object structure.
+            </summary>
+            <remarks>
+            Equivalent to: <code>GetValue(name).GetValues()</code>
+            </remarks>
+            <param name="name">The name of the entry that contains the values to get.</param>
+            <returns>The collection of <see cref="T:Spring.Json.JsonValue"/>s.</returns>
+            <exception cref="T:Spring.Json.JsonException">
+            If the value held by this instance is not a JSON object structure or 
+            if the entry with the specified name does not exists.
+            </exception>
+        </member>
+        <member name="M:Spring.Json.JsonValue.GetValues(System.Int32)">
+            <summary>
+            Returns all <see cref="T:Spring.Json.JsonValue"/>s at the specified entry index 
+            if the value held by this instance is a JSON array structure.
+            </summary>
+            <remarks>
+            Equivalent to: <code>GetValue(index).GetValues()</code>
+            </remarks>
+            <param name="index">The zero-based index of the entry that contains the values to get.</param>
+            <returns>The collection of <see cref="T:Spring.Json.JsonValue"/>s.</returns>
+            <exception cref="T:Spring.Json.JsonException">
+            If the value held by this instance is not a JSON array structure or
+            if the entry at the specified index does not exists.
+            </exception>
+        </member>
+        <member name="M:Spring.Json.JsonValue.ContainsName(System.String)">
+            <summary>
+            If the value held by this instance is a JSON object structure, 
+            indicates whether or not it contains the specified entry name.
+            </summary>
+            <param name="name">The name of the entry to search for.</param>
+            <returns>
+            <see langword="true"/> if this JSON object contains the specified entry name; otherwise, <see langword="false"/>.
+            </returns>
+            <exception cref="T:Spring.Json.JsonException">If the value held by this instance is not a JSON object structure.</exception>
+        </member>
+        <member name="M:Spring.Json.JsonValue.GetNames">
+            <summary>
+            Returns all entry names 
+            if the value held by this instance is a JSON object structure.
+            </summary>
+            <returns>The collection of entry names.</returns>
+            <exception cref="T:Spring.Json.JsonException">If the value held by this instance is not a JSON object structure.</exception>
+        </member>
+        <member name="P:Spring.Json.JsonValue.IsObject">
+            <summary>
+            Gets or sets a value indicating whether or not this instance holds a JSON object structure.
+            </summary>
+        </member>
+        <member name="P:Spring.Json.JsonValue.IsArray">
+            <summary>
+            Gets or sets a value indicating whether or not this instance holds a JSON array structure.
+            </summary>
+        </member>
+        <member name="P:Spring.Json.JsonValue.IsString">
+            <summary>
+            Gets or sets a value indicating whether or not this instance holds a JSON string.
+            </summary>
+        </member>
+        <member name="P:Spring.Json.JsonValue.IsNumber">
+            <summary>
+            Gets or sets a value indicating whether or not this instance holds a JSON number.
+            </summary>
+        </member>
+        <member name="P:Spring.Json.JsonValue.IsBoolean">
+            <summary>
+            Gets or sets a value indicating whether or not this instance holds a JSON boolean.
+            </summary>
+        </member>
+        <member name="P:Spring.Json.JsonValue.IsNull">
+            <summary>
+            Gets or sets a value indicating whether or not this instance holds a JSON null value.
+            </summary>
+        </member>
+        <member name="T:Spring.Json.JsonValue.JsonValueType">
+            <summary>
+            Specifies the JSON value types.
+            </summary>
+        </member>
+        <member name="F:Spring.Json.JsonValue.JsonValueType.String">
+            <summary>
+            The JSON string.
+            </summary>
+        </member>
+        <member name="F:Spring.Json.JsonValue.JsonValueType.Number">
+            <summary>
+            The JSON number.
+            </summary>
+        </member>
+        <member name="F:Spring.Json.JsonValue.JsonValueType.Object">
+            <summary>
+            The JSON object.
+            </summary>
+        </member>
+        <member name="F:Spring.Json.JsonValue.JsonValueType.Array">
+            <summary>
+            The JSON array.
+            </summary>
+        </member>
+        <member name="F:Spring.Json.JsonValue.JsonValueType.Boolean">
+            <summary>
+            The JSON boolean.
+            </summary>
+        </member>
+        <member name="F:Spring.Json.JsonValue.JsonValueType.Null">
+            <summary>
+            The JSON null.
+            </summary>
+        </member>
+        <member name="M:Spring.Json.JsonArray.#ctor(Spring.Json.JsonValue[])">
+            <summary>
+            Creates a new instance of <see cref="T:Spring.Json.JsonArray"/>.
+            </summary>
+        </member>
+        <member name="M:Spring.Json.JsonArray.GetValue(System.Int32)">
+            <summary>
+            Returns the <see cref="T:Spring.Json.JsonValue"/> at the specified entry index.
+            </summary>
+            <param name="index">The zero-based index of the entry that contains the value to get.</param>
+            <returns>
+            The <see cref="T:Spring.Json.JsonValue"/> at the specified index 
+            or <see langword="null"/> if the entry does not exists.
+            </returns>
+        </member>
+        <member name="M:Spring.Json.JsonArray.GetValues">
+            <summary>
+            Returns all <see cref="T:Spring.Json.JsonValue"/>s of the JSON array structure.
+            </summary>
+            <returns>The collection of <see cref="T:Spring.Json.JsonValue"/>s.</returns>
+        </member>
+        <member name="M:Spring.Json.JsonArray.AddValue(Spring.Json.JsonValue)">
+            <summary>
+            Adds a <see cref="T:Spring.Json.JsonValue"/> to the end of the JSON array structure.
+            </summary>
+            <param name="value">The <see cref="T:Spring.Json.JsonValue"/> to add.</param>
+        </member>
+        <member name="T:Spring.Json.JsonException">
+            <summary>
+            The exception that is thrown while processing (parsing, generating or mapping) JSON content.
+            </summary>
+            <author>Bruno Baia</author>
+        </member>
+        <member name="M:Spring.Json.JsonException.#ctor">
+            <summary>
+            Creates a new instance of the <see cref="T:Spring.Json.JsonException"/> class.
+            </summary>
+        </member>
+        <member name="M:Spring.Json.JsonException.#ctor(System.String)">
+            <summary>
+            Creates a new instance of the <see cref="T:Spring.Json.JsonException"/> class.
+            </summary>
+            <param name="message">
+            A message about the exception.
+            </param>
+        </member>
+        <member name="M:Spring.Json.JsonException.#ctor(System.String,System.Exception)">
+            <summary>
+            Creates a new instance of the <see cref="T:Spring.Json.JsonException"/> class.
+            </summary>
+            <param name="message">
+            A message about the exception.
+            </param>
+            <param name="rootCause">
+            The root exception that is being wrapped.
+            </param>
+        </member>
+        <member name="T:Spring.Json.JsonMapper">
+            <summary>
+            Data binder that provides functionality for converting between 
+            objects of arbitrary types and <see cref="T:Spring.Json.JsonValue"/> instances.
+            </summary>
+            <author>Bruno Baia</author>
+        </member>
+        <member name="M:Spring.Json.JsonMapper.#ctor">
+            <summary>
+            Creates a new empty instance of <see cref="T:Spring.Json.JsonMapper"/>.
+            </summary>
+        </member>
+        <member name="M:Spring.Json.JsonMapper.RegisterDeserializer(System.Type,Spring.Json.IJsonDeserializer)">
+            <summary>
+            Registers a deserializer for the specified <paramref name="type"/>.
+            </summary>
+            <param name="type">The type to deserialize to.</param>
+            <param name="deserializer">The deserializer to use.</param>
+        </member>
+        <member name="M:Spring.Json.JsonMapper.RegisterSerializer(System.Type,Spring.Json.IJsonSerializer)">
+            <summary>
+            Registers a serializer for the specified <paramref name="type"/>.
+            </summary>
+            <param name="type">The type to serialize from.</param>
+            <param name="serializer">The serializer to use.</param>
+        </member>
+        <member name="M:Spring.Json.JsonMapper.CanDeserialize(System.Type)">
+            <summary>
+            Indicates whether a <see cref="T:Spring.Json.JsonValue"/> can be deserialized to a given type.
+            </summary>
+            <param name="type">The type to use.</param>
+            <returns>
+            <see langword="true"/> if a <see cref="T:Spring.Json.JsonValue"/> can be deserialized to the given type; otherwise <see langword="false"/>.
+            </returns>
+        </member>
+        <member name="M:Spring.Json.JsonMapper.CanSerialize(System.Type)">
+            <summary>
+            Indicates whether a given type can be serialized to a <see cref="T:Spring.Json.JsonValue"/>.
+            </summary>
+            <param name="type">The type to use.</param>
+            <returns>
+            <see langword="true"/> if the given type can be serialized to a <see cref="T:Spring.Json.JsonValue"/>; otherwise <see langword="false"/>.
+            </returns>
+        </member>
+        <member name="M:Spring.Json.JsonMapper.Deserialize``1(Spring.Json.JsonValue)">
+            <summary>
+            Deserialize the specified <paramref name="value"/> to the type <typeparamref name="T"/>.
+            </summary>
+            <typeparam name="T">The type to deserialize to.</typeparam>
+            <param name="value">The <see cref="T:Spring.Json.JsonValue"/> to deserialize.</param>
+            <returns>An object created from the passed <see cref="T:Spring.Json.JsonValue"/>.</returns>
+        </member>
+        <member name="M:Spring.Json.JsonMapper.Serialize(System.Object)">
+            <summary>
+            Serialize the specified <paramref name="obj"/> to a <see cref="T:Spring.Json.JsonValue"/>.
+            </summary>
+            <param name="obj">The object to serialize.</param>
+            <returns>A <see cref="T:Spring.Json.JsonValue"/> object created from the passed objects.</returns>
+        </member>
+        <member name="T:Spring.Json.JsonObject">
+            <summary>
+            Represents a JSON object structure. 
+            A JSON object is a collection of name/value pairs.
+            </summary>
+            <remarks>
+            Specification details, see http://www.json.org/
+            </remarks>
+            <seealso cref="T:Spring.Json.JsonValue"/>
+            <author>Bruno Baia</author>
+        </member>
+        <member name="M:Spring.Json.JsonObject.#ctor">
+            <summary>
+            Creates a new instance of <see cref="T:Spring.Json.JsonObject"/>.
+            </summary>
+        </member>
+        <member name="M:Spring.Json.JsonObject.GetValue(System.String)">
+            <summary>
+            Returns the <see cref="T:Spring.Json.JsonValue"/> associated with the specified entry name 
+            if the value held by this instance is a JSON object structure.
+            </summary>
+            <param name="name">The name of the entry that contains the value to get.</param>
+            <returns>
+            The <see cref="T:Spring.Json.JsonValue"/> associated with the specified name 
+            or <see langword="null"/> if the entry does not exists.
+            </returns>
+            <exception cref="T:Spring.Json.JsonException">If the value held by this instance is not a JSON object structure.</exception>
+        </member>
+        <member name="M:Spring.Json.JsonObject.GetValues">
+            <summary>
+            Returns all <see cref="T:Spring.Json.JsonValue"/>s 
+            if the value held by this instance is a JSON object or array structure.
+            </summary>
+            <returns>The collection of <see cref="T:Spring.Json.JsonValue"/>s.</returns>
+            <exception cref="T:Spring.Json.JsonException">If the value held by this instance is not a JSON object or array structure.</exception>
+        </member>
+        <member name="M:Spring.Json.JsonObject.ContainsName(System.String)">
+            <summary>
+            If the value held by this instance is a JSON object structure, 
+            indicates whether or not it contains the specified entry name.
+            </summary>
+            <param name="name">The name of the entry to search for.</param>
+            <returns>
+            <see langword="true"/> if this JSON object contains the specified entry name; otherwise, <see langword="false"/>.
+            </returns>
+            <exception cref="T:Spring.Json.JsonException">If the value held by this instance is not a JSON object structure.</exception>
+        </member>
+        <member name="M:Spring.Json.JsonObject.GetNames">
+            <summary>
+            Returns all entry names 
+            if the value held by this instance is a JSON object structure.
+            </summary>
+            <returns>The collection of entry names.</returns>
+            <exception cref="T:Spring.Json.JsonException">If the value held by this instance is not a JSON object structure.</exception>
+        </member>
+        <member name="M:Spring.Json.JsonObject.AddValue(System.String,Spring.Json.JsonValue)">
+            <summary>
+            Adds the specified name/<see cref="T:Spring.Json.JsonValue"/> pair 
+            to the JSON object structure held by this instance.
+            </summary>
+            <param name="name">The name of the entry to add.</param>
+            <param name="value">The <see cref="T:Spring.Json.JsonValue"/> of the entry to add.</param>
+            <exception cref="T:Spring.Json.JsonException">
+            If the value held by this instance is not a JSON object structure or 
+            if an entry with the same name already exists.
+            </exception>
+        </member>
         <member name="T:Spring.Rest.Client.HttpClientErrorException">
             <summary>
             Exception thrown when an HTTP 4xx is received.
@@ -2314,7 +3003,7 @@
         <member name="M:Spring.Rest.Client.HttpResponseException.#ctor(Spring.Http.HttpResponseMessage{System.Byte[]})">
             <summary>
             Creates a new instance of <see cref="T:Spring.Rest.Client.HttpResponseException"/> 
-            based on a HTTP response message.
+            based on an HTTP response message.
             </summary>
             <param name="response">The HTTP response message.</param>
         </member>
@@ -2332,7 +3021,7 @@
         <member name="M:Spring.Rest.Client.HttpClientErrorException.#ctor(Spring.Http.HttpResponseMessage{System.Byte[]})">
             <summary>
             Creates a new instance of <see cref="T:Spring.Rest.Client.HttpClientErrorException"/> 
-            based on a HTTP response message.
+            based on an HTTP response message.
             </summary>
             <param name="response">The HTTP response message.</param>
         </member>
@@ -2346,7 +3035,7 @@
         <member name="M:Spring.Rest.Client.HttpServerErrorException.#ctor(Spring.Http.HttpResponseMessage{System.Byte[]})">
             <summary>
             Creates a new instance of <see cref="T:Spring.Rest.Client.HttpServerErrorException"/> 
-            based on a HTTP response message.
+            based on an HTTP response message.
             </summary>
             <param name="response">The HTTP response message.</param>
         </member>
@@ -2433,18 +3122,20 @@
             </summary>
             <param name="response">The active HTTP request.</param>
         </member>
-        <member name="T:Spring.Rest.Client.IRestAsyncOperations">
+        <member name="T:Spring.Rest.Client.IRestOperations">
             <summary>
-            Interface specifying a basic set of RESTful asynchronous operations. 
+            Interface specifying a basic set of RESTful operations. 
             </summary>
             <remarks>
             Not often used directly, but a useful option to enhance testability, 
             as it can easily be mocked or stubbed.
             </remarks>
             <see cref="T:Spring.Rest.Client.RestTemplate"/>
-            <author>Bruno Baia</author>
+            <author>Arjen Poutsma</author>
+            <author>Juergen Hoeller</author>
+            <author>Bruno Baia (.NET)</author>
         </member>
-        <member name="M:Spring.Rest.Client.IRestAsyncOperations.GetForObjectAsync``1(System.String,System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{``0}},System.Object[])">
+        <member name="M:Spring.Rest.Client.IRestOperations.GetForObjectAsync``1(System.String,System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{``0}},System.Object[])">
             <summary>
             Asynchronously retrieve a representation by doing a GET on the specified URL. 
             The response (if any) is converted.
@@ -2462,7 +3153,7 @@
             A <see cref="T:Spring.Rest.Client.RestOperationCanceler"/> instance that allows to cancel the asynchronous operation.
             </returns>
         </member>
-        <member name="M:Spring.Rest.Client.IRestAsyncOperations.GetForObjectAsync``1(System.String,System.Collections.Generic.IDictionary{System.String,System.Object},System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{``0}})">
+        <member name="M:Spring.Rest.Client.IRestOperations.GetForObjectAsync``1(System.String,System.Collections.Generic.IDictionary{System.String,System.Object},System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{``0}})">
             <summary>
             Asynchronously retrieve a representation by doing a GET on the specified URL. 
             The response (if any) is converted.
@@ -2480,7 +3171,7 @@
             A <see cref="T:Spring.Rest.Client.RestOperationCanceler"/> instance that allows to cancel the asynchronous operation.
             </returns>
         </member>
-        <member name="M:Spring.Rest.Client.IRestAsyncOperations.GetForObjectAsync``1(System.Uri,System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{``0}})">
+        <member name="M:Spring.Rest.Client.IRestOperations.GetForObjectAsync``1(System.Uri,System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{``0}})">
             <summary>
             Asynchronously retrieve a representation by doing a GET on the specified URL. 
             The response (if any) is converted.
@@ -2494,7 +3185,7 @@
             A <see cref="T:Spring.Rest.Client.RestOperationCanceler"/> instance that allows to cancel the asynchronous operation.
             </returns>
         </member>
-        <member name="M:Spring.Rest.Client.IRestAsyncOperations.GetForMessageAsync``1(System.String,System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{Spring.Http.HttpResponseMessage{``0}}},System.Object[])">
+        <member name="M:Spring.Rest.Client.IRestOperations.GetForMessageAsync``1(System.String,System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{Spring.Http.HttpResponseMessage{``0}}},System.Object[])">
             <summary>
             Asynchronously retrieve an entity by doing a GET on the specified URL. 
             The response is converted and stored in an <see cref="T:Spring.Http.HttpResponseMessage`1"/>.
@@ -2512,7 +3203,7 @@
             A <see cref="T:Spring.Rest.Client.RestOperationCanceler"/> instance that allows to cancel the asynchronous operation.
             </returns>
         </member>
-        <member name="M:Spring.Rest.Client.IRestAsyncOperations.GetForMessageAsync``1(System.String,System.Collections.Generic.IDictionary{System.String,System.Object},System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{Spring.Http.HttpResponseMessage{``0}}})">
+        <member name="M:Spring.Rest.Client.IRestOperations.GetForMessageAsync``1(System.String,System.Collections.Generic.IDictionary{System.String,System.Object},System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{Spring.Http.HttpResponseMessage{``0}}})">
             <summary>
             Asynchronously retrieve an entity by doing a GET on the specified URL. 
             The response is converted and stored in an <see cref="T:Spring.Http.HttpResponseMessage`1"/>.
@@ -2530,7 +3221,7 @@
             A <see cref="T:Spring.Rest.Client.RestOperationCanceler"/> instance that allows to cancel the asynchronous operation.
             </returns>
         </member>
-        <member name="M:Spring.Rest.Client.IRestAsyncOperations.GetForMessageAsync``1(System.Uri,System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{Spring.Http.HttpResponseMessage{``0}}})">
+        <member name="M:Spring.Rest.Client.IRestOperations.GetForMessageAsync``1(System.Uri,System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{Spring.Http.HttpResponseMessage{``0}}})">
             <summary>
             Asynchronously retrieve an entity by doing a GET on the specified URL. 
             The response is converted and stored in an <see cref="T:Spring.Http.HttpResponseMessage`1"/>.
@@ -2544,7 +3235,7 @@
             A <see cref="T:Spring.Rest.Client.RestOperationCanceler"/> instance that allows to cancel the asynchronous operation.
             </returns>
         </member>
-        <member name="M:Spring.Rest.Client.IRestAsyncOperations.HeadForHeadersAsync(System.String,System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{Spring.Http.HttpHeaders}},System.Object[])">
+        <member name="M:Spring.Rest.Client.IRestOperations.HeadForHeadersAsync(System.String,System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{Spring.Http.HttpHeaders}},System.Object[])">
             <summary>
             Asynchronously retrieve all headers of the resource specified by the URI template.
             </summary>
@@ -2560,7 +3251,7 @@
             A <see cref="T:Spring.Rest.Client.RestOperationCanceler"/> instance that allows to cancel the asynchronous operation.
             </returns>
         </member>
-        <member name="M:Spring.Rest.Client.IRestAsyncOperations.HeadForHeadersAsync(System.String,System.Collections.Generic.IDictionary{System.String,System.Object},System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{Spring.Http.HttpHeaders}})">
+        <member name="M:Spring.Rest.Client.IRestOperations.HeadForHeadersAsync(System.String,System.Collections.Generic.IDictionary{System.String,System.Object},System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{Spring.Http.HttpHeaders}})">
             <summary>
             Asynchronously retrieve all headers of the resource specified by the URI template.
             </summary>
@@ -2576,7 +3267,7 @@
             A <see cref="T:Spring.Rest.Client.RestOperationCanceler"/> instance that allows to cancel the asynchronous operation.
             </returns>
         </member>
-        <member name="M:Spring.Rest.Client.IRestAsyncOperations.HeadForHeadersAsync(System.Uri,System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{Spring.Http.HttpHeaders}})">
+        <member name="M:Spring.Rest.Client.IRestOperations.HeadForHeadersAsync(System.Uri,System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{Spring.Http.HttpHeaders}})">
             <summary>
             Asynchronously retrieve all headers of the resource specified by the URI template.
             </summary>
@@ -2588,7 +3279,7 @@
             A <see cref="T:Spring.Rest.Client.RestOperationCanceler"/> instance that allows to cancel the asynchronous operation.
             </returns>
         </member>
-        <member name="M:Spring.Rest.Client.IRestAsyncOperations.PostForLocationAsync(System.String,System.Object,System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{System.Uri}},System.Object[])">
+        <member name="M:Spring.Rest.Client.IRestOperations.PostForLocationAsync(System.String,System.Object,System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{System.Uri}},System.Object[])">
             <summary>
             Asynchronously create a new resource by POSTing the given object to the URI template, 
             and returns the value of the 'Location' header. 
@@ -2611,7 +3302,7 @@
             A <see cref="T:Spring.Rest.Client.RestOperationCanceler"/> instance that allows to cancel the asynchronous operation.
             </returns>
         </member>
-        <member name="M:Spring.Rest.Client.IRestAsyncOperations.PostForLocationAsync(System.String,System.Object,System.Collections.Generic.IDictionary{System.String,System.Object},System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{System.Uri}})">
+        <member name="M:Spring.Rest.Client.IRestOperations.PostForLocationAsync(System.String,System.Object,System.Collections.Generic.IDictionary{System.String,System.Object},System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{System.Uri}})">
             <summary>
             Asynchronously create a new resource by POSTing the given object to the URI template, 
             and returns the value of the 'Location' header. 
@@ -2634,7 +3325,7 @@
             A <see cref="T:Spring.Rest.Client.RestOperationCanceler"/> instance that allows to cancel the asynchronous operation.
             </returns>
         </member>
-        <member name="M:Spring.Rest.Client.IRestAsyncOperations.PostForLocationAsync(System.Uri,System.Object,System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{System.Uri}})">
+        <member name="M:Spring.Rest.Client.IRestOperations.PostForLocationAsync(System.Uri,System.Object,System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{System.Uri}})">
             <summary>
             Asynchronously create a new resource by POSTing the given object to the URI template, 
             and returns the value of the 'Location' header. 
@@ -2651,7 +3342,7 @@
             A <see cref="T:Spring.Rest.Client.RestOperationCanceler"/> instance that allows to cancel the asynchronous operation.
             </returns>
         </member>
-        <member name="M:Spring.Rest.Client.IRestAsyncOperations.PostForObjectAsync``1(System.String,System.Object,System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{``0}},System.Object[])">
+        <member name="M:Spring.Rest.Client.IRestOperations.PostForObjectAsync``1(System.String,System.Object,System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{``0}},System.Object[])">
             <summary>
             Asynchronously create a new resource by POSTing the given object to the URI template, 
             and returns the representation found in the response. 
@@ -2674,7 +3365,7 @@
             A <see cref="T:Spring.Rest.Client.RestOperationCanceler"/> instance that allows to cancel the asynchronous operation.
             </returns>
         </member>
-        <member name="M:Spring.Rest.Client.IRestAsyncOperations.PostForObjectAsync``1(System.String,System.Object,System.Collections.Generic.IDictionary{System.String,System.Object},System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{``0}})">
+        <member name="M:Spring.Rest.Client.IRestOperations.PostForObjectAsync``1(System.String,System.Object,System.Collections.Generic.IDictionary{System.String,System.Object},System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{``0}})">
             <summary>
             Asynchronously create a new resource by POSTing the given object to the URI template, 
             and returns the representation found in the response. 
@@ -2697,7 +3388,7 @@
             A <see cref="T:Spring.Rest.Client.RestOperationCanceler"/> instance that allows to cancel the asynchronous operation.
             </returns>
         </member>
-        <member name="M:Spring.Rest.Client.IRestAsyncOperations.PostForObjectAsync``1(System.Uri,System.Object,System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{``0}})">
+        <member name="M:Spring.Rest.Client.IRestOperations.PostForObjectAsync``1(System.Uri,System.Object,System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{``0}})">
             <summary>
             Asynchronously create a new resource by POSTing the given object to the URI template, 
             and returns the representation found in the response. 
@@ -2714,7 +3405,7 @@
             A <see cref="T:Spring.Rest.Client.RestOperationCanceler"/> instance that allows to cancel the asynchronous operation.
             </returns>
         </member>
-        <member name="M:Spring.Rest.Client.IRestAsyncOperations.PostForMessageAsync``1(System.String,System.Object,System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{Spring.Http.HttpResponseMessage{``0}}},System.Object[])">
+        <member name="M:Spring.Rest.Client.IRestOperations.PostForMessageAsync``1(System.String,System.Object,System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{Spring.Http.HttpResponseMessage{``0}}},System.Object[])">
             <summary>
             Asynchronously create a new resource by POSTing the given object to the URI template, 
             and returns the response as <see cref="T:Spring.Http.HttpResponseMessage`1"/>. 
@@ -2737,7 +3428,7 @@
             A <see cref="T:Spring.Rest.Client.RestOperationCanceler"/> instance that allows to cancel the asynchronous operation.
             </returns>
         </member>
-        <member name="M:Spring.Rest.Client.IRestAsyncOperations.PostForMessageAsync``1(System.String,System.Object,System.Collections.Generic.IDictionary{System.String,System.Object},System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{Spring.Http.HttpResponseMessage{``0}}})">
+        <member name="M:Spring.Rest.Client.IRestOperations.PostForMessageAsync``1(System.String,System.Object,System.Collections.Generic.IDictionary{System.String,System.Object},System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{Spring.Http.HttpResponseMessage{``0}}})">
             <summary>
             Asynchronously create a new resource by POSTing the given object to the URI template, 
             and returns the response as <see cref="T:Spring.Http.HttpResponseMessage`1"/>. 
@@ -2760,7 +3451,7 @@
             A <see cref="T:Spring.Rest.Client.RestOperationCanceler"/> instance that allows to cancel the asynchronous operation.
             </returns>
         </member>
-        <member name="M:Spring.Rest.Client.IRestAsyncOperations.PostForMessageAsync``1(System.Uri,System.Object,System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{Spring.Http.HttpResponseMessage{``0}}})">
+        <member name="M:Spring.Rest.Client.IRestOperations.PostForMessageAsync``1(System.Uri,System.Object,System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{Spring.Http.HttpResponseMessage{``0}}})">
             <summary>
             Asynchronously create a new resource by POSTing the given object to the URI template, 
             and returns the response as <see cref="T:Spring.Http.HttpResponseMessage`1"/>. 
@@ -2777,7 +3468,7 @@
             A <see cref="T:Spring.Rest.Client.RestOperationCanceler"/> instance that allows to cancel the asynchronous operation.
             </returns>
         </member>
-        <member name="M:Spring.Rest.Client.IRestAsyncOperations.PostForMessageAsync(System.String,System.Object,System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{Spring.Http.HttpResponseMessage}},System.Object[])">
+        <member name="M:Spring.Rest.Client.IRestOperations.PostForMessageAsync(System.String,System.Object,System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{Spring.Http.HttpResponseMessage}},System.Object[])">
             <summary>
             Asynchronously create a new resource by POSTing the given object to the URI template, 
             and returns the response with no entity as <see cref="T:Spring.Http.HttpResponseMessage"/>. 
@@ -2799,7 +3490,7 @@
             A <see cref="T:Spring.Rest.Client.RestOperationCanceler"/> instance that allows to cancel the asynchronous operation.
             </returns>
         </member>
-        <member name="M:Spring.Rest.Client.IRestAsyncOperations.PostForMessageAsync(System.String,System.Object,System.Collections.Generic.IDictionary{System.String,System.Object},System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{Spring.Http.HttpResponseMessage}})">
+        <member name="M:Spring.Rest.Client.IRestOperations.PostForMessageAsync(System.String,System.Object,System.Collections.Generic.IDictionary{System.String,System.Object},System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{Spring.Http.HttpResponseMessage}})">
             <summary>
             Asynchronously create a new resource by POSTing the given object to the URI template, 
             and returns the response with no entity as <see cref="T:Spring.Http.HttpResponseMessage"/>. 
@@ -2821,7 +3512,7 @@
             A <see cref="T:Spring.Rest.Client.RestOperationCanceler"/> instance that allows to cancel the asynchronous operation.
             </returns>
         </member>
-        <member name="M:Spring.Rest.Client.IRestAsyncOperations.PostForMessageAsync(System.Uri,System.Object,System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{Spring.Http.HttpResponseMessage}})">
+        <member name="M:Spring.Rest.Client.IRestOperations.PostForMessageAsync(System.Uri,System.Object,System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{Spring.Http.HttpResponseMessage}})">
             <summary>
             Asynchronously create a new resource by POSTing the given object to the URI template, 
             and returns the response with no entity as <see cref="T:Spring.Http.HttpResponseMessage"/>. 
@@ -2837,7 +3528,7 @@
             A <see cref="T:Spring.Rest.Client.RestOperationCanceler"/> instance that allows to cancel the asynchronous operation.
             </returns>
         </member>
-        <member name="M:Spring.Rest.Client.IRestAsyncOperations.PutAsync(System.String,System.Object,System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{System.Object}},System.Object[])">
+        <member name="M:Spring.Rest.Client.IRestOperations.PutAsync(System.String,System.Object,System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{System.Object}},System.Object[])">
             <summary>
             Asynchronously create or update a resource by PUTting the given object to the URI.
             </summary>
@@ -2858,7 +3549,7 @@
             A <see cref="T:Spring.Rest.Client.RestOperationCanceler"/> instance that allows to cancel the asynchronous operation.
             </returns>
         </member>
-        <member name="M:Spring.Rest.Client.IRestAsyncOperations.PutAsync(System.String,System.Object,System.Collections.Generic.IDictionary{System.String,System.Object},System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{System.Object}})">
+        <member name="M:Spring.Rest.Client.IRestOperations.PutAsync(System.String,System.Object,System.Collections.Generic.IDictionary{System.String,System.Object},System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{System.Object}})">
             <summary>
             Asynchronously create or update a resource by PUTting the given object to the URI.
             </summary>
@@ -2879,7 +3570,7 @@
             A <see cref="T:Spring.Rest.Client.RestOperationCanceler"/> instance that allows to cancel the asynchronous operation.
             </returns>
         </member>
-        <member name="M:Spring.Rest.Client.IRestAsyncOperations.PutAsync(System.Uri,System.Object,System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{System.Object}})">
+        <member name="M:Spring.Rest.Client.IRestOperations.PutAsync(System.Uri,System.Object,System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{System.Object}})">
             <summary>
             Asynchronously create or update a resource by PUTting the given object to the URI.
             </summary>
@@ -2894,7 +3585,7 @@
             A <see cref="T:Spring.Rest.Client.RestOperationCanceler"/> instance that allows to cancel the asynchronous operation.
             </returns>
         </member>
-        <member name="M:Spring.Rest.Client.IRestAsyncOperations.DeleteAsync(System.String,System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{System.Object}},System.Object[])">
+        <member name="M:Spring.Rest.Client.IRestOperations.DeleteAsync(System.String,System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{System.Object}},System.Object[])">
             <summary>
             Asynchronously delete the resources at the specified URI.
             </summary>
@@ -2910,7 +3601,7 @@
             A <see cref="T:Spring.Rest.Client.RestOperationCanceler"/> instance that allows to cancel the asynchronous operation.
             </returns>
         </member>
-        <member name="M:Spring.Rest.Client.IRestAsyncOperations.DeleteAsync(System.String,System.Collections.Generic.IDictionary{System.String,System.Object},System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{System.Object}})">
+        <member name="M:Spring.Rest.Client.IRestOperations.DeleteAsync(System.String,System.Collections.Generic.IDictionary{System.String,System.Object},System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{System.Object}})">
             <summary>
             Asynchronously delete the resources at the specified URI.
             </summary>
@@ -2926,7 +3617,7 @@
             A <see cref="T:Spring.Rest.Client.RestOperationCanceler"/> instance that allows to cancel the asynchronous operation.
             </returns>
         </member>
-        <member name="M:Spring.Rest.Client.IRestAsyncOperations.DeleteAsync(System.Uri,System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{System.Object}})">
+        <member name="M:Spring.Rest.Client.IRestOperations.DeleteAsync(System.Uri,System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{System.Object}})">
             <summary>
             Asynchronously delete the resources at the specified URI.
             </summary>
@@ -2938,7 +3629,7 @@
             A <see cref="T:Spring.Rest.Client.RestOperationCanceler"/> instance that allows to cancel the asynchronous operation.
             </returns>
         </member>
-        <member name="M:Spring.Rest.Client.IRestAsyncOperations.OptionsForAllowAsync(System.String,System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{System.Collections.Generic.IList{Spring.Http.HttpMethod}}},System.Object[])">
+        <member name="M:Spring.Rest.Client.IRestOperations.OptionsForAllowAsync(System.String,System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{System.Collections.Generic.IList{Spring.Http.HttpMethod}}},System.Object[])">
             <summary>
             Asynchronously return the value of the Allow header for the given URI.
             </summary>
@@ -2954,7 +3645,7 @@
             A <see cref="T:Spring.Rest.Client.RestOperationCanceler"/> instance that allows to cancel the asynchronous operation.
             </returns>
         </member>
-        <member name="M:Spring.Rest.Client.IRestAsyncOperations.OptionsForAllowAsync(System.String,System.Collections.Generic.IDictionary{System.String,System.Object},System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{System.Collections.Generic.IList{Spring.Http.HttpMethod}}})">
+        <member name="M:Spring.Rest.Client.IRestOperations.OptionsForAllowAsync(System.String,System.Collections.Generic.IDictionary{System.String,System.Object},System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{System.Collections.Generic.IList{Spring.Http.HttpMethod}}})">
             <summary>
             Asynchronously return the value of the Allow header for the given URI.
             </summary>
@@ -2970,7 +3661,7 @@
             A <see cref="T:Spring.Rest.Client.RestOperationCanceler"/> instance that allows to cancel the asynchronous operation.
             </returns>
         </member>
-        <member name="M:Spring.Rest.Client.IRestAsyncOperations.OptionsForAllowAsync(System.Uri,System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{System.Collections.Generic.IList{Spring.Http.HttpMethod}}})">
+        <member name="M:Spring.Rest.Client.IRestOperations.OptionsForAllowAsync(System.Uri,System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{System.Collections.Generic.IList{Spring.Http.HttpMethod}}})">
             <summary>
             Asynchronously return the value of the Allow header for the given URI.
             </summary>
@@ -2982,7 +3673,7 @@
             A <see cref="T:Spring.Rest.Client.RestOperationCanceler"/> instance that allows to cancel the asynchronous operation.
             </returns>
         </member>
-        <member name="M:Spring.Rest.Client.IRestAsyncOperations.ExchangeAsync``1(System.String,Spring.Http.HttpMethod,Spring.Http.HttpEntity,System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{Spring.Http.HttpResponseMessage{``0}}},System.Object[])">
+        <member name="M:Spring.Rest.Client.IRestOperations.ExchangeAsync``1(System.String,Spring.Http.HttpMethod,Spring.Http.HttpEntity,System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{Spring.Http.HttpResponseMessage{``0}}},System.Object[])">
             <summary>
             Asynchronously execute the HTTP method to the given URI template, writing the given request message to the request, 
             and returns the response as <see cref="T:Spring.Http.HttpResponseMessage`1"/>.
@@ -3004,7 +3695,7 @@
             A <see cref="T:Spring.Rest.Client.RestOperationCanceler"/> instance that allows to cancel the asynchronous operation.
             </returns>
         </member>
-        <member name="M:Spring.Rest.Client.IRestAsyncOperations.ExchangeAsync``1(System.String,Spring.Http.HttpMethod,Spring.Http.HttpEntity,System.Collections.Generic.IDictionary{System.String,System.Object},System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{Spring.Http.HttpResponseMessage{``0}}})">
+        <member name="M:Spring.Rest.Client.IRestOperations.ExchangeAsync``1(System.String,Spring.Http.HttpMethod,Spring.Http.HttpEntity,System.Collections.Generic.IDictionary{System.String,System.Object},System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{Spring.Http.HttpResponseMessage{``0}}})">
             <summary>
             Asynchronously execute the HTTP method to the given URI template, writing the given request message to the request, 
             and returns the response as <see cref="T:Spring.Http.HttpResponseMessage`1"/>.
@@ -3026,7 +3717,7 @@
             A <see cref="T:Spring.Rest.Client.RestOperationCanceler"/> instance that allows to cancel the asynchronous operation.
             </returns>
         </member>
-        <member name="M:Spring.Rest.Client.IRestAsyncOperations.ExchangeAsync``1(System.Uri,Spring.Http.HttpMethod,Spring.Http.HttpEntity,System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{Spring.Http.HttpResponseMessage{``0}}})">
+        <member name="M:Spring.Rest.Client.IRestOperations.ExchangeAsync``1(System.Uri,Spring.Http.HttpMethod,Spring.Http.HttpEntity,System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{Spring.Http.HttpResponseMessage{``0}}})">
             <summary>
             Asynchronously execute the HTTP method to the given URI template, writing the given request message to the request, 
             and returns the response as <see cref="T:Spring.Http.HttpResponseMessage`1"/>.
@@ -3044,7 +3735,7 @@
             A <see cref="T:Spring.Rest.Client.RestOperationCanceler"/> instance that allows to cancel the asynchronous operation.
             </returns>
         </member>
-        <member name="M:Spring.Rest.Client.IRestAsyncOperations.ExchangeAsync(System.String,Spring.Http.HttpMethod,Spring.Http.HttpEntity,System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{Spring.Http.HttpResponseMessage}},System.Object[])">
+        <member name="M:Spring.Rest.Client.IRestOperations.ExchangeAsync(System.String,Spring.Http.HttpMethod,Spring.Http.HttpEntity,System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{Spring.Http.HttpResponseMessage}},System.Object[])">
             <summary>
             Asynchronously execute the HTTP method to the given URI template, writing the given request message to the request, 
             and returns the response with no entity as <see cref="T:Spring.Http.HttpResponseMessage"/>.
@@ -3065,7 +3756,7 @@
             A <see cref="T:Spring.Rest.Client.RestOperationCanceler"/> instance that allows to cancel the asynchronous operation.
             </returns>
         </member>
-        <member name="M:Spring.Rest.Client.IRestAsyncOperations.ExchangeAsync(System.String,Spring.Http.HttpMethod,Spring.Http.HttpEntity,System.Collections.Generic.IDictionary{System.String,System.Object},System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{Spring.Http.HttpResponseMessage}})">
+        <member name="M:Spring.Rest.Client.IRestOperations.ExchangeAsync(System.String,Spring.Http.HttpMethod,Spring.Http.HttpEntity,System.Collections.Generic.IDictionary{System.String,System.Object},System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{Spring.Http.HttpResponseMessage}})">
             <summary>
             Asynchronously execute the HTTP method to the given URI template, writing the given request message to the request, 
             and returns the response with no entity as <see cref="T:Spring.Http.HttpResponseMessage"/>.
@@ -3086,7 +3777,7 @@
             A <see cref="T:Spring.Rest.Client.RestOperationCanceler"/> instance that allows to cancel the asynchronous operation.
             </returns>
         </member>
-        <member name="M:Spring.Rest.Client.IRestAsyncOperations.ExchangeAsync(System.Uri,Spring.Http.HttpMethod,Spring.Http.HttpEntity,System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{Spring.Http.HttpResponseMessage}})">
+        <member name="M:Spring.Rest.Client.IRestOperations.ExchangeAsync(System.Uri,Spring.Http.HttpMethod,Spring.Http.HttpEntity,System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{Spring.Http.HttpResponseMessage}})">
             <summary>
             Asynchronously execute the HTTP method to the given URI template, writing the given request message to the request, 
             and returns the response with no entity as <see cref="T:Spring.Http.HttpResponseMessage"/>.
@@ -3103,7 +3794,7 @@
             A <see cref="T:Spring.Rest.Client.RestOperationCanceler"/> instance that allows to cancel the asynchronous operation.
             </returns>
         </member>
-        <member name="M:Spring.Rest.Client.IRestAsyncOperations.ExecuteAsync``1(System.String,Spring.Http.HttpMethod,Spring.Rest.Client.IRequestCallback,Spring.Rest.Client.IResponseExtractor{``0},System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{``0}},System.Object[])">
+        <member name="M:Spring.Rest.Client.IRestOperations.ExecuteAsync``1(System.String,Spring.Http.HttpMethod,Spring.Rest.Client.IRequestCallback,Spring.Rest.Client.IResponseExtractor{``0},System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{``0}},System.Object[])">
             <summary>
             Asynchronously execute the HTTP method to the given URI template, preparing the request with the 
             <see cref="T:Spring.Rest.Client.IRequestCallback"/>, and reading the response with an <see cref="T:Spring.Rest.Client.IResponseExtractor`1"/>.
@@ -3124,7 +3815,7 @@
             A <see cref="T:Spring.Rest.Client.RestOperationCanceler"/> instance that allows to cancel the asynchronous operation.
             </returns>
         </member>
-        <member name="M:Spring.Rest.Client.IRestAsyncOperations.ExecuteAsync``1(System.String,Spring.Http.HttpMethod,Spring.Rest.Client.IRequestCallback,Spring.Rest.Client.IResponseExtractor{``0},System.Collections.Generic.IDictionary{System.String,System.Object},System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{``0}})">
+        <member name="M:Spring.Rest.Client.IRestOperations.ExecuteAsync``1(System.String,Spring.Http.HttpMethod,Spring.Rest.Client.IRequestCallback,Spring.Rest.Client.IResponseExtractor{``0},System.Collections.Generic.IDictionary{System.String,System.Object},System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{``0}})">
             <summary>
             Asynchronously execute the HTTP method to the given URI template, preparing the request with the 
             <see cref="T:Spring.Rest.Client.IRequestCallback"/>, and reading the response with an <see cref="T:Spring.Rest.Client.IResponseExtractor`1"/>.
@@ -3145,7 +3836,7 @@
             A <see cref="T:Spring.Rest.Client.RestOperationCanceler"/> instance that allows to cancel the asynchronous operation.
             </returns>
         </member>
-        <member name="M:Spring.Rest.Client.IRestAsyncOperations.ExecuteAsync``1(System.Uri,Spring.Http.HttpMethod,Spring.Rest.Client.IRequestCallback,Spring.Rest.Client.IResponseExtractor{``0},System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{``0}})">
+        <member name="M:Spring.Rest.Client.IRestOperations.ExecuteAsync``1(System.Uri,Spring.Http.HttpMethod,Spring.Rest.Client.IRequestCallback,Spring.Rest.Client.IResponseExtractor{``0},System.Action{Spring.Rest.Client.RestOperationCompletedEventArgs{``0}})">
             <summary>
             Asynchronously execute the HTTP method to the given URI template, preparing the request with the 
             <see cref="T:Spring.Rest.Client.IRequestCallback"/>, and reading the response with an <see cref="T:Spring.Rest.Client.IResponseExtractor`1"/>.
@@ -3187,7 +3878,7 @@
             Provides data when an asynchronous REST operation completes.
             </summary>
             <typeparam name="T">The type of the response value.</typeparam>
-            <see cref="T:Spring.Rest.Client.IRestAsyncOperations"/>
+            <see cref="T:Spring.Rest.Client.IRestOperations"/>
             <see cref="T:Spring.Rest.Client.RestTemplate"/>
         </member>
         <member name="M:Spring.Rest.Client.RestOperationCompletedEventArgs`1.#ctor(`0,System.Exception,System.Boolean,System.Object)">
@@ -4314,6 +5005,16 @@
             </summary>
             <param name="response">The active HTTP request.</param>
         </member>
+        <member name="M:Spring.Rest.Client.Support.MessageConverterResponseExtractor`1.HasMessageBody(Spring.Http.Client.IClientHttpResponse)">
+            <summary>
+            Indicates whether or not the given response has a message body.
+            </summary>
+            <remarks>
+            Default implementation returns false for a response status of 204 or 304, or a 'Content-Length' of 0.
+            </remarks>
+            <param name="response">The response to check for a message body.</param>
+            <returns><see langword="true"/> if the response has a body; otherwise <see langword="false"/>.</returns>
+        </member>
         <member name="T:Spring.Rest.Client.Support.RestAsyncOperationState`1">
             <summary>
             Represents the state of an asynchronous REST operation 
@@ -4518,12 +5219,6 @@
             <author>Arjen Poutsma</author>
             <author>Juergen Hoeller</author>
             <author>Bruno Baia (.NET)</author>
-        </member>
-        <member name="F:Spring.Util.UriTemplate.VARIABLENAMES_REGEX">
-            Captures URI template variable names. 
-        </member>
-        <member name="F:Spring.Util.UriTemplate.VARIABLEVALUE_PATTERN">
-            Replaces template variables in the URI template. 
         </member>
         <member name="M:Spring.Util.UriTemplate.#ctor(System.String)">
             <summary>
