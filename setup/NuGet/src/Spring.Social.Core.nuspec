@@ -12,9 +12,9 @@
     <description>Spring.NET Social Framework</description>
     <summary>Allows you to connect your applications with SaaS providers such as Facebook and Twitter.</summary>
     <language>en-US</language>
-    <tags>Spring Social REST HTTP</tags>
+    <tags>Spring Social REST HTTP OAuth</tags>
     <dependencies>
-      <dependency id="Spring.Rest" version="1.0.2" />
+      <dependency id="Spring.Rest" version="1.1.0" />
     </dependencies>
   </metadata>
   <files>
@@ -38,6 +38,9 @@
     <file src="..\..\..\bin\sl\4.0\Release\Spring.Social.Core.dll" target="lib\sl4" />
     <file src="..\..\..\bin\sl\4.0\Release\Spring.Social.Core.pdb" target="lib\sl4" />
     <file src="..\..\..\bin\sl\4.0\Release\Spring.Social.Core.xml" target="lib\sl4" />
+    <file src="..\..\..\bin\sl\5.0\Release\Spring.Social.Core.dll" target="lib\sl5" />
+    <file src="..\..\..\bin\sl\5.0\Release\Spring.Social.Core.pdb" target="lib\sl5" />
+    <file src="..\..\..\bin\sl\5.0\Release\Spring.Social.Core.xml" target="lib\sl5" />
     <file src="..\..\..\bin\wp\7.0\Release\Spring.Social.Core.dll" target="lib\sl4-wp" />
     <file src="..\..\..\bin\wp\7.0\Release\Spring.Social.Core.pdb" target="lib\sl4-wp" />
     <file src="..\..\..\bin\wp\7.0\Release\Spring.Social.Core.xml" target="lib\sl4-wp" />
