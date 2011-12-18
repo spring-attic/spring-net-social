@@ -75,6 +75,16 @@
     <Compile Include="Social\OAuth1\OAuth1Version.cs" />
     <Compile Include="Social\OAuth1\OAuthToken.cs" />
     <Compile Include="Social\OAuth1\SigningSupport.cs" />
+    <Compile Include="Social\OAuth2\AbstractOAuth2ApiBinding.cs" />
+    <Compile Include="Social\OAuth2\AbstractOAuth2ServiceProvider.cs" />
+    <Compile Include="Social\OAuth2\AccessGrant.cs" />
+    <Compile Include="Social\OAuth2\GrantType .cs" />
+    <Compile Include="Social\OAuth2\IOAuth2Operations.cs" />
+    <Compile Include="Social\OAuth2\IOAuth2ServiceProvider.cs" />
+    <Compile Include="Social\OAuth2\OAuth2Parameters.cs" />
+    <Compile Include="Social\OAuth2\OAuth2RequestInterceptor.cs" />
+    <Compile Include="Social\OAuth2\OAuth2Template.cs" />
+    <Compile Include="Social\OAuth2\OAuth2Version.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <ProjectExtensions>
