@@ -1,0 +1,16 @@
+﻿@{
+    ViewBag.Title = "Update Twitter's status";
+}
+
+<h2>Twitter</h2>
+<p>
+    Update your Twitter's status.
+</p>
+
+@using (Html.BeginForm()) {
+    <div>
+        <input type="text" name="status" />
+        <input type="submit" value="Tweet" />
+    </div>
+}
+
