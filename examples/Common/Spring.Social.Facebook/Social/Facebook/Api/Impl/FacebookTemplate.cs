@@ -48,7 +48,7 @@ namespace Spring.Social.Facebook.Api.Impl
         {
         }
 
-        // Configure the REST client used to consume Twitter API resources
+        // Configure the REST client used to consume Facebook API resources
         protected override void ConfigureRestTemplate(RestTemplate restTemplate)
         {
             restTemplate.BaseAddress = API_URI_BASE;
