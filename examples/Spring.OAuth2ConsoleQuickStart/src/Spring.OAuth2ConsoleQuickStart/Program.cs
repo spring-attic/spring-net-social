@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 
+using Spring.Rest.Client;
 using Spring.Social.Facebook.Api;
 using Spring.Social.OAuth2;
 
@@ -42,10 +43,25 @@ namespace Spring.OAuth2ConsoleQuickStart
 #endif
                 Console.WriteLine("Status updated!");
             }
-            catch (Spring.Rest.Client.HttpResponseException ex)
+#if NET_4_0
+            catch (AggregateException ae)
+            {
+                ae.Handle(ex =>
+                    {
+                        if (ex is HttpResponseException)
+                        {
+                            Console.WriteLine(((HttpResponseException)ex).GetResponseBodyAsString());
+                            return true;
+                        }
+                        return false;
+                    });
+            }
+#else
+            catch (HttpResponseException ex)
             {
                 Console.WriteLine(ex.GetResponseBodyAsString());
             }
+#endif
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
