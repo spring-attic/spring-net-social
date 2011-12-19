@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spring.OAuth1ConsoleQuickStart.2008-NET35", "src\Spring.OAuth1ConsoleQuickStart\Spring.OAuth1ConsoleQuickStart.2008-NET35.csproj", "{097DB6A8-5DBF-2FDC-85AE-FAD4F27D6179}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spring.Social.Twitter.2008-NET35", "..\Common\Spring.Social.Twitter\Spring.Social.Twitter.2008-NET35.csproj", "{E0452754-2423-4EE5-A554-71C40D02B782}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +15,10 @@ Global
 		{097DB6A8-5DBF-2FDC-85AE-FAD4F27D6179}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{097DB6A8-5DBF-2FDC-85AE-FAD4F27D6179}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{097DB6A8-5DBF-2FDC-85AE-FAD4F27D6179}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E0452754-2423-4EE5-A554-71C40D02B782}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0452754-2423-4EE5-A554-71C40D02B782}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0452754-2423-4EE5-A554-71C40D02B782}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0452754-2423-4EE5-A554-71C40D02B782}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

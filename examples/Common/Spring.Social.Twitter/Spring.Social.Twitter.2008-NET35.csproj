@@ -5,13 +5,14 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{1A7DB6A8-5DBF-2FDC-85AE-FAD4F27D6179}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{E0452754-2423-4EE5-A554-71C40D02B782}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Spring.OAuth2ConsoleQuickStart</RootNamespace>
-    <AssemblyName>Spring.OAuth2ConsoleQuickStart</AssemblyName>
+    <RootNamespace>Spring</RootNamespace>
+    <AssemblyName>Spring.Social.Twitter</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkSubset>Client</TargetFrameworkSubset>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -33,22 +34,18 @@
   <ItemGroup>
     <Reference Include="Spring.Rest, Version=1.1.0.1635, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\bin\net\3.5\Debug\Spring.Rest.dll</HintPath>
+      <HintPath>..\..\..\bin\net\3.5\Debug\Spring.Rest.dll</HintPath>
     </Reference>
     <Reference Include="Spring.Social.Core, Version=1.0.0.1735, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\bin\net\3.5\Debug\Spring.Social.Core.dll</HintPath>
+      <HintPath>..\..\..\bin\net\3.5\Debug\Spring.Social.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Common\Spring.Social.Facebook\Spring.Social.Facebook.2008-NET35.csproj">
-      <Project>{A9978258-8AD4-4233-9DF5-959E08195962}</Project>
-      <Name>Spring.Social.Facebook.2008-NET35</Name>
-    </ProjectReference>
+    <Compile Include="Social\Twitter\Api\Impl\TwitterTemplate.cs" />
+    <Compile Include="Social\Twitter\Api\ITwitter.cs" />
+    <Compile Include="Social\Twitter\Api\TwitterServiceProvider.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

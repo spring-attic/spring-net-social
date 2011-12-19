@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{B37D6FA8-12BF-9FAC-35CE-1DB6D4F09179}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{E0452754-2423-4EE5-A554-71C40D02B782}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Spring.OAuth2ConsoleQuickStart</RootNamespace>
-    <AssemblyName>Spring.OAuth2ConsoleQuickStart</AssemblyName>
+    <RootNamespace>Spring</RootNamespace>
+    <AssemblyName>Spring.Social.Twitter</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
@@ -31,14 +31,14 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile />
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;NET_2_0;NET_3_0;NET_3_5;NET_4_0</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NET_2_0;NET_3_0;NET_3_5;NET_4_0;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -46,23 +46,25 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;NET_2_0;NET_3_0;NET_3_5;NET_4_0</DefineConstants>
+    <DefineConstants>TRACE;NET_2_0;NET_3_0;NET_3_5;NET_4_0;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Spring.Rest, Version=1.1.0.1635, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\bin\net\4.0\Debug\Spring.Rest.dll</HintPath>
+      <HintPath>..\..\..\bin\net\4.0\Debug\Spring.Rest.dll</HintPath>
     </Reference>
     <Reference Include="Spring.Social.Core, Version=1.0.0.1735, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\bin\net\4.0\Debug\Spring.Social.Core.dll</HintPath>
+      <HintPath>..\..\..\bin\net\4.0\Debug\Spring.Social.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="Social\Twitter\Api\Impl\TwitterTemplate.cs" />
+    <Compile Include="Social\Twitter\Api\ITwitter.cs" />
+    <Compile Include="Social\Twitter\Api\TwitterServiceProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -80,12 +82,6 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Common\Spring.Social.Facebook\Spring.Social.Facebook.2010-NET40.csproj">
-      <Project>{A9978258-8AD4-4233-9DF5-959E08195962}</Project>
-      <Name>Spring.Social.Facebook.2010-NET40</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spring.OAuth2ConsoleQuickStart.2010-NET40", "src\Spring.OAuth2ConsoleQuickStart\Spring.OAuth2ConsoleQuickStart.2010-NET40.csproj", "{B37D6FA8-12BF-9FAC-35CE-1DB6D4F09179}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spring.Social.Facebook.2010-NET40", "..\Common\Spring.Social.Facebook\Spring.Social.Facebook.2010-NET40.csproj", "{A9978258-8AD4-4233-9DF5-959E08195962}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +15,10 @@ Global
 		{B37D6FA8-12BF-9FAC-35CE-1DB6D4F09179}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B37D6FA8-12BF-9FAC-35CE-1DB6D4F09179}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B37D6FA8-12BF-9FAC-35CE-1DB6D4F09179}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9978258-8AD4-4233-9DF5-959E08195962}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9978258-8AD4-4233-9DF5-959E08195962}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9978258-8AD4-4233-9DF5-959E08195962}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9978258-8AD4-4233-9DF5-959E08195962}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

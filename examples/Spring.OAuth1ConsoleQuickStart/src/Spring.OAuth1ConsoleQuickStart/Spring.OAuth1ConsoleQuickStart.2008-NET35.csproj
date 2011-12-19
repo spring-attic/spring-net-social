@@ -43,9 +43,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
-    <Compile Include="Twitter\Api\Impl\TwitterTemplate.cs" />
-    <Compile Include="Twitter\Api\ITwitter.cs" />
-    <Compile Include="Twitter\Api\TwitterServiceProvider.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\Spring.Social.Twitter\Spring.Social.Twitter.2008-NET35.csproj">
+      <Project>{E0452754-2423-4EE5-A554-71C40D02B782}</Project>
+      <Name>Spring.Social.Twitter.2008-NET35</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
