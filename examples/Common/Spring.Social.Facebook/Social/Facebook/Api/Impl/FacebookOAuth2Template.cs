@@ -22,7 +22,12 @@ using System;
 #if NET_4_0 || SILVERLIGHT_5
 using System.Threading.Tasks;
 #endif
+#if SILVERLIGHT
+using Spring.Collections.Specialized;
+#else
 using System.Collections.Specialized;
+#endif
+
 
 using Spring.Rest.Client;
 using Spring.Social.OAuth2;

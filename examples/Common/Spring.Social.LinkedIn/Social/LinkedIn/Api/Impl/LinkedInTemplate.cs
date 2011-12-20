@@ -19,10 +19,9 @@
 #endregion
 
 using System;
-#if NET_4_0
+#if NET_4_0 || SILVERLIGHT_5
 using System.Threading.Tasks;
 #endif
-using System.Xml.Linq;
 using System.Collections.Generic;
 
 using Spring.Rest.Client;
@@ -66,29 +65,34 @@ namespace Spring.Social.LinkedIn.Api.Impl
         protected override IList<IHttpMessageConverter> GetMessageConverters()
         {
             IList<IHttpMessageConverter> converters = base.GetMessageConverters();
-            // Use Linq to XML with the XML API
-            converters.Add(new XElementHttpMessageConverter());
+            converters.Add(new DataContractHttpMessageConverter()); // Use DataContractSerializer
+            //converters.Add(new XElementHttpMessageConverter()); // Use Linq to XML
+            //converters.Add(new DataContractJsonHttpMessageConverter()); // Use DataContractJsonSerializer
+            //converters.Add(new NJsonHttpMessageConverter()); // Use JSON.NET
+            //converters.Add(new SpringJsonHttpMessageConverter()); // Use Spring light-weight JSON
             return converters;
         }
 
         #region ILinkedIn Membres
 
-#if NET_4_0
-        // Retrieves the user's GitHub profile Name.
-        public Task<string> GetProfileNameAsync()
+#if NET_4_0 || SILVERLIGHT_5
+        // Asynchronously retrieves the user's GitHub profile Name.
+        public Task<LinkedInProfile> GetUserProfileAsync()
         {
-            return this.RestTemplate.GetForObjectAsync<XElement>(PROFILE_URL, "~")
-                .ContinueWith<string>(task =>
-                    {
-                        return task.Result.Element("first-name").Value + " " + task.Result.Element("last-name").Value;
-                    });
+            return this.RestTemplate.GetForObjectAsync<LinkedInProfile>(PROFILE_URL, "~");
         }
 #else
+#if !SILVERLIGHT
         // Retrieves the user's GitHub profile Name.
-        public string GetProfileName()
+        public LinkedInProfile GetUserProfile()
         {
-            XElement result = this.RestTemplate.GetForObject<XElement>(PROFILE_URL, "~");
-            return result.Element("first-name").Value + " " + result.Element("last-name").Value;
+            return this.RestTemplate.GetForObject<LinkedInProfile>(PROFILE_URL, "~");
+        }
+#endif
+        // Asynchronously retrieves the user's LinkedIn profile Name.
+        public RestOperationCanceler GetUserProfileAsync(Action<RestOperationCompletedEventArgs<LinkedInProfile>> operationCompleted)
+        {
+            return this.RestTemplate.GetForObjectAsync<LinkedInProfile>(PROFILE_URL, operationCompleted, "~");
         }
 #endif
 

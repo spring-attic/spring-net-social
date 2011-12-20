@@ -19,11 +19,16 @@
 #endregion
 
 using System;
-#if NET_4_0
+#if NET_4_0 || SILVERLIGHT_5
 using System.Threading.Tasks;
 #endif
 using System.Collections.Generic;
+#if SILVERLIGHT
+using Spring.Collections.Specialized;
+#else
 using System.Collections.Specialized;
+#endif
+
 
 using Spring.Json;
 using Spring.Rest.Client;
@@ -62,8 +67,11 @@ namespace Spring.Social.GitHub.Api.Impl
         protected override IList<IHttpMessageConverter> GetMessageConverters()
         {
             IList<IHttpMessageConverter> converters = base.GetMessageConverters();
-            // Use light-weight JSON support based on SimpleJson
-            converters.Add(new SpringJsonHttpMessageConverter());
+            //converters.Add(new DataContractHttpMessageConverter()); // DataContractSerializer
+            //converters.Add(new XElementHttpMessageConverter()); // Linq to XML
+            //converters.Add(new DataContractJsonHttpMessageConverter()); // DataContractJsonSerializer
+            //converters.Add(new NJsonHttpMessageConverter()); // JSON.NET
+            converters.Add(new SpringJsonHttpMessageConverter()); // Spring light-weight JSON
             return converters;
         }
 
@@ -74,8 +82,8 @@ namespace Spring.Social.GitHub.Api.Impl
 
         #region GitHub Membres
 
-#if NET_4_0
-        // Retrieves the user's GitHub profile Name.
+#if NET_4_0 || SILVERLIGHT_5
+        // Asynchronously retrieves the user's GitHub profile Name.
         public Task<string> GetProfileNameAsync()
         {
             return this.RestTemplate.GetForObjectAsync<JsonValue>(PROFILE_URL)
@@ -85,11 +93,27 @@ namespace Spring.Social.GitHub.Api.Impl
                     });
         }
 #else
+#if !SILVERLIGHT
         // Retrieves the user's GitHub profile Name.
         public string GetProfileName()
         {
             JsonValue result = this.RestTemplate.GetForObject<JsonValue>(PROFILE_URL);
             return result.GetValue("user").GetValue<string>("name");
+        }
+#endif
+        // Asynchronously retrieves the user's GitHub profile Name.
+        public RestOperationCanceler GetProfileNameAsync(Action<RestOperationCompletedEventArgs<string>> operationCompleted)
+        {
+            return this.RestTemplate.GetForObjectAsync<JsonValue>(PROFILE_URL, 
+                 r =>
+                 {
+                     string response = null;
+                     if (r.Error == null)
+                     {
+                         response = r.Response.GetValue("user").GetValue<string>("name");
+                     }
+                     operationCompleted(new RestOperationCompletedEventArgs<string>(response, r.Error, r.Cancelled, r.UserState));
+                 });
         }
 #endif
 

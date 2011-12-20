@@ -41,14 +41,15 @@
       <HintPath>..\..\..\bin\net\3.5\Debug\Spring.Social.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.XML" />
-    <Reference Include="System.Xml.Linq">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    <Reference Include="System.Runtime.Serialization">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Social\LinkedIn\Api\Impl\LinkedInTemplate.cs" />
     <Compile Include="Social\LinkedIn\Api\ILinkedIn.cs" />
+    <Compile Include="Social\LinkedIn\Api\LinkedInProfile.cs" />
     <Compile Include="Social\LinkedIn\Api\LinkedInServiceProvider.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -19,8 +19,10 @@
 #endregion
 
 using System;
-#if NET_4_0
+#if NET_4_0 || SILVERLIGHT_5
 using System.Threading.Tasks;
+#else
+using Spring.Rest.Client;
 #endif
 
 namespace Spring.Social.LinkedIn.Api
@@ -28,12 +30,16 @@ namespace Spring.Social.LinkedIn.Api
     // Interface specifying a basic set of operations for interacting with LinkedIn.
     public interface ILinkedIn : IApiBinding
     {
-#if NET_4_0
-        // Retrieves the user's LinkedIn profile Name.
-        Task<string> GetProfileNameAsync();
+#if NET_4_0 || SILVERLIGHT_5
+        // Asynchronously retrieves the user's LinkedIn profile Name.
+        Task<LinkedInProfile> GetUserProfileAsync();
 #else
+#if !SILVERLIGHT
         // Retrieves the user's LinkedIn profile Name.
-        string GetProfileName();
+        LinkedInProfile GetUserProfile();
+#endif
+        // Asynchronously retrieves the user's LinkedIn profile Name.
+        RestOperationCanceler GetUserProfileAsync(Action<RestOperationCompletedEventArgs<LinkedInProfile>> operationCompleted);
 #endif
     }
 }

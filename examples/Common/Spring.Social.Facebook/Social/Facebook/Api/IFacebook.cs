@@ -19,8 +19,11 @@
 #endregion
 
 using System;
-#if NET_4_0
+#if NET_4_0 || SILVERLIGHT_5
 using System.Threading.Tasks;
+#else
+using Spring.Http;
+using Spring.Rest.Client;
 #endif
 
 namespace Spring.Social.Facebook.Api
@@ -28,12 +31,16 @@ namespace Spring.Social.Facebook.Api
     // Interface specifying a basic set of operations for interacting with Facebook.
     public interface IFacebook : IApiBinding
     {
-#if NET_4_0
-        // Updates the user's status.
+#if NET_4_0 || SILVERLIGHT_5
+        // Asynchronously updates the user's status.
         Task UpdateStatusAsync(string status);
 #else
+#if !SILVERLIGHT
         // Updates the user's status.
         void UpdateStatus(string status);
+#endif
+        // Asynchronously updates the user's status.
+        RestOperationCanceler UpdateStatusAsync(string status, Action<RestOperationCompletedEventArgs<HttpResponseMessage>> operationCompleted);
 #endif
     }
 }

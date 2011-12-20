@@ -19,11 +19,17 @@
 #endregion
 
 using System;
-#if NET_4_0
+#if NET_4_0 || SILVERLIGHT_5
 using System.Threading.Tasks;
 #endif
+#if SILVERLIGHT
+using Spring.Collections.Specialized;
+#else
 using System.Collections.Specialized;
+#endif
 
+
+using Spring.Http;
 using Spring.Rest.Client;
 using Spring.Social.OAuth2;
 
@@ -54,6 +60,20 @@ namespace Spring.Social.Facebook.Api.Impl
             restTemplate.BaseAddress = API_URI_BASE;
         }
 
+        /*
+        // Returns message converters used to consume Facebook API resources
+        protected override IList<IHttpMessageConverter> GetMessageConverters()
+        {
+            IList<IHttpMessageConverter> converters = base.GetMessageConverters();
+            //converters.Add(new DataContractHttpMessageConverter()); // DataContractSerializer
+            //converters.Add(new XElementHttpMessageConverter()); // Linq to XML
+            //converters.Add(new DataContractJsonHttpMessageConverter()); // DataContractJsonSerializer
+            //converters.Add(new NJsonHttpMessageConverter()); // JSON.NET
+            //converters.Add(new SpringJsonHttpMessageConverter()); // Spring light-weight JSON
+            return converters;
+        }
+        */
+
         protected override OAuth2Version GetOAuth2Version()
         {
             return OAuth2Version.DRAFT_10;
@@ -61,8 +81,8 @@ namespace Spring.Social.Facebook.Api.Impl
 
         #region IFacebook Membres
 
-#if NET_4_0
-        // Updates the user's status.
+#if NET_4_0 || SILVERLIGHT_5
+        // Asynchronously updates the user's status.
         public Task UpdateStatusAsync(string status)
         {
             NameValueCollection content = new NameValueCollection(1);
@@ -70,11 +90,21 @@ namespace Spring.Social.Facebook.Api.Impl
             return this.RestTemplate.PostForMessageAsync(PROFILE_URL, content, "me");
         }
 #else
+#if !SILVERLIGHT
+        // Updates the user's status.
         public void UpdateStatus(string status)
         {
             NameValueCollection content = new NameValueCollection(1);
             content.Add("message", status);
             this.RestTemplate.PostForMessage(PROFILE_URL, content, "me");
+        }
+#endif
+        // Asynchronously updates the user's status.
+        public RestOperationCanceler UpdateStatusAsync(string status, Action<RestOperationCompletedEventArgs<HttpResponseMessage>> operationCompleted)
+        {
+            NameValueCollection content = new NameValueCollection(1);
+            content.Add("message", status);
+            return this.RestTemplate.PostForMessageAsync(PROFILE_URL, content, operationCompleted, "me");
         }
 #endif
 

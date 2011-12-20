@@ -19,8 +19,11 @@
 #endregion
 
 using System;
-#if NET_4_0
+#if NET_4_0 || SILVERLIGHT_5
 using System.Threading.Tasks;
+#else
+using Spring.Http;
+using Spring.Rest.Client;
 #endif
 
 namespace Spring.Social.GitHub.Api
@@ -28,12 +31,16 @@ namespace Spring.Social.GitHub.Api
     // Interface specifying a basic set of operations for interacting with GitHub.
     public interface IGitHub : IApiBinding
     {
-#if NET_4_0
-        // Retrieves the user's GitHub profile Name.
+#if NET_4_0 || SILVERLIGHT_5
+        // Asynchronously retrieves the user's GitHub profile Name.
         Task<string> GetProfileNameAsync();
 #else
+#if !SILVERLIGHT
         // Retrieves the user's GitHub profile Name.
         string GetProfileName();
+#endif
+        // Asynchronously retrieves the user's GitHub profile Name.
+        RestOperationCanceler GetProfileNameAsync(Action<RestOperationCompletedEventArgs<string>> operationCompleted);
 #endif
     }
 }

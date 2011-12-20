@@ -19,11 +19,16 @@
 #endregion
 
 using System;
-#if NET_4_0
+#if NET_4_0 || SILVERLIGHT_5
 using System.Threading.Tasks;
 #endif
+#if SILVERLIGHT
+using Spring.Collections.Specialized;
+#else
 using System.Collections.Specialized;
+#endif
 
+using Spring.Http;
 using Spring.Rest.Client;
 using Spring.Social.OAuth1;
 
@@ -56,10 +61,24 @@ namespace Spring.Social.Twitter.Api.Impl
             restTemplate.BaseAddress = API_URI_BASE;
         }
 
+        /*
+        // Returns message converters used to consume Twitter API resources
+        protected override IList<IHttpMessageConverter> GetMessageConverters()
+        {
+            IList<IHttpMessageConverter> converters = base.GetMessageConverters();
+            //converters.Add(new DataContractHttpMessageConverter()); // Use DataContractSerializer
+            //converters.Add(new XElementHttpMessageConverter()); // Use Linq to XML
+            //converters.Add(new DataContractJsonHttpMessageConverter()); // Use DataContractJsonSerializer
+            //converters.Add(new NJsonHttpMessageConverter()); // Use JSON.NET
+            //converters.Add(new SpringJsonHttpMessageConverter()); // Use Spring light-weight JSON
+            return converters;
+        }
+        */
+
         #region ITwitter Membres
 
-#if NET_4_0
-        // Updates the user's status.
+#if NET_4_0 || SILVERLIGHT_5
+        // Asynchronously updates the user's status.
         public Task UpdateStatusAsync(string status)
         {
             NameValueCollection tweetParams = new NameValueCollection(1);
@@ -67,11 +86,21 @@ namespace Spring.Social.Twitter.Api.Impl
             return this.RestTemplate.PostForMessageAsync(TWEET_URL, tweetParams);
         }
 #else
+#if !SILVERLIGHT
+        // Updates the user's status.
         public void UpdateStatus(string status)
         {
-            NameValueCollection tweetParams = new NameValueCollection(1);
-            tweetParams.Add("status", status);
-            this.RestTemplate.PostForMessage(TWEET_URL, tweetParams);
+            NameValueCollection request = new NameValueCollection(1);
+            request.Add("status", status);
+            this.RestTemplate.PostForMessage(TWEET_URL, request);
+        }
+#endif
+        // Asynchronously updates the user's status.
+        public RestOperationCanceler UpdateStatusAsync(string status, Action<RestOperationCompletedEventArgs<HttpResponseMessage>> operationCompleted)
+        {
+            NameValueCollection request = new NameValueCollection(1);
+            request.Add("status", status);
+            return this.RestTemplate.PostForMessageAsync(TWEET_URL, request, operationCompleted);
         }
 #endif
 
