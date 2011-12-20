@@ -1862,6 +1862,40 @@
             Default value is <c>false</c>.
             </summary>
         </member>
+        <member name="T:Spring.Http.HttpUtils">
+            <summary>
+            Miscellaneous HTTP utility methods.
+            </summary>
+            <author>Bruno Baia</author>
+        </member>
+        <member name="M:Spring.Http.HttpUtils.FormDecode(System.String)">
+            <summary>
+            Decodes 'application/x-www-form-urlencoded' data using 'UTF-8' encoding scheme.
+            </summary>
+            <param name="s">The string to decode.</param>
+            <returns>The decoded string.</returns>
+        </member>
+        <member name="M:Spring.Http.HttpUtils.FormEncode(System.String)">
+            <summary>
+            Encodes 'application/x-www-form-urlencoded' data using 'UTF-8' encoding scheme.
+            </summary>
+            <param name="s">The string to encode.</param>
+            <returns>The encoded string.</returns>
+        </member>
+        <member name="M:Spring.Http.HttpUtils.UrlDecode(System.String)">
+            <summary>
+            Decodes URI data using 'UTF-8' encoding scheme.
+            </summary>
+            <param name="s">The string to decode.</param>
+            <returns>The decoded string.</returns>
+        </member>
+        <member name="M:Spring.Http.HttpUtils.UrlEncode(System.String)">
+            <summary>
+            Encodes URI data using 'UTF-8' encoding scheme.
+            </summary>
+            <param name="s">The string to encode.</param>
+            <returns>The encoded string.</returns>
+        </member>
         <member name="T:Spring.Http.HttpEntity">
             <summary>
             Represents an HTTP entity message, as defined in the HTTP specification. 
