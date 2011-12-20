@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010 Express for Windows Phone
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spring.OAuth2WindowsPhoneQuickStart.2010-WP71", "Spring.OAuth2WindowsPhoneQuickStart\Spring.OAuth2WindowsPhoneQuickStart.2010-WP71.csproj", "{1F459C5F-90CA-4C59-9EC8-78A791017EDF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spring.Social.Facebook.2010-WP71", "..\Common\Spring.Social.Facebook\Spring.Social.Facebook.2010-WP71.csproj", "{1324042B-1A82-4EDA-AC7C-3AAE03C5C5EA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spring.Social.GitHub.2010-WP71", "..\Common\Spring.Social.Github\Spring.Social.GitHub.2010-WP71.csproj", "{8BD4042B-1A82-4EDA-AC7C-3AAE03C5C5EA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1F459C5F-90CA-4C59-9EC8-78A791017EDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F459C5F-90CA-4C59-9EC8-78A791017EDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F459C5F-90CA-4C59-9EC8-78A791017EDF}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{1F459C5F-90CA-4C59-9EC8-78A791017EDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F459C5F-90CA-4C59-9EC8-78A791017EDF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F459C5F-90CA-4C59-9EC8-78A791017EDF}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{1324042B-1A82-4EDA-AC7C-3AAE03C5C5EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1324042B-1A82-4EDA-AC7C-3AAE03C5C5EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1324042B-1A82-4EDA-AC7C-3AAE03C5C5EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1324042B-1A82-4EDA-AC7C-3AAE03C5C5EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8BD4042B-1A82-4EDA-AC7C-3AAE03C5C5EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BD4042B-1A82-4EDA-AC7C-3AAE03C5C5EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BD4042B-1A82-4EDA-AC7C-3AAE03C5C5EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8BD4042B-1A82-4EDA-AC7C-3AAE03C5C5EA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
