@@ -8,7 +8,7 @@ using Spring.Rest.Client;
 using Spring.Social.Twitter.Api;
 using Spring.Social.OAuth1;
 
-namespace Spring.OAuth2ConsoleQuickStart
+namespace Spring.OAuth1ConsoleQuickStart
 {
     class Program
     {
@@ -33,7 +33,7 @@ namespace Spring.OAuth2ConsoleQuickStart
 #endif
                 Console.WriteLine("Done");
 
-                string authenticateUrl = twitterServiceProvider.OAuthOperations.BuildAuthenticateUrl(oauthToken.Value, OAuth1Parameters.NONE);
+                string authenticateUrl = twitterServiceProvider.OAuthOperations.BuildAuthorizeUrl(oauthToken.Value, OAuth1Parameters.NONE);
                 Console.WriteLine("Redirect user for authentication: " + authenticateUrl);
                 Process.Start(authenticateUrl);
 

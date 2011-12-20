@@ -11,14 +11,14 @@ namespace Spring.OAuth2ConsoleQuickStart
     {
         // Register your own Facebook app at https://developers.facebook.com/apps.
         // Set your application id & secret here
-        private const string FacebookClientID = TODO;
-        private const string FacebookClientSecret = TODO;
+        private const string FacebookApiId = TODO;
+        private const string FacebookApiSecret = TODO;
 
         static void Main(string[] args)
         {
             try
             {
-                FacebookServiceProvider facebookServiceProvider = new FacebookServiceProvider(FacebookClientID, FacebookClientSecret);
+                FacebookServiceProvider facebookServiceProvider = new FacebookServiceProvider(FacebookApiId, FacebookApiSecret);
 
                 // OAuth 'dance'
                 // Authentication using the client-side authorization flow 
