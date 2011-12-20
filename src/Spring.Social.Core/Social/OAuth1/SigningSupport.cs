@@ -182,7 +182,7 @@ namespace Spring.Social.OAuth1
                     stream.Position = 0;
                     byte[] bytes = stream.ToArray();
                     Encoding encoding = (requestContentType != null && requestContentType.CharSet != null) ? requestContentType.CharSet : Encoding.UTF8;
-                    return ParseFormParameters(encoding.GetString(bytes, 0, bytes.Length).Replace("+", "%20"));
+                    return ParseFormParameters(encoding.GetString(bytes, 0, bytes.Length));
                 }
             }
             return new NameValueCollection();
@@ -200,12 +200,12 @@ namespace Spring.Social.OAuth1
                     int idx = pair.IndexOf('=');
                     if (idx == -1)
                     {
-                        parameters.Add(UrlDecode(pair), string.Empty);
+                        parameters.Add(HttpUtils.FormDecode(pair), string.Empty);
                     }
                     else
                     {
-                        string name = UrlDecode(pair.Substring(0, idx));
-                        string value = UrlDecode(pair.Substring(idx + 1));
+                        string name = HttpUtils.FormDecode(pair.Substring(0, idx));
+                        string value = HttpUtils.FormDecode(pair.Substring(idx + 1));
                         parameters.Add(name, value);
                     }
                 }
@@ -230,7 +230,7 @@ namespace Spring.Social.OAuth1
         // http://oauth.net/core/1.0a/#rfc.section.5.1
         private static string OAuthEncode(string url)
         {
-            string urlEncoded = UrlEncode(url);
+            string urlEncoded = HttpUtils.UrlEncode(url);
             if (urlEncoded == null)
             {
                 return null;
@@ -241,36 +241,6 @@ namespace Spring.Social.OAuth1
                 .Replace("(", "%28")
                 .Replace(")", "%29")
                 .Replace("*", "%2A");
-        }
-
-        private static string UrlEncode(string url)
-        {
-            if (url == null)
-            {
-                return null;
-            }
-#if WINDOWS_PHONE
-            return System.Net.HttpUtility.UrlEncode(url);
-#elif SILVERLIGHT
-            return System.Windows.Browser.HttpUtility.UrlEncode(url);
-#else
-            return Uri.EscapeDataString(url);
-#endif
-        }
-
-        private static string UrlDecode(string url)
-        {
-            if (url == null)
-            {
-                return null;
-            }
-#if WINDOWS_PHONE
-            return System.Net.HttpUtility.UrlDecode(url);
-#elif SILVERLIGHT
-            return System.Windows.Browser.HttpUtility.UrlDecode(url);
-#else
-            return Uri.UnescapeDataString(url);
-#endif
         }
 
         #endregion

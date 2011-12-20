@@ -449,20 +449,20 @@ namespace Spring.Social.OAuth1
         private string BuildAuthUrl(string baseAuthUrl, string requestToken, OAuth1Parameters parameters)
         {
             StringBuilder authUrl = new StringBuilder(baseAuthUrl);
-            authUrl.Append("?oauth_token=").Append(UrlEncode(requestToken));
+            authUrl.Append("?oauth_token=").Append(HttpUtils.UrlEncode(requestToken));
             if (this.version == OAuth1Version.CORE_10)
             {
-                authUrl.Append("&oauth_callback=").Append(UrlEncode(parameters.CallbackUrl));
+                authUrl.Append("&oauth_callback=").Append(HttpUtils.UrlEncode(parameters.CallbackUrl));
             }
             NameValueCollection additionalParameters = this.GetAdditionalParameters(parameters.AdditionalParameters);
             if (additionalParameters != null)
             {
                 foreach (string additionalParameterName in additionalParameters)
                 {
-                    string additionalParameterNameEncoded = UrlEncode(additionalParameterName);
+                    string additionalParameterNameEncoded = HttpUtils.UrlEncode(additionalParameterName);
                     foreach (string additionalParameterValue in additionalParameters.GetValues(additionalParameterName))
                     {
-                        authUrl.Append('&').Append(additionalParameterNameEncoded).Append('=').Append(UrlEncode(additionalParameterValue));
+                        authUrl.Append('&').Append(additionalParameterNameEncoded).Append('=').Append(HttpUtils.UrlEncode(additionalParameterValue));
                     }
                 }
             }
@@ -487,21 +487,6 @@ namespace Spring.Social.OAuth1
                 }
                 return customAuthorizeParameters;
             }
-        }
-
-        private static string UrlEncode(string data)
-        {
-            if (data == null)
-            {
-                return null;
-            }
-#if WINDOWS_PHONE
-            return System.Net.HttpUtility.UrlEncode(data);
-#elif SILVERLIGHT
-            return System.Windows.Browser.HttpUtility.UrlEncode(data);
-#else
-            return Uri.EscapeDataString(data);
-#endif
         }
     }
 }

@@ -92,7 +92,7 @@ namespace Spring.Social.OAuth2
             this.clientId = clientId;
             this.clientSecret = clientSecret;
 
-            string clientInfo = "?client_id=" + UrlEncode(clientId);
+            string clientInfo = "?client_id=" + HttpUtils.UrlEncode(clientId);
             this.authorizeUrl = authorizeUrl + clientInfo;
             if (authenticateUrl != null)
             {
@@ -461,7 +461,7 @@ namespace Spring.Social.OAuth2
         {
             StringBuilder authUrl = new StringBuilder(baseAuthUrl)
                 .Append("&redirect_uri=")
-                .Append(UrlEncode(parameters.RedirectUri));
+                .Append(HttpUtils.UrlEncode(parameters.RedirectUri));
             if (grantType == GrantType.AUTHORIZATION_CODE)
             {
                 authUrl.Append("&response_type=code");
@@ -472,39 +472,24 @@ namespace Spring.Social.OAuth2
             }
             if (parameters.Scope != null)
             {
-                authUrl.Append("&scope=").Append(UrlEncode(parameters.Scope));
+                authUrl.Append("&scope=").Append(HttpUtils.UrlEncode(parameters.Scope));
             }
             if (parameters.State != null)
             {
-                authUrl.Append("&state={0}").Append(UrlEncode(parameters.State));
+                authUrl.Append("&state={0}").Append(HttpUtils.UrlEncode(parameters.State));
             }
             if (parameters.AdditionalParameters != null)
             {
                 foreach (string parameterName in parameters.AdditionalParameters)
                 {
-                    string parameterNameEncoded = UrlEncode(parameterName);
+                    string parameterNameEncoded = HttpUtils.UrlEncode(parameterName);
                     foreach (string parameterValue in parameters.AdditionalParameters.GetValues(parameterName))
                     {
-                        authUrl.AppendFormat("&{0}={1}", parameterNameEncoded, UrlEncode(parameterValue));
+                        authUrl.AppendFormat("&{0}={1}", parameterNameEncoded, HttpUtils.UrlEncode(parameterValue));
                     }
                 }
             }
             return authUrl.ToString();
-        }
-
-        private static string UrlEncode(string data)
-        {
-            if (data == null)
-            {
-                return null;
-            }
-#if WINDOWS_PHONE
-            return System.Net.HttpUtility.UrlEncode(data);
-#elif SILVERLIGHT
-            return System.Windows.Browser.HttpUtility.UrlEncode(data);
-#else
-            return Uri.EscapeDataString(data);
-#endif
         }
     }
 }
