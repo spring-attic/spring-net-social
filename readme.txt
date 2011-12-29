@@ -50,6 +50,7 @@ The "bin" directory contains the following distinct dll files for use in applica
 Dependencies are those other than on the .NET BCL.
 
 	* "Spring.Social.Core" for all supported Framework versions
+
 	* "Spring.Rest" for all supported Framework versions
 	* Dependencies: Common.Logging for .NET 3.5 and 4.0
 

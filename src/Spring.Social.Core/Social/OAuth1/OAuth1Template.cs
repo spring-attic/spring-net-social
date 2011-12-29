@@ -22,7 +22,6 @@ using System;
 using System.Text;
 using System.Collections.Generic;
 #if NET_4_0 || SILVERLIGHT_5
-using System.Threading;
 using System.Threading.Tasks;
 #endif
 #if SILVERLIGHT
@@ -133,7 +132,7 @@ namespace Spring.Social.OAuth1
             this.signingSupport = new SigningSupport();
         }
 
-        #region IOAuth1Operations Membres
+        #region IOAuth1Operations Members
 
         /// <summary>
         /// Gets the version of OAuth1 implemented by this operations instance.

@@ -19,11 +19,11 @@
 #endregion
 
 using System;
+using System.Text;
+using System.Collections.Generic;
 #if NET_4_0 || SILVERLIGHT_5
 using System.Threading.Tasks;
 #endif
-using System.Text;
-using System.Collections.Generic;
 #if SILVERLIGHT
 using Spring.Collections.Specialized;
 #else
@@ -107,7 +107,7 @@ namespace Spring.Social.OAuth2
             this.restTemplate = this.CreateRestTemplate();
         }
 
-        #region IOAuth2Operations Membres
+        #region IOAuth2Operations Members
 
         /// <summary>
         /// Construct the URL to redirect the user to for authorization.

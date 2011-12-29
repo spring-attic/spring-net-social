@@ -84,7 +84,7 @@ namespace Spring.Social.OAuth1
             this.ConfigureRestTemplate(this.restTemplate);
         }
 
-        #region IApiBinding Membres
+        #region IApiBinding Members
 
         /// <summary>
         /// Returns true if this API binding has been authorized on behalf of a specific user.
@@ -105,10 +105,11 @@ namespace Spring.Social.OAuth1
         /// Returns a list of <see cref="IHttpMessageConverter"/>s to be used by the internal <see cref="RestTemplate"/>.
         /// </summary>
         /// <remarks>
-        /// Override this method to add additional message converters or to replace the default list of message converters.
+        /// Override this method to add additional message converters or to replace the default list of message converters. 
+        /// By default, this includes a <see cref="StringHttpMessageConverter"/> and a <see cref="FormHttpMessageConverter"/>.
         /// </remarks>
         /// <returns>
-        /// By default, this includes a <see cref="StringHttpMessageConverter"/> and a <see cref="FormHttpMessageConverter"/>.
+        /// The list of <see cref="IHttpMessageConverter"/>s to be used by the internal <see cref="RestTemplate"/>.
         /// </returns>
         protected virtual IList<IHttpMessageConverter> GetMessageConverters()
         {
@@ -125,7 +126,7 @@ namespace Spring.Social.OAuth1
         /// An example use case might be to configure a custom error handler. 
         /// Note that this method is called after the RestTemplate has been configured with the message converters returned from GetMessageConverters().
         /// </remarks>
-        /// <param name="restTemplate">The RestTemplate to configure</param>
+        /// <param name="restTemplate">The RestTemplate to configure.</param>
         protected virtual void ConfigureRestTemplate(RestTemplate restTemplate)
         {
         }

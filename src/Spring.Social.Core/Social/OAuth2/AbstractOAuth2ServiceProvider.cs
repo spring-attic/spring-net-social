@@ -42,7 +42,7 @@ namespace Spring.Social.OAuth2
             this.oauth2Operations = oauth2Operations;
         }
 
-        #region IOAuth2ServiceProvider<T> Membres
+        #region IOAuth2ServiceProvider<T> Members
 
         /// <summary>
         /// Gets the service interface for carrying out the "OAuth dance" with this provider. 

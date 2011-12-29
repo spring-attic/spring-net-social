@@ -45,7 +45,7 @@ namespace Spring.Social.OAuth2
 		    this.oauth2Version = oauth2Version;
         }
 
-        #region IClientHttpRequestBeforeInterceptor Membres
+        #region IClientHttpRequestBeforeInterceptor Members
 
         /// <summary>
         /// The callback method before the given request is executed.

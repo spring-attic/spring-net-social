@@ -70,7 +70,7 @@ namespace Spring.Social.OAuth1
             this.oauth1Operations = oauth1Operations;
         }
 
-        #region IOAuth1ServiceProvider<T> Membres
+        #region IOAuth1ServiceProvider<T> Members
 
         /// <summary>
         /// Gets the service interface for carrying out the "OAuth dance" with this provider. 

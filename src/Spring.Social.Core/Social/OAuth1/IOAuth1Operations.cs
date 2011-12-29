@@ -19,17 +19,16 @@
 #endregion
 
 using System;
-#if NET_4_0 || SILVERLIGHT_5
-using System.Threading;
-using System.Threading.Tasks;
-#endif
 #if SILVERLIGHT
 using Spring.Collections.Specialized;
 #else
 using System.Collections.Specialized;
 #endif
-
+#if NET_4_0 || SILVERLIGHT_5
+using System.Threading.Tasks;
+#else
 using Spring.Rest.Client;
+#endif
 
 namespace Spring.Social.OAuth1
 {

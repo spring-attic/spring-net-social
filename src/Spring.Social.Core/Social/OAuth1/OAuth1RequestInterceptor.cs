@@ -53,7 +53,7 @@ namespace Spring.Social.OAuth1
             this.signingSupport = new SigningSupport();
         }
 
-        #region IClientHttpRequestBeforeInterceptor Membres
+        #region IClientHttpRequestBeforeInterceptor Members
 
         /// <summary>
         /// The callback method before the given request is executed.
