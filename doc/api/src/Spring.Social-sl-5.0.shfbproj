@@ -18,7 +18,7 @@
     <OutputPath>.\Help\</OutputPath>
     <HtmlHelpName>Documentation</HtmlHelpName>
     <Language>en-US</Language>
-    <FrameworkVersion>Silverlight 4.0</FrameworkVersion>
+    <FrameworkVersion>Silverlight 5.0</FrameworkVersion>
     <HelpFileFormat>HtmlHelp1</HelpFileFormat>
     <DocumentationSources>
       <DocumentationSource sourceFile="..\..\..\bin\sl\5.0\Release\Spring.Social.Core.dll" />
