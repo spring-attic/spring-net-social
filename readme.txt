@@ -54,6 +54,8 @@ Dependencies are those other than on the .NET BCL.
 	* "Spring.Rest" for all supported Framework versions
 	* Dependencies: Common.Logging for .NET 3.5 and 4.0
 
+	* "Spring.Rest.Testing" for all supported Framework versions
+
 Debug build is done using /DEBUG:full and release build using /DEBUG:pdbonly flags.
 
 
