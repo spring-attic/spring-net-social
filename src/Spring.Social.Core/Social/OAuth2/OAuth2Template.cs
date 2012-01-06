@@ -30,6 +30,7 @@ using Spring.Collections.Specialized;
 using System.Collections.Specialized;
 #endif
 
+using Spring.Util;
 using Spring.Json;
 using Spring.Rest.Client;
 using Spring.Http;
@@ -83,11 +84,10 @@ namespace Spring.Social.OAuth2
         /// <param name="accessTokenUrl">The URL of the provider's access token endpoint.</param>
         public OAuth2Template(string clientId, string clientSecret, string authorizeUrl, string authenticateUrl, string accessTokenUrl)
         {
-            // TODO: 
-            //AssertUtils.ArgumentNotNull("clientId", "The clientId property cannot be null");
-            //AssertUtils.ArgumentNotNull("clientSecret", "The clientSecret property cannot be null");
-            //AssertUtils.ArgumentNotNull("authorizeUrl", "The authorizeUrl property cannot be null");
-            //AssertUtils.ArgumentNotNull("accessTokenUrl", "The accessTokenUrl property cannot be null");
+            ArgumentUtils.AssertNotNull(clientId, "clientId");
+            ArgumentUtils.AssertNotNull(clientSecret, "clientSecret");
+            ArgumentUtils.AssertNotNull(authorizeUrl, "authorizeUrl");
+            ArgumentUtils.AssertNotNull(accessTokenUrl, "accessTokenUrl");
 
             this.clientId = clientId;
             this.clientSecret = clientSecret;

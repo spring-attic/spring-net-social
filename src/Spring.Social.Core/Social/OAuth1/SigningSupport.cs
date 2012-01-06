@@ -191,7 +191,6 @@ namespace Spring.Social.OAuth1
         private static NameValueCollection ParseFormParameters(string parameterString)
         {
             NameValueCollection parameters = new NameValueCollection();
-            // TODO : StringUtils.HasText
             if (parameterString != null && parameterString.Trim().Length > 0)
             {
                 string[] pairs = parameterString.Split('&');

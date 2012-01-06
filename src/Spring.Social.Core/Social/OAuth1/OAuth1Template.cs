@@ -30,6 +30,7 @@ using Spring.Collections.Specialized;
 using System.Collections.Specialized;
 #endif
 
+using Spring.Util;
 using Spring.Rest.Client;
 using Spring.Http;
 using Spring.Http.Converters;
@@ -114,12 +115,11 @@ namespace Spring.Social.OAuth1
         /// <param name="version">The version of OAuth 1, either 10 or 10a.</param>
         public OAuth1Template(string consumerKey, string consumerSecret, string requestTokenUrl, string authorizeUrl, string authenticateUrl, string accessTokenUrl, OAuth1Version version)
         {
-            // TODO:
-            //AssertUtils.ArgumentNotNull("consumerKey", "The consumerKey property cannot be null");
-            //AssertUtils.ArgumentNotNull("consumerSecret", "The consumerSecret property cannot be null");
-            //AssertUtils.ArgumentNotNull("requestTokenUrl", "The requestTokenUrl property cannot be null");
-            //AssertUtils.ArgumentNotNull("authorizeUrl", "The authorizeUrl property cannot be null");
-            //AssertUtils.ArgumentNotNull("accessTokenUrl", "The accessTokenUrl property cannot be null");
+            ArgumentUtils.AssertNotNull(consumerKey, "consumerKey");
+            ArgumentUtils.AssertNotNull(consumerSecret, "consumerSecret");
+            ArgumentUtils.AssertNotNull(requestTokenUrl, "requestTokenUrl");
+            ArgumentUtils.AssertNotNull(authorizeUrl, "authorizeUrl");
+            ArgumentUtils.AssertNotNull(accessTokenUrl, "accessTokenUrl");
 
             this.consumerKey = consumerKey;
             this.consumerSecret = consumerSecret;
