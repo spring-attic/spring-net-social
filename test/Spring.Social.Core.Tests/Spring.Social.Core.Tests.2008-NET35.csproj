@@ -84,15 +84,25 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\net\3.5\Spring.Rest.dll</HintPath>
     </Reference>
+    <Reference Include="Spring.Rest.Testing, Version=1.1.0.3635, Culture=neutral, PublicKeyToken=65e474d141e25e07, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\net\3.5\Spring.Rest.Testing.dll</HintPath>
+    </Reference>
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Social\OAuth1\SigningSupportTests.cs" />
+    <Compile Include="Social\OAuth1\AbstractOAuth1ApiBindingTests.cs" />
+    <Compile Include="Social\OAuth1\OAuth1TemplateTests.cs" />
+    <Compile Include="Social\OAuth1\SigningSupportTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Social\OAuth1\AccessToken.formencoded" />
+    <EmbeddedResource Include="Social\OAuth1\RequestToken.formencoded" />
     <None Include="Spring.Social.Core.Tests.dll.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
