@@ -99,10 +99,19 @@
     <Compile Include="Social\OAuth1\SigningSupportTests.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Social\OAuth2\AbstractOAuth2ApiBindingTests.cs" />
+    <Compile Include="Social\OAuth2\OAuth2TemplateTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Social\OAuth1\AccessToken.formencoded" />
     <EmbeddedResource Include="Social\OAuth1\RequestToken.formencoded" />
+    <EmbeddedResource Include="Social\OAuth2\AccessToken.json" />
+    <EmbeddedResource Include="Social\OAuth2\AccessToken_ExpiresInAsNonNumericString.json" />
+    <EmbeddedResource Include="Social\OAuth2\AccessToken_ExpiresInAsString.json" />
+    <EmbeddedResource Include="Social\OAuth2\AccessToken_NoExpiresIn.json" />
+    <EmbeddedResource Include="Social\OAuth2\AccessToken_NoExpiresInOrScope.json" />
+    <EmbeddedResource Include="Social\OAuth2\RefreshToken.json" />
+    <EmbeddedResource Include="Social\OAuth2\RefreshToken_NoExpiresIn.json" />
     <None Include="Spring.Social.Core.Tests.dll.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

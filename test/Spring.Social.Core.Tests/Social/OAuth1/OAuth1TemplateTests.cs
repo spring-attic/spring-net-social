@@ -57,6 +57,7 @@ namespace Spring.Social.OAuth1
 	    [Test]
 	    public void BuildAuthorizeUrl() 
         {
+            // TODO: Add OAuth1Parameters properties setters ?
 		    OAuth1Parameters parameters = new OAuth1Parameters("http://www.someclient.com/oauth/callback");
 		    Assert.AreEqual(AUTHORIZE_URL + "?oauth_token=request_token", 
                 oauth10a.BuildAuthorizeUrl("request_token", OAuth1Parameters.NONE));

@@ -83,7 +83,7 @@ namespace Spring.Social.OAuth2
             this.redirectUri = redirectUri;
             this.scope = scope;
             this.state = state;
-            this.additionalParameters = additionalParameters;
+            this.additionalParameters = additionalParameters ?? new NameValueCollection();
         }
 
         /// <summary>

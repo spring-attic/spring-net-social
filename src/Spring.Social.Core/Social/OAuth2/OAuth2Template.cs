@@ -453,7 +453,11 @@ namespace Spring.Social.OAuth2
             string accessToken = response.GetValue<string>("access_token");
             string scope = response.ContainsName("scope") ? response.GetValue<string>("scope") : null;
             string refreshToken = response.ContainsName("refresh_token") ? response.GetValue<string>("refresh_token") : null;
-            int? expiresIn = response.ContainsName("expires_in") ? response.GetValue<int?>("expires_in") : null;
+            int? expiresIn = null;
+            if (response.ContainsName("expires_in"))
+            {
+                try { expiresIn = response.GetValue<int?>("expires_in"); } catch (JsonException) { }
+            }
             return this.CreateAccessGrant(accessToken, scope, refreshToken, expiresIn, response);
         }
 
