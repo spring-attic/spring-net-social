@@ -1,0 +1,509 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Spring.Rest.Testing</name>
+    </assembly>
+    <members>
+        <member name="T:Spring.Rest.Client.Testing.AssertionException">
+            <summary>
+            The exception that is thrown when an assertion fails.
+            </summary>
+            <author>Bruno Baia</author>
+        </member>
+        <member name="M:Spring.Rest.Client.Testing.AssertionException.#ctor">
+            <summary>
+            Creates a new instance of the <see cref="T:Spring.Rest.Client.Testing.AssertionException"/> class.
+            </summary>
+        </member>
+        <member name="M:Spring.Rest.Client.Testing.AssertionException.#ctor(System.String)">
+            <summary>
+            Creates a new instance of the <see cref="T:Spring.Rest.Client.Testing.AssertionException"/> class.
+            </summary>
+            <param name="message">
+            A message about the exception.
+            </param>
+        </member>
+        <member name="M:Spring.Rest.Client.Testing.AssertionException.#ctor(System.String,System.Exception)">
+            <summary>
+            Creates a new instance of the <see cref="T:Spring.Rest.Client.Testing.AssertionException"/> class.
+            </summary>
+            <param name="message">A message about the exception.</param>
+            <param name="rootCause">The root exception that is being wrapped.</param>
+        </member>
+        <member name="M:Spring.Rest.Client.Testing.AssertionException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Creates a new instance of the <see cref="T:Spring.Rest.Client.Testing.AssertionException"/> class.
+            </summary>
+            <param name="info">
+            The <see cref="T:System.Runtime.Serialization.SerializationInfo"/>
+            that holds the serialized object data about the exception being thrown.
+            </param>
+            <param name="context">
+            The <see cref="T:System.Runtime.Serialization.StreamingContext"/>
+            that contains contextual information about the source or destination.
+            </param>
+        </member>
+        <member name="T:Spring.Rest.Client.Testing.AssertionUtils">
+            <summary>
+            Represents an unit test framework independent assertion class.
+            </summary>
+            <author>Lukas Krecan</author>
+            <author>Arjen Poutsma</author>
+            <author>Craig Walls</author>
+            <author>Bruno Baia (.NET)</author>
+        </member>
+        <member name="M:Spring.Rest.Client.Testing.AssertionUtils.Fail(System.String)">
+            <summary>
+            Fails a test with the given message.
+            </summary>
+            <param name="message">The message.</param>
+            <exception cref="T:Spring.Rest.Client.Testing.AssertionException">Always.</exception>
+        </member>
+        <member name="M:Spring.Rest.Client.Testing.AssertionUtils.IsTrue(System.Boolean,System.String)">
+            <summary>
+            Asserts that a condition is true. If not, throws an <see cref="T:Spring.Rest.Client.Testing.AssertionException"/> with the given message.
+            </summary>
+            <param name="condition">The condition to test for.</param>
+            <param name="message">The message.</param>
+            <exception cref="T:Spring.Rest.Client.Testing.AssertionException">If condition is false.</exception>
+        </member>
+        <member name="M:Spring.Rest.Client.Testing.AssertionUtils.AreEqual(System.Object,System.Object,System.String)">
+            <summary>
+            Asserts that two objects are equal. If not, an <see cref="T:Spring.Rest.Client.Testing.AssertionException"/> is thrown with the given message.
+            </summary>
+            <param name="expected">The expected value.</param>
+            <param name="actual">The actual value.</param>
+            <param name="message">The message.</param>
+            <exception cref="T:Spring.Rest.Client.Testing.AssertionException">If objects are not equal.</exception>
+        </member>
+        <member name="T:Spring.Rest.Client.Testing.RequestActionsExtensions">
+            <summary>
+            Extensions methods for <see cref="T:Spring.Rest.Client.Testing.IRequestActions"/> interface. 
+            </summary>
+            <author>Bruno Baia</author>
+        </member>
+        <member name="M:Spring.Rest.Client.Testing.RequestActionsExtensions.AndExpectMethod(Spring.Rest.Client.Testing.IRequestActions,Spring.Http.HttpMethod)">
+            <summary>
+            Expects the given request <see cref="T:Spring.Http.HttpMethod"/>.
+            </summary>
+            <param name="requestActions">The <see cref="T:Spring.Rest.Client.Testing.IRequestActions"/> to set up expectation on.</param>
+            <param name="method">The HTTP method.</param>
+            <returns>The request matcher.</returns>
+        </member>
+        <member name="M:Spring.Rest.Client.Testing.RequestActionsExtensions.AndExpectUri(Spring.Rest.Client.Testing.IRequestActions,System.String)">
+            <summary>
+            Expects the given request URI.
+            </summary>
+            <param name="requestActions">The <see cref="T:Spring.Rest.Client.Testing.IRequestActions"/> to set up expectation on.</param>
+            <param name="uri">the request URI.</param>
+            <returns>The request matcher.</returns>
+        </member>
+        <member name="M:Spring.Rest.Client.Testing.RequestActionsExtensions.AndExpectUri(Spring.Rest.Client.Testing.IRequestActions,System.Uri)">
+            <summary>
+            Expects the given request URI.
+            </summary>
+            <param name="requestActions">The <see cref="T:Spring.Rest.Client.Testing.IRequestActions"/> to set up expectation on.</param>
+            <param name="uri">the request URI.</param>
+            <returns>The request matcher.</returns>
+        </member>
+        <member name="M:Spring.Rest.Client.Testing.RequestActionsExtensions.AndExpectHeader(Spring.Rest.Client.Testing.IRequestActions,System.String,System.String)">
+            <summary>
+            Expects the given request header.
+            </summary>
+            <param name="requestActions">The <see cref="T:Spring.Rest.Client.Testing.IRequestActions"/> to set up expectation on.</param>
+            <param name="header">The header name.</param>
+            <param name="value">The header value.</param>
+            <returns>The request matcher.</returns>
+        </member>
+        <member name="M:Spring.Rest.Client.Testing.RequestActionsExtensions.AndExpectHeaderContains(Spring.Rest.Client.Testing.IRequestActions,System.String,System.String)">
+            <summary>
+            Expects that the specified request header contains a subtring.
+            </summary>
+            <param name="requestActions">The <see cref="T:Spring.Rest.Client.Testing.IRequestActions"/> to set up expectation on.</param>
+            <param name="header">The header name.</param>
+            <param name="value">The substring that must appear in the header.</param>
+            <returns>The request matcher.</returns>
+        </member>
+        <member name="M:Spring.Rest.Client.Testing.RequestActionsExtensions.AndExpectBody(Spring.Rest.Client.Testing.IRequestActions,System.String)">
+            <summary>
+            Expects the given request body content.
+            </summary>
+            <param name="requestActions">The <see cref="T:Spring.Rest.Client.Testing.IRequestActions"/> to set up expectation on.</param>
+            <param name="body">The request body.</param>
+            <returns>The request matcher.</returns>
+        </member>
+        <member name="M:Spring.Rest.Client.Testing.RequestActionsExtensions.AndRespondWith(Spring.Rest.Client.Testing.IRequestActions,System.String,Spring.Http.HttpHeaders,System.Net.HttpStatusCode,System.String)">
+            <summary>
+            Responds with the given response body, headers, status code, and status description.
+            </summary>
+            <param name="requestActions">The <see cref="T:Spring.Rest.Client.Testing.IRequestActions"/> to set up response on.</param>
+            <param name="body">The body of the response.</param>
+            <param name="headers">The response headers.</param>
+            <param name="statusCode">The response status code.</param>
+            <param name="statusDescription">The response status description.</param>
+            <returns>A <see cref="T:Spring.Rest.Client.Testing.ResponseCreator"/>.</returns>
+        </member>
+        <member name="M:Spring.Rest.Client.Testing.RequestActionsExtensions.AndRespondWith(Spring.Rest.Client.Testing.IRequestActions,System.String,Spring.Http.HttpHeaders)">
+            <summary>
+            Responds with the given response body and headers. The response status code is HTTP 200 (OK).
+            </summary>
+            <param name="requestActions">The <see cref="T:Spring.Rest.Client.Testing.IRequestActions"/> to set up response on.</param>
+            <param name="body">The body of the response.</param>
+            <param name="headers">The response headers.</param>
+            <returns>A <see cref="T:Spring.Rest.Client.Testing.ResponseCreator"/>.</returns>
+        </member>
+        <member name="M:Spring.Rest.Client.Testing.RequestActionsExtensions.AndRespondWith(Spring.Rest.Client.Testing.IRequestActions,Spring.IO.IResource,Spring.Http.HttpHeaders,System.Net.HttpStatusCode,System.String)">
+            <summary>
+            Responds with the given response body (from a <see cref="T:Spring.IO.IResource"/>), headers, status code, and status description.
+            </summary>
+            <param name="requestActions">The <see cref="T:Spring.Rest.Client.Testing.IRequestActions"/> to set up response on.</param>
+            <param name="body">The <see cref="T:Spring.IO.IResource"/> containing the body of the response.</param>
+            <param name="headers">The response headers.</param>
+            <param name="statusCode">The response status code.</param>
+            <param name="statusDescription">The response status description.</param>
+        </member>
+        <member name="M:Spring.Rest.Client.Testing.RequestActionsExtensions.AndRespondWith(Spring.Rest.Client.Testing.IRequestActions,Spring.IO.IResource,Spring.Http.HttpHeaders)">
+            <summary>
+            Responds with the given response body (from a <see cref="T:Spring.IO.IResource"/>) and headers. The response status code is HTTP 200 (OK).
+            </summary>
+            <param name="requestActions">The <see cref="T:Spring.Rest.Client.Testing.IRequestActions"/> to set up response on.</param>
+            <param name="body">The <see cref="T:Spring.IO.IResource"/> containing the body of the response.</param>
+            <param name="headers">The response headers.</param>
+        </member>
+        <member name="T:Spring.Rest.Client.Testing.RequestMatchers">
+            <summary>
+            Factory methods for <see cref="T:Spring.Rest.Client.Testing.RequestMatcher"/> classes. 
+            Typically used to provide input for <see cref="M:IRequestActions.AndExpect(RequestMatcher)"/>.
+            </summary>
+            <author>Arjen Poutsma</author>
+            <author>Craig Walls</author>
+            <author>Bruno Baia (.NET)</author>
+        </member>
+        <member name="M:Spring.Rest.Client.Testing.RequestMatchers.MatchMethod(Spring.Http.HttpMethod)">
+            <summary>
+            Creates a <see cref="T:Spring.Rest.Client.Testing.RequestMatcher"/> that expect the given request <see cref="T:Spring.Http.HttpMethod"/>.
+            </summary>
+            <param name="method">The HTTP method.</param>
+            <returns>The request matcher.</returns>
+        </member>
+        <member name="M:Spring.Rest.Client.Testing.RequestMatchers.MatchUri(System.String)">
+            <summary>
+            Creates a <see cref="T:Spring.Rest.Client.Testing.RequestMatcher"/> that expect the given request URI.
+            </summary>
+            <param name="uri">the request URI.</param>
+            <returns>The request matcher.</returns>
+        </member>
+        <member name="M:Spring.Rest.Client.Testing.RequestMatchers.MatchUri(System.Uri)">
+            <summary>
+            Creates a <see cref="T:Spring.Rest.Client.Testing.RequestMatcher"/> that expect the given request URI.
+            </summary>
+            <param name="uri">the request URI.</param>
+            <returns>The request matcher.</returns>
+        </member>
+        <member name="M:Spring.Rest.Client.Testing.RequestMatchers.MatchHeader(System.String,System.String)">
+            <summary>
+            Creates a <see cref="T:Spring.Rest.Client.Testing.RequestMatcher"/> that expect the given request header.
+            </summary>
+            <param name="header">The header name.</param>
+            <param name="value">The header value.</param>
+            <returns>The request matcher.</returns>
+        </member>
+        <member name="M:Spring.Rest.Client.Testing.RequestMatchers.MatchHeaderContains(System.String,System.String)">
+            <summary>
+            Creates a <see cref="T:Spring.Rest.Client.Testing.RequestMatcher"/> that expect that the specified request header contains a subtring.
+            </summary>
+            <param name="header">The header name.</param>
+            <param name="value">The substring that must appear in the header.</param>
+            <returns>The request matcher.</returns>
+        </member>
+        <member name="M:Spring.Rest.Client.Testing.RequestMatchers.MatchBody(System.String)">
+            <summary>
+            Creates a <see cref="T:Spring.Rest.Client.Testing.RequestMatcher"/> that expect the given request body content.
+            </summary>
+            <param name="body">The request body.</param>
+            <returns>The request matcher.</returns>
+        </member>
+        <member name="T:Spring.Rest.Client.Testing.ResponseCreators">
+            <summary>
+            Factory methods for <see cref="T:Spring.Rest.Client.Testing.ResponseCreator"/> classes. 
+            Typically used to provide input for <see cref="M:IRequestActions.AndRespond(ResponseCreator)"/>.
+            </summary>
+            <author>Arjen Poutsma</author>
+            <author>Craig Walls</author>
+            <author>Bruno Baia (.NET)</author>
+        </member>
+        <member name="M:Spring.Rest.Client.Testing.ResponseCreators.CreateWith(System.String,Spring.Http.HttpHeaders,System.Net.HttpStatusCode,System.String)">
+            <summary>
+            Creates a <see cref="T:Spring.Rest.Client.Testing.ResponseCreator"/> that respond with 
+            the given response body, headers, status code, and status description.
+            </summary>
+            <param name="body">The body of the response.</param>
+            <param name="headers">The response headers.</param>
+            <param name="statusCode">The response status code.</param>
+            <param name="statusDescription">The response status description.</param>
+            <returns>A <see cref="T:Spring.Rest.Client.Testing.ResponseCreator"/>.</returns>
+        </member>
+        <member name="M:Spring.Rest.Client.Testing.ResponseCreators.CreateWith(System.String,Spring.Http.HttpHeaders)">
+            <summary>
+            Creates a <see cref="T:Spring.Rest.Client.Testing.ResponseCreator"/> that respond with 
+            the given response body and headers. 
+            The response status code is HTTP 200 (OK).
+            </summary>
+            <param name="body">The body of the response.</param>
+            <param name="headers">The response headers.</param>
+            <returns>A <see cref="T:Spring.Rest.Client.Testing.ResponseCreator"/>.</returns>
+        </member>
+        <member name="M:Spring.Rest.Client.Testing.ResponseCreators.CreateWith(Spring.IO.IResource,Spring.Http.HttpHeaders,System.Net.HttpStatusCode,System.String)">
+            <summary>
+            Creates a <see cref="T:Spring.Rest.Client.Testing.ResponseCreator"/> that respond with 
+            the given response body (from a <see cref="T:Spring.IO.IResource"/>), headers, status code, and status description.
+            </summary>
+            <param name="body">The <see cref="T:Spring.IO.IResource"/> containing the body of the response.</param>
+            <param name="headers">The response headers.</param>
+            <param name="statusCode">The response status code.</param>
+            <param name="statusDescription">The response status description.</param>
+            <returns>A <see cref="T:Spring.Rest.Client.Testing.ResponseCreator"/>.</returns>
+        </member>
+        <member name="M:Spring.Rest.Client.Testing.ResponseCreators.CreateWith(Spring.IO.IResource,Spring.Http.HttpHeaders)">
+            <summary>
+            Creates a <see cref="T:Spring.Rest.Client.Testing.ResponseCreator"/> that respond with 
+            the given response body (from a <see cref="T:Spring.IO.IResource"/>) and headers. 
+            The response status code is HTTP 200 (OK).
+            </summary>
+            <param name="body">The <see cref="T:Spring.IO.IResource"/> containing the body of the response.</param>
+            <param name="headers">The response headers.</param>
+            <returns>A <see cref="T:Spring.Rest.Client.Testing.ResponseCreator"/>.</returns>
+        </member>
+        <member name="T:Spring.Rest.Client.Testing.MockRestServiceServer">
+            <summary>
+            Main entry point for client-side REST testing. 
+            Typically used to test a <see cref="T:Spring.Rest.Client.RestTemplate"/>, set up expectations on request messages, and create response messages.
+            </summary>
+            <remarks>
+            The typical usage of this class is:
+            <list type="bullet">
+            <item>
+            Create a <see cref="T:Spring.Rest.Client.Testing.MockRestServiceServer"/> instance by calling <see cref="M:MockRestServiceServer.CreateServer(RestTemplate)"/> method.
+            </item>
+            <item>
+            Set up request expectation by calling <see cref="M:MockRestServiceServer.ExpectNewRequest()"/>. 
+            More request expectations can be set up by chaining <see cref="M:IRequestActions.AndExpect(RequestMatcher)"/> calls, 
+            possibly by using the default method extensions provided.
+            </item>
+            <item>
+            Create an appropriate response message by calling <see cref="M:IRequestActions.AndRespond(ResponseCreator)"/>, 
+            possibly by using the default method extensions provided.
+            </item>
+            <item>
+            Call <see cref="M:MockRestServiceServer.Verify()"/>.
+            </item>
+            </list>
+            Note that because of the 'fluent' API offered by this class (and related classes), 
+            you can typically use the Code Completion features (i.e. ctrl-space) in your IDE to set up the mocks.
+            </remarks>
+            <author>Arjen Poutsma</author>
+            <author>Lukas Krecan</author>
+            <author>Craig Walls</author>
+            <author>Bruno Baia (.NET)</author>
+        </member>
+        <member name="M:Spring.Rest.Client.Testing.MockRestServiceServer.CreateServer(Spring.Rest.Client.RestTemplate)">
+            <summary>
+            Creates a <see cref="T:Spring.Rest.Client.Testing.MockRestServiceServer"/> instance based on the given <see cref="T:Spring.Rest.Client.RestTemplate"/>.
+            </summary>
+            <param name="restTemplate">The RestTemplate.</param>
+            <returns>The created server.</returns>
+        </member>
+        <member name="M:Spring.Rest.Client.Testing.MockRestServiceServer.ExpectNewRequest">
+            <summary>
+            Returns a <see cref="T:Spring.Rest.Client.Testing.IRequestActions"/> object that allows for creating the response, or to set up request expectations.
+            </summary>
+            <returns>The response actions.</returns>
+        </member>
+        <member name="M:Spring.Rest.Client.Testing.MockRestServiceServer.Verify">
+            <summary>
+            Verifies that all request expectations were met.
+            </summary>
+            <exception cref="T:Spring.Rest.Client.Testing.AssertionException">In case of unmet expectations.</exception>
+        </member>
+        <member name="T:Spring.Rest.Client.Testing.MockClientHttpResponse">
+            <summary>
+            Mock implementation of <see cref="T:Spring.Http.Client.IClientHttpResponse"/>. 
+            </summary>
+            <author>Arjen Poutsma</author>
+            <author>Lukas Krecan</author>
+            <author>Craig Walls</author>
+            <author>Bruno Baia (.NET)</author>
+        </member>
+        <member name="M:Spring.Rest.Client.Testing.MockClientHttpResponse.#ctor(System.IO.Stream,Spring.Http.HttpHeaders,System.Net.HttpStatusCode,System.String)">
+            <summary>
+            Creates a new instance of <see cref="T:Spring.Rest.Client.Testing.MockClientHttpResponse"/>.
+            </summary>
+            <param name="body">The body of the response as a stream.</param>
+            <param name="headers">The response headers.</param>
+            <param name="statusCode">The response status code.</param>
+            <param name="statusDescription">The response status description.</param>
+        </member>
+        <member name="M:Spring.Rest.Client.Testing.MockClientHttpResponse.Close">
+            <summary>
+            Closes this response, freeing any resources created.
+            </summary>
+        </member>
+        <member name="P:Spring.Rest.Client.Testing.MockClientHttpResponse.StatusCode">
+            <summary>
+            Gets the HTTP status code of the response.
+            </summary>
+        </member>
+        <member name="P:Spring.Rest.Client.Testing.MockClientHttpResponse.StatusDescription">
+            <summary>
+            Gets the HTTP status description of the response.
+            </summary>
+        </member>
+        <member name="P:Spring.Rest.Client.Testing.MockClientHttpResponse.Headers">
+            <summary>
+            Gets the message headers.
+            </summary>
+        </member>
+        <member name="P:Spring.Rest.Client.Testing.MockClientHttpResponse.Body">
+            <summary>
+            Gets the body of the message as a stream.
+            </summary>
+        </member>
+        <member name="T:Spring.Rest.Client.Testing.MockClientHttpRequestFactory">
+            <summary>
+            Mock implementation of <see cref="T:Spring.Http.Client.IClientHttpRequestFactory"/>. 
+            Contains a list of expected <see cref="T:Spring.Rest.Client.Testing.MockClientHttpRequest"/>s, and iterates over those.
+            </summary>
+            <author>Arjen Poutsma</author>
+            <author>Lukas Krecan</author>
+            <author>Craig Walls</author>
+            <author>Bruno Baia (.NET)</author>
+        </member>
+        <member name="M:Spring.Rest.Client.Testing.MockClientHttpRequestFactory.CreateRequest(System.Uri,Spring.Http.HttpMethod)">
+            <summary>
+            Create a new <see cref="T:Spring.Http.Client.IClientHttpRequest"/> for the specified URI and HTTP method.
+            </summary>
+            <param name="uri">The URI to create a request for.</param>
+            <param name="method">The HTTP method to execute.</param>
+            <returns>The created request.</returns>
+        </member>
+        <member name="T:Spring.Rest.Client.Testing.MockClientHttpRequest">
+            <summary>
+            Mock implementation of <see cref="T:Spring.Http.Client.IClientHttpRequest"/>. 
+            Implements <see cref="T:Spring.Rest.Client.Testing.IRequestActions"/> to form a fluent API.
+            </summary>
+            <author>Arjen Poutsma</author>
+            <author>Lukas Krecan</author>
+            <author>Craig Walls</author>
+            <author>Bruno Baia (.NET)</author>
+        </member>
+        <member name="T:Spring.Rest.Client.Testing.IRequestActions">
+            <summary>
+            Allows for setting up responses and additional expectations on requests.
+            </summary>
+            <remarks>
+            Implementations of this interface are returned by <see cref="M:MockRestServiceServer.ExpectNewRequest()"/>.
+            </remarks>
+            <author>Lukas Krecan</author>
+            <author>Arjen Poutsma</author>
+            <author>Craig Walls</author>
+            <author>Bruno Baia (.NET)</author>
+        </member>
+        <member name="M:Spring.Rest.Client.Testing.IRequestActions.AndExpect(Spring.Rest.Client.Testing.RequestMatcher)">
+            <summary>
+            Allows for further expectations to be set on the request.
+            </summary>
+            <param name="requestMatcher">The request expectations.</param>
+            <returns>The request expectations.</returns>
+        </member>
+        <member name="M:Spring.Rest.Client.Testing.IRequestActions.AndRespond(Spring.Rest.Client.Testing.ResponseCreator)">
+            <summary>
+            Allows for reponse creation on the request.
+            </summary>
+            <param name="responseCreator">The response creator.</param>
+        </member>
+        <member name="M:Spring.Rest.Client.Testing.MockClientHttpRequest.Execute">
+            <summary>
+            Execute this request, resulting in a <see cref="T:Spring.Http.Client.IClientHttpResponse"/> that can be read.
+            </summary>
+            <returns>The response result of the execution</returns>
+        </member>
+        <member name="M:Spring.Rest.Client.Testing.MockClientHttpRequest.ExecuteAsync(System.Object,System.Action{Spring.Http.Client.ClientHttpRequestCompletedEventArgs})">
+            <summary>
+            Execute this request asynchronously.
+            </summary>
+            <param name="state">
+            An optional user-defined object that is passed to the method invoked 
+            when the asynchronous operation completes.
+            </param>
+            <param name="executeCompleted">
+            The <see cref="T:System.Action`1"/> to perform when the asynchronous execution completes.
+            </param>
+        </member>
+        <member name="M:Spring.Rest.Client.Testing.MockClientHttpRequest.CancelAsync">
+            <summary>
+            Cancels a pending asynchronous operation.
+            </summary>
+        </member>
+        <member name="M:Spring.Rest.Client.Testing.MockClientHttpRequest.AndExpect(Spring.Rest.Client.Testing.RequestMatcher)">
+            <summary>
+            Allows for further expectations to be set on the request.
+            </summary>
+            <param name="requestMatcher">The request expectations.</param>
+            <returns>The request expectations.</returns>
+        </member>
+        <member name="M:Spring.Rest.Client.Testing.MockClientHttpRequest.AndRespond(Spring.Rest.Client.Testing.ResponseCreator)">
+            <summary>
+            Allows for reponse creation on the request.
+            </summary>
+            <param name="responseCreator">The response creator.</param>
+        </member>
+        <member name="M:Spring.Rest.Client.Testing.MockClientHttpRequest.GetBodyAsString">
+            <summary>
+            Returns the body content as a string.
+            </summary>
+            <returns>A String representation of the body.</returns>
+        </member>
+        <member name="P:Spring.Rest.Client.Testing.MockClientHttpRequest.Method">
+            <summary>
+            Gets or sets the HTTP method of the request.
+            </summary>
+        </member>
+        <member name="P:Spring.Rest.Client.Testing.MockClientHttpRequest.Uri">
+            <summary>
+            Gets or sets the URI of the request.
+            </summary>
+        </member>
+        <member name="P:Spring.Rest.Client.Testing.MockClientHttpRequest.Headers">
+            <summary>
+            Gets the message headers.
+            </summary>
+        </member>
+        <member name="P:Spring.Rest.Client.Testing.MockClientHttpRequest.Body">
+            <summary>
+            Sets the delegate that writes the body message as a stream.
+            </summary>
+        </member>
+        <member name="T:Spring.Rest.Client.Testing.ResponseCreator">
+            <summary>
+            Creates a response for the given request.
+            </summary>
+            <param name="request">The request.</param>
+            <returns>The created <see cref="T:Spring.Http.Client.IClientHttpResponse"/>.</returns>
+            <author>Bruno Baia (.NET)</author>
+            <author>Lukas Krecan</author>
+            <author>Arjen Poutsma</author>
+            <author>Craig Walls</author>
+        </member>
+        <member name="T:Spring.Rest.Client.Testing.RequestMatcher">
+            <summary>
+            Matches the given request message against the expectations.
+            </summary>
+            <param name="request">The request to make assertions on.</param>
+            <exception cref="T:Spring.Rest.Client.Testing.AssertionException">If expectations are not met.</exception>
+            <author>Bruno Baia (.NET)</author>
+            <author>Lukas Krecan</author>
+            <author>Arjen Poutsma</author>
+            <author>Craig Walls</author>
+        </member>
+    </members>
+</doc>

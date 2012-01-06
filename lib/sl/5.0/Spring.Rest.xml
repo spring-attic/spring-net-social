@@ -958,15 +958,15 @@
             <see langword="true"/> if the supported media types are compatible with the media type, or if the media type is null.
             </returns>
         </member>
-        <member name="M:Spring.Http.Converters.AbstractHttpMessageConverter.GetDefaultContentType(System.Type)">
+        <member name="M:Spring.Http.Converters.AbstractHttpMessageConverter.GetDefaultContentType(System.Object)">
             <summary>
-            Returns the default content type for the given type. 
+            Returns the default content type for the given object. 
             Called when <see cref="M:Write"/> is invoked without a specified content type parameter.
             </summary>
             <remarks>
             By default, this returns the first element of the <see cref="P:SupportedMediaTypes"/> property, if any.
             </remarks>
-            <param name="type">The type to return the content type for.</param>
+            <param name="content">The object to return the content type for.</param>
             <returns>The <see cref="T:Spring.Http.MediaType">content type</see>, or null if not known.</returns>
         </member>
         <member name="M:Spring.Http.Converters.AbstractHttpMessageConverter.GetContentTypeCharset(Spring.Http.MediaType,System.Text.Encoding)">
@@ -1141,8 +1141,8 @@
             In other words, this converter can read and write 'normal' HTML forms (as <see cref="T:Spring.Collections.Specialized.NameValueCollection"/>), 
             and it can write multipart form (as <see cref="T:System.Collections.Generic.IDictionary`2"/>). 
             When writing multipart, this converter uses other <see cref="T:Spring.Http.Converters.IHttpMessageConverter"/> to write the respective MIME parts. 
-            By default, basic converters are registered (supporting <see cref="T:System.String"/> and <see cref="T:System.IO.FileInfo"/>, for instance); 
-            these can be overridden by setting <see cref="P:PartConverters"/> property.
+            By default, basic converters are registered (supporting <see cref="T:System.String"/>, <see cref="T:System.IO.FileInfo"/> 
+            and <see cref="T:Spring.IO.IResource"/>, for instance); these can be overridden by setting <see cref="P:PartConverters"/> property.
             </para>
             <para>
             For example, the following snippet shows how to submit an HTML form:
@@ -1161,7 +1161,7 @@
             RestTemplate template = new RestTemplate();
             IDictionary&lt;string, object&gt; parts = new Dictionary&lt;string, object&gt;();
             parts.Add("field 1", "value 1");
-            parts.Add("file", new FileInfo(@"C:\myFile.jpg"));
+            parts.Add("file", new FileResource(@"C:\myDir\myFile.jpg"));
             template.PostForLocation("http://example.com/myFileUpload", parts);
             </code>
             </para>
@@ -1238,11 +1238,11 @@
         </member>
         <member name="M:Spring.Http.Converters.FormHttpMessageConverter.GetMultipartFilename(System.Object)">
             <summary>
-            Return the filename of the given multipart part 
-            to be used for the 'Content-Disposition' header.
+            Return the filename of the given multipart part to be used for the 'Content-Disposition' header.
             </summary>
             <remarks>
-            Default implementation returns <see cref="P:FileInfo.FullName"/> if the part is a <see cref="T:System.IO.FileInfo"/>, 
+            Default implementation returns <see cref="P:FileInfo.Name"/> if the part is a <see cref="T:System.IO.FileInfo"/>, 
+            extracts the file name from the URI if the part is a <see cref="T:Spring.IO.IResource"/> 
             and <see langword="null"/> in other cases. Can be overridden in subclasses.
             </remarks>
             <param name="part">The part to determine the file name for</param>
@@ -1521,6 +1521,72 @@
             <param name="content">The object to write to the HTTP message.</param>
             <param name="message">The HTTP message to write to.</param>
             <exception cref="T:Spring.Http.Converters.HttpMessageNotWritableException">In case of conversion errors</exception>
+        </member>
+        <member name="T:Spring.Http.Converters.ResourceHttpMessageConverter">
+            <summary>
+            Implementation of <see cref="T:Spring.Http.Converters.IHttpMessageConverter"/> that can read and write <see cref="T:Spring.IO.IResource"/>s.
+            </summary>
+            <remarks>
+            <para>
+            By default, this converter supports all media types.
+            </para>
+            <para>
+            A mapping between file extension and mime types is used to determine the Content-Type of written files. 
+            If no Content-Type is available, 'application/octet-stream' is used.
+            </para>
+            <para>
+            This can be overridden by setting the <see cref="P:SupportedMediaTypes"/> property.
+            </para>
+            </remarks>
+            <author>Arjen Poutsma</author>
+            <author>Bruno Baia (.NET)</author>
+        </member>
+        <member name="M:Spring.Http.Converters.ResourceHttpMessageConverter.#ctor">
+            <summary>
+            Creates a new instance of the <see cref="T:Spring.Http.Converters.FileInfoHttpMessageConverter"/>.
+            </summary>
+        </member>
+        <member name="M:Spring.Http.Converters.ResourceHttpMessageConverter.Supports(System.Type)">
+            <summary>
+            Indicates whether the given class is supported by this converter.
+            </summary>
+            <param name="type">The type to test for support.</param>
+            <returns><see langword="true"/> if supported; otherwise <see langword="false"/></returns>
+        </member>
+        <member name="M:Spring.Http.Converters.ResourceHttpMessageConverter.ReadInternal``1(Spring.Http.IHttpInputMessage)">
+            <summary>
+            Abstract template method that reads the actualy object. Invoked from <see cref="M:Read"/>.
+            </summary>
+            <typeparam name="T">The type of object to return.</typeparam>
+            <param name="message">The HTTP message to read from.</param>
+            <returns>The converted object.</returns>
+            <exception cref="T:Spring.Http.Converters.HttpMessageNotReadableException">In case of conversion errors</exception>
+        </member>
+        <member name="M:Spring.Http.Converters.ResourceHttpMessageConverter.WriteInternal(System.Object,Spring.Http.IHttpOutputMessage)">
+            <summary>
+            Abstract template method that writes the actual body. Invoked from <see cref="M:Write"/>.
+            </summary>
+            <param name="content">The object to write to the HTTP message.</param>
+            <param name="message">The HTTP message to write to.</param>
+            <exception cref="T:Spring.Http.Converters.HttpMessageNotWritableException">In case of conversion errors</exception>
+        </member>
+        <member name="M:Spring.Http.Converters.ResourceHttpMessageConverter.GetDefaultContentType(System.Object)">
+            <summary>
+            Returns the default content type for the given object. 
+            Called when <see cref="M:Write"/> is invoked without a specified content type parameter.
+            </summary>
+            <remarks>
+            This implementation uses the mapping between file extension and mime types is used 
+            to determine the Content-Type of written files. 
+            If no Content-Type is available, 'application/octet-stream' is used.
+            </remarks>
+            <param name="content">The object to return the content type for.</param>
+            <returns>The <see cref="T:Spring.Http.MediaType">content type</see>, or null if not known.</returns>
+        </member>
+        <member name="P:Spring.Http.Converters.ResourceHttpMessageConverter.MimeMapping">
+            <summary>
+            Gets or sets the mapping between file extension and mime types.
+            </summary>
         </member>
         <member name="T:Spring.Http.Converters.StringHttpMessageConverter">
             <summary>
@@ -1939,7 +2005,7 @@
             <summary>
             Creates a new instance of <see cref="T:Spring.Http.HttpMethod"/> with the given HTTP method value.
             </summary>
-            <param name="value">The HTTP method as a string value.</param>
+            <param name="method">The HTTP method as a string value.</param>
         </member>
         <member name="M:Spring.Http.HttpMethod.Equals(Spring.Http.HttpMethod)">
             <summary>
@@ -2459,6 +2525,348 @@
             Gets the quality value, as indicated by a 'q' parameter, if any. 
             Defaults to '1.0'.
             </summary>
+        </member>
+        <member name="T:Spring.IO.AbstractResource">
+            <summary>
+            Convenience base class for <see cref="T:Spring.IO.IResource"/> implementations 
+            based on a resource name.
+            </summary>
+            <author>Bruno Baia</author>
+            <seealso cref="T:Spring.IO.IResource"/>
+        </member>
+        <member name="T:Spring.IO.IResource">
+            <summary>
+            The central abstraction for access to resources such as <see cref="T:System.IO.Stream"/>s.
+            </summary>
+            <remarks>
+            <para>
+            This interface encapsulates a resource descriptor that abstracts away from the underlying type of resource; 
+            possible resource types include files, memory streams, and databases (this list is not exhaustive).
+            </para>
+            <para>
+            A <see cref="T:System.IO.Stream"/> can definitely be opened and accessed for every such resource; 
+            if the resource exists in a physical form (for example, the resource is not an in-memory stream 
+            or one that has been extracted from an assembly or ZIP file), a <see cref="T:System.Uri"/> 
+            can also be accessed. The actual behavior is implementation-specific.
+            </para>
+            <para>
+            Third party extensions or libraries that want to integrate external resources 
+            are encouraged expose such resources via this abstraction.
+            </para>
+            </remarks>
+            <author>Bruno Baia</author>
+        </member>
+        <member name="M:Spring.IO.IResource.GetStream">
+            <summary>
+            Returns a <see cref="T:System.IO.Stream"/> for this resource.
+            </summary>
+            <remarks>
+            Clients of this interface must be aware that every access of this 
+            method will create a <i>fresh</i> <see cref="T:System.IO.Stream"/>;
+            it is the responsibility of the calling code to close any such <see cref="T:System.IO.Stream"/>.
+            </remarks>
+            <returns>
+            An <see cref="T:System.IO.Stream"/>.
+            </returns>
+            <seealso cref="P:Spring.IO.IResource.IsOpen"/>
+        </member>
+        <member name="P:Spring.IO.IResource.IsOpen">
+            <summary>
+            Gets a value indicating whether or not this resource represents a handle with an open stream? 
+            Returns <see langword="true"/> if the source cannot be read multiple times.
+            </summary>
+        </member>
+        <member name="P:Spring.IO.IResource.Uri">
+            <summary>
+            Gets the <see cref="T:System.Uri"/> handle for this resource, 
+            or <see langword="null"/> if the source cannot be represented by an <see cref="T:System.Uri"/>.
+            </summary>
+        </member>
+        <member name="M:Spring.IO.AbstractResource.#ctor(System.String)">
+            <summary>
+            Creates a new instance of the <see cref="T:Spring.IO.AbstractResource"/> class.
+            </summary>
+            <param name="resourceName">A string representation of the resource.</param>
+        </member>
+        <member name="M:Spring.IO.AbstractResource.GetStream">
+            <summary>
+            Returns a <see cref="T:System.IO.Stream"/> for this resource.
+            </summary>
+            <remarks>
+            Clients of this interface must be aware that every access of this 
+            method will create a <i>fresh</i> <see cref="T:System.IO.Stream"/>;
+            it is the responsibility of the calling code to close any such <see cref="T:System.IO.Stream"/>.
+            </remarks>
+            <returns>
+            An <see cref="T:System.IO.Stream"/>.
+            </returns>
+            <seealso cref="P:Spring.IO.IResource.IsOpen"/>
+        </member>
+        <member name="M:Spring.IO.AbstractResource.GetResourceNameWithoutProtocol(System.String)">
+            <summary>
+            Strips any protocol name from the supplied <paramref name="resourceName"/>.
+            </summary>
+            <remarks>
+            If the supplied <paramref name="resourceName"/> does not have any protocol associated with it, 
+            then the supplied <paramref name="resourceName"/> will be returned as-is.
+            </remarks>
+            <example>
+            <code language="C#">
+            GetResourceNameWithoutProtocol("http://www.mycompany.com/resource.txt");
+            // returns www.mycompany.com/resource.txt
+            </code>
+            </example>
+            <param name="resourceName">The name of the resource.</param>
+            <returns>The name of the resource without the protocol name.</returns>
+        </member>
+        <member name="M:Spring.IO.AbstractResource.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current resource.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current resource.
+            </returns>
+        </member>
+        <member name="P:Spring.IO.AbstractResource.IsOpen">
+            <summary>
+            Gets a value indicating whether or not this resource represents a handle with an open stream? 
+            Returns <see langword="true"/> if the source cannot be read multiple times.
+            </summary>
+            <remarks>
+            This default implementation, always returns <see langword="false"/>.
+            </remarks>
+        </member>
+        <member name="P:Spring.IO.AbstractResource.Uri">
+            <summary>
+            Gets the <see cref="T:System.Uri"/> handle for this resource, 
+            or <see langword="null"/> if the source cannot be represented by an <see cref="T:System.Uri"/>.
+            </summary>
+        </member>
+        <member name="T:Spring.IO.AssemblyResource">
+            <summary>
+            An <see cref="T:Spring.IO.IResource"/> implementation for resources stored within assemblies 
+            (aka embedded resources).
+            </summary>
+            <remarks>
+            This implementation expects any resource name passed to the
+            constructor to adhere to the following format:
+            <code>
+            assembly://<i>assemblyName</i>/<i>namespace</i>/<i>resourceName</i>
+            </code>
+            </remarks>
+            <author>Bruno Baia</author>
+            <seealso cref="T:Spring.IO.IResource"/>
+        </member>
+        <member name="M:Spring.IO.AssemblyResource.#ctor(System.String)">
+            <summary>
+            Creates a new instance of the <see cref="T:Spring.IO.AssemblyResource"/> class.
+            </summary>
+            <param name="resourceName">The name of the assembly resource.</param>
+            <exception cref="T:System.UriFormatException">
+            If the supplied <paramref name="resourceName"/> did not conform to the expected format.
+            </exception>
+            <exception cref="T:System.IO.FileNotFoundException">
+            If the assembly specified in the supplied <paramref name="resourceName"/> could not be found.
+            </exception>
+        </member>
+        <member name="M:Spring.IO.AssemblyResource.GetStream">
+            <summary>
+            Returns a <see cref="T:System.IO.Stream"/> for this resource.
+            </summary>
+            <remarks>
+            Clients of this interface must be aware that every access of this 
+            method will create a <i>fresh</i> <see cref="T:System.IO.Stream"/>;
+            it is the responsibility of the calling code to close any such <see cref="T:System.IO.Stream"/>.
+            </remarks>
+            <returns>
+            An <see cref="T:System.IO.Stream"/>.
+            </returns>
+            <seealso cref="P:Spring.IO.IResource.IsOpen"/>
+        </member>
+        <member name="M:Spring.IO.AssemblyResource.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current resource.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current resource.
+            </returns>
+        </member>
+        <member name="P:Spring.IO.AssemblyResource.Uri">
+            <summary>
+            Gets the <see cref="T:System.Uri"/> handle for this resource.
+            </summary>
+        </member>
+        <member name="T:Spring.IO.ByteArrayResource">
+            <summary>
+            A byte array backed resource.
+            </summary>
+            <author>Bruno Baia</author>
+            <seealso cref="T:Spring.IO.IResource"/>
+        </member>
+        <member name="M:Spring.IO.ByteArrayResource.#ctor(System.Byte[])">
+            <summary>
+            Creates a new instance of the <see cref="T:Spring.IO.ByteArrayResource"/> class.
+            </summary>
+            <param name="bytes">The byte array for this resource.</param>
+        </member>
+        <member name="M:Spring.IO.ByteArrayResource.GetStream">
+            <summary>
+            Returns a <see cref="T:System.IO.Stream"/> for this resource.
+            </summary>
+            <remarks>
+            Clients of this interface must be aware that every access of this 
+            method will create a <i>fresh</i> <see cref="T:System.IO.Stream"/>;
+            it is the responsibility of the calling code to close any such <see cref="T:System.IO.Stream"/>.
+            </remarks>
+            <returns>
+            An <see cref="T:System.IO.Stream"/>.
+            </returns>
+            <seealso cref="P:Spring.IO.IResource.IsOpen"/>
+        </member>
+        <member name="M:Spring.IO.ByteArrayResource.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current resource.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current resource.
+            </returns>
+        </member>
+        <member name="P:Spring.IO.ByteArrayResource.Bytes">
+            <summary>
+            Gets the byte array encapsulated by this resource.
+            </summary>
+        </member>
+        <member name="P:Spring.IO.ByteArrayResource.IsOpen">
+            <summary>
+            Gets a value indicating whether or not this resource represents a handle with an open stream? 
+            Returns <see langword="true"/> if the source cannot be read multiple times.
+            </summary>
+            <remarks>
+            This default implementation, always returns <see langword="false"/>.
+            </remarks>
+        </member>
+        <member name="P:Spring.IO.ByteArrayResource.Uri">
+            <summary>
+            Gets the <see cref="T:System.Uri"/> handle for this resource, 
+            or <see langword="null"/> if the source cannot be represented by an <see cref="T:System.Uri"/>.
+            </summary>
+            <remarks>
+            This default implementation always returns <see langword="null"/>, 
+            assuming that the resource cannot be represented as an <see cref="T:System.Uri"/>.
+            </remarks>
+        </member>
+        <member name="T:Spring.IO.FileResource">
+            <summary>
+            A <see cref="T:System.IO.FileInfo"/> backed resource.
+            </summary>
+            <author>Bruno Baia</author>
+            <seealso cref="T:Spring.IO.IResource"/>
+        </member>
+        <member name="M:Spring.IO.FileResource.#ctor(System.String)">
+            <summary>
+            Creates a new instance of the <see cref="T:Spring.IO.FileResource"/> class.
+            </summary>
+            <param name="resourceName">The name of the file system resource.</param>
+        </member>
+        <member name="M:Spring.IO.FileResource.GetStream">
+            <summary>
+            Returns a <see cref="T:System.IO.Stream"/> for this resource.
+            </summary>
+            <remarks>
+            Clients of this interface must be aware that every access of this 
+            method will create a <i>fresh</i> <see cref="T:System.IO.Stream"/>;
+            it is the responsibility of the calling code to close any such <see cref="T:System.IO.Stream"/>.
+            </remarks>
+            <returns>
+            An <see cref="T:System.IO.Stream"/>.
+            </returns>
+            <seealso cref="P:Spring.IO.IResource.IsOpen"/>
+        </member>
+        <member name="M:Spring.IO.FileResource.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current resource.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current resource.
+            </returns>
+        </member>
+        <member name="P:Spring.IO.FileResource.File">
+            <summary>
+            Gets the underlying <see cref="T:System.IO.FileInfo"/> handle for this resource.
+            </summary>
+        </member>
+        <member name="P:Spring.IO.FileResource.Uri">
+            <summary>
+            Gets the <see cref="T:System.Uri"/> handle for this resource.
+            </summary>
+        </member>
+        <member name="T:Spring.IO.StreamResource">
+            <summary>
+            <see cref="T:Spring.IO.IResource"/> adapter implementation for a <see cref="T:System.IO.Stream"/>.
+            </summary>
+            <remarks>
+            <para>
+            In contrast to other <see cref="T:Spring.IO.IResource"/> implementations, 
+            this is an adapter for an already opened resource - the <see cref="P:Spring.IO.IResource.IsOpen"/> 
+            therefore always returns <see langword="true"/>.
+            </para>
+            <para>
+            Do not use this class if you need to keep the resource descriptor somewhere, 
+            or if you need to read a stream multiple times.
+            </para>
+            </remarks>
+            <author>Bruno Baia</author>
+            <seealso cref="T:Spring.IO.IResource"/>
+        </member>
+        <member name="M:Spring.IO.StreamResource.#ctor(System.IO.Stream)">
+            <summary>
+            Creates a new instance of the <see cref="T:Spring.IO.StreamResource"/> class.
+            </summary>
+            <param name="stream">The <see cref="T:System.IO.Stream"/> to use.</param>
+        </member>
+        <member name="M:Spring.IO.StreamResource.GetStream">
+            <summary>
+            Returns a <see cref="T:System.IO.Stream"/> for this resource.
+            </summary>
+            <remarks>
+            Clients of this interface must be aware that every access of this 
+            method will create a <i>fresh</i> <see cref="T:System.IO.Stream"/>;
+            it is the responsibility of the calling code to close any such <see cref="T:System.IO.Stream"/>.
+            </remarks>
+            <returns>
+            An <see cref="T:System.IO.Stream"/>.
+            </returns>
+            <exception cref="T:System.InvalidOperationException">
+            If the underlying <see cref="T:System.IO.Stream"/> has already been read.
+            </exception>
+            <seealso cref="P:Spring.IO.IResource.IsOpen"/>
+        </member>
+        <member name="M:Spring.IO.StreamResource.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current resource.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current resource.
+            </returns>
+        </member>
+        <member name="P:Spring.IO.StreamResource.IsOpen">
+            <summary>
+            Gets a value indicating whether or not this resource represents a handle with an open stream? 
+            Returns <see langword="true"/> if the source cannot be read multiple times.
+            </summary>
+            <remarks>
+            This default implementation, always returns <see langword="true"/>.
+            </remarks>
+        </member>
+        <member name="P:Spring.IO.StreamResource.Uri">
+            <summary>
+            Gets the <see cref="T:System.Uri"/> handle for this resource, 
+            or <see langword="null"/> if the source cannot be represented by an <see cref="T:System.Uri"/>.
+            </summary>
+            <remarks>
+            This default implementation always returns <see langword="null"/>, 
+            assuming that the resource cannot be represented as an <see cref="T:System.Uri"/>.
+            </remarks>
         </member>
         <member name="T:Spring.Json.IJsonDeserializer">
             <summary>
@@ -6180,19 +6588,25 @@
             to perform when the REST operation completes.
             </summary>
         </member>
-        <member name="T:Spring.Util.AssertUtils">
+        <member name="T:Spring.Util.ArgumentUtils">
             <summary>
-            Assertion utility methods that simplify things such as argument checks.
+            Assertion utility methods that assists in validating arguments. 
+            Useful for identifying programmer errors early and clearly at runtime.
             </summary>
             <remarks>
-            <p>
-            Not intended to be used directly by applications.
-            </p>
+            <para>
+            For example, if the contract of a public method states it does not allow <code>null</code> arguments, 
+            ArgumentUtils can be used to validate that contract. 
+            Doing this clearly indicates a contract violation when it occurs and protects the class's invariants.
+            </para>
+            <para>
+            Mainly for internal use within the framework.
+            </para>
             </remarks>
             <author>Aleksandar Seovic</author>
             <author>Erich Eichinger</author>
         </member>
-        <member name="M:Spring.Util.AssertUtils.ArgumentNotNull(System.Object,System.String)">
+        <member name="M:Spring.Util.ArgumentUtils.AssertNotNull(System.Object,System.String)">
             <summary>
             Checks the value of the supplied <paramref name="argument"/> and throws an
             <see cref="T:System.ArgumentNullException"/> if it is <see langword="null"/>.
@@ -6203,22 +6617,7 @@
             If the supplied <paramref name="argument"/> is <see langword="null"/>.
             </exception>
         </member>
-        <member name="M:Spring.Util.AssertUtils.ArgumentNotNull(System.Object,System.String,System.String)">
-            <summary>
-            Checks the value of the supplied <paramref name="argument"/> and throws an
-            <see cref="T:System.ArgumentNullException"/> if it is <see langword="null"/>.
-            </summary>
-            <param name="argument">The object to check.</param>
-            <param name="name">The argument name.</param>
-            <param name="message">
-            An arbitrary message that will be passed to any thrown
-            <see cref="T:System.ArgumentNullException"/>.
-            </param>
-            <exception cref="T:System.ArgumentNullException">
-            If the supplied <paramref name="argument"/> is <see langword="null"/>.
-            </exception>
-        </member>
-        <member name="M:Spring.Util.AssertUtils.ArgumentHasText(System.String,System.String)">
+        <member name="M:Spring.Util.ArgumentUtils.AssertHasText(System.String,System.String)">
             <summary>
             Checks the value of the supplied string <paramref name="argument"/> and throws an
             <see cref="T:System.ArgumentNullException"/> if it is <see langword="null"/> or
@@ -6226,23 +6625,6 @@
             </summary>
             <param name="argument">The string to check.</param>
             <param name="name">The argument name.</param>
-            <exception cref="T:System.ArgumentNullException">
-            If the supplied <paramref name="argument"/> is <see langword="null"/> or
-            contains only whitespace character(s).
-            </exception>
-        </member>
-        <member name="M:Spring.Util.AssertUtils.ArgumentHasText(System.String,System.String,System.String)">
-            <summary>
-            Checks the value of the supplied string <paramref name="argument"/> and throws an
-            <see cref="T:System.ArgumentNullException"/> if it is <see langword="null"/> or
-            contains only whitespace character(s).
-            </summary>
-            <param name="argument">The string to check.</param>
-            <param name="name">The argument name.</param>
-            <param name="message">
-            An arbitrary message that will be passed to any thrown
-            <see cref="T:System.ArgumentNullException"/>.
-            </param>
             <exception cref="T:System.ArgumentNullException">
             If the supplied <paramref name="argument"/> is <see langword="null"/> or
             contains only whitespace character(s).
@@ -6264,9 +6646,7 @@
             Miscellaneous <see cref="T:System.String"/> utility methods.
             </summary>
             <remarks>
-            <p>
             Mainly for internal use within the framework.
-            </p>
             </remarks>
             <author>Rod Johnson</author>
             <author>Juergen Hoeller</author>
