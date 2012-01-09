@@ -88,7 +88,9 @@
             </summary>
             <param name="requestActions">The <see cref="T:Spring.Rest.Client.Testing.IRequestActions"/> to set up expectation on.</param>
             <param name="method">The HTTP method.</param>
-            <returns>The request matcher.</returns>
+            <returns>
+            The <see cref="T:Spring.Rest.Client.Testing.IRequestActions"/> to set up responses and additional expectations on the request.
+            </returns>
         </member>
         <member name="M:Spring.Rest.Client.Testing.RequestActionsExtensions.AndExpectUri(Spring.Rest.Client.Testing.IRequestActions,System.String)">
             <summary>
@@ -96,7 +98,9 @@
             </summary>
             <param name="requestActions">The <see cref="T:Spring.Rest.Client.Testing.IRequestActions"/> to set up expectation on.</param>
             <param name="uri">the request URI.</param>
-            <returns>The request matcher.</returns>
+            <returns>
+            The <see cref="T:Spring.Rest.Client.Testing.IRequestActions"/> to set up responses and additional expectations on the request.
+            </returns>
         </member>
         <member name="M:Spring.Rest.Client.Testing.RequestActionsExtensions.AndExpectUri(Spring.Rest.Client.Testing.IRequestActions,System.Uri)">
             <summary>
@@ -104,7 +108,9 @@
             </summary>
             <param name="requestActions">The <see cref="T:Spring.Rest.Client.Testing.IRequestActions"/> to set up expectation on.</param>
             <param name="uri">the request URI.</param>
-            <returns>The request matcher.</returns>
+            <returns>
+            The <see cref="T:Spring.Rest.Client.Testing.IRequestActions"/> to set up responses and additional expectations on the request.
+            </returns>
         </member>
         <member name="M:Spring.Rest.Client.Testing.RequestActionsExtensions.AndExpectHeader(Spring.Rest.Client.Testing.IRequestActions,System.String,System.String)">
             <summary>
@@ -113,16 +119,20 @@
             <param name="requestActions">The <see cref="T:Spring.Rest.Client.Testing.IRequestActions"/> to set up expectation on.</param>
             <param name="header">The header name.</param>
             <param name="value">The header value.</param>
-            <returns>The request matcher.</returns>
+            <returns>
+            The <see cref="T:Spring.Rest.Client.Testing.IRequestActions"/> to set up responses and additional expectations on the request.
+            </returns>
         </member>
         <member name="M:Spring.Rest.Client.Testing.RequestActionsExtensions.AndExpectHeaderContains(Spring.Rest.Client.Testing.IRequestActions,System.String,System.String)">
             <summary>
-            Expects that the specified request header contains a subtring.
+            Expects that the specified request header contains the given substring.
             </summary>
             <param name="requestActions">The <see cref="T:Spring.Rest.Client.Testing.IRequestActions"/> to set up expectation on.</param>
             <param name="header">The header name.</param>
             <param name="value">The substring that must appear in the header.</param>
-            <returns>The request matcher.</returns>
+            <returns>
+            The <see cref="T:Spring.Rest.Client.Testing.IRequestActions"/> to set up responses and additional expectations on the request.
+            </returns>
         </member>
         <member name="M:Spring.Rest.Client.Testing.RequestActionsExtensions.AndExpectBody(Spring.Rest.Client.Testing.IRequestActions,System.String)">
             <summary>
@@ -130,7 +140,19 @@
             </summary>
             <param name="requestActions">The <see cref="T:Spring.Rest.Client.Testing.IRequestActions"/> to set up expectation on.</param>
             <param name="body">The request body.</param>
-            <returns>The request matcher.</returns>
+            <returns>
+            The <see cref="T:Spring.Rest.Client.Testing.IRequestActions"/> to set up responses and additional expectations on the request.
+            </returns>
+        </member>
+        <member name="M:Spring.Rest.Client.Testing.RequestActionsExtensions.AndExpectBodyContains(Spring.Rest.Client.Testing.IRequestActions,System.String)">
+            <summary>
+            Expects that the request body contains the given substring.
+            </summary>
+            <param name="requestActions">The <see cref="T:Spring.Rest.Client.Testing.IRequestActions"/> to set up expectation on.</param>
+            <param name="body">The request body.</param>
+            <returns>
+            The <see cref="T:Spring.Rest.Client.Testing.IRequestActions"/> to set up responses and additional expectations on the request.
+            </returns>
         </member>
         <member name="M:Spring.Rest.Client.Testing.RequestActionsExtensions.AndRespondWith(Spring.Rest.Client.Testing.IRequestActions,System.String,Spring.Http.HttpHeaders,System.Net.HttpStatusCode,System.String)">
             <summary>
@@ -141,7 +163,6 @@
             <param name="headers">The response headers.</param>
             <param name="statusCode">The response status code.</param>
             <param name="statusDescription">The response status description.</param>
-            <returns>A <see cref="T:Spring.Rest.Client.Testing.ResponseCreator"/>.</returns>
         </member>
         <member name="M:Spring.Rest.Client.Testing.RequestActionsExtensions.AndRespondWith(Spring.Rest.Client.Testing.IRequestActions,System.String,Spring.Http.HttpHeaders)">
             <summary>
@@ -150,7 +171,6 @@
             <param name="requestActions">The <see cref="T:Spring.Rest.Client.Testing.IRequestActions"/> to set up response on.</param>
             <param name="body">The body of the response.</param>
             <param name="headers">The response headers.</param>
-            <returns>A <see cref="T:Spring.Rest.Client.Testing.ResponseCreator"/>.</returns>
         </member>
         <member name="M:Spring.Rest.Client.Testing.RequestActionsExtensions.AndRespondWith(Spring.Rest.Client.Testing.IRequestActions,Spring.IO.IResource,Spring.Http.HttpHeaders,System.Net.HttpStatusCode,System.String)">
             <summary>
@@ -221,6 +241,13 @@
             Creates a <see cref="T:Spring.Rest.Client.Testing.RequestMatcher"/> that expect the given request body content.
             </summary>
             <param name="body">The request body.</param>
+            <returns>The request matcher.</returns>
+        </member>
+        <member name="M:Spring.Rest.Client.Testing.RequestMatchers.MatchBodyContains(System.String)">
+            <summary>
+            Creates a <see cref="T:Spring.Rest.Client.Testing.RequestMatcher"/> that expect to contain the given request body content.
+            </summary>
+            <param name="body">The substring that must appear in the body content.</param>
             <returns>The request matcher.</returns>
         </member>
         <member name="T:Spring.Rest.Client.Testing.ResponseCreators">

@@ -2909,15 +2909,38 @@
         </member>
         <member name="M:Spring.IO.AssemblyResource.#ctor(System.String)">
             <summary>
-            Creates a new instance of the <see cref="T:Spring.IO.AssemblyResource"/> class.
+            Creates a new instance of the <see cref="T:Spring.IO.AssemblyResource"/> class 
+            with the specified resource name.
             </summary>
-            <param name="resourceName">The name of the assembly resource.</param>
+            <param name="resourceName">
+            The resource name that must follow the format 'assembly://assemblyName/namespace/resourceName'.
+            </param>
             <exception cref="T:System.UriFormatException">
             If the supplied <paramref name="resourceName"/> did not conform to the expected format.
             </exception>
             <exception cref="T:System.IO.FileNotFoundException">
             If the assembly specified in the supplied <paramref name="resourceName"/> could not be found.
             </exception>
+        </member>
+        <member name="M:Spring.IO.AssemblyResource.#ctor(System.String,System.Type)">
+            <summary>
+            Creates a new instance of the <see cref="T:Spring.IO.AssemblyResource"/> class. 
+            Generates the full assembly resource name from a file name and a type used to obtain the assembly name and the namespace.
+            </summary>
+            <param name="resourceName">The name of the file in the assembly.</param>
+            <param name="type">The type to determine the assembly and the namespace.</param>
+            <exception cref="T:System.UriFormatException">
+            If the generated resource name did not conform to the expected format.
+            </exception>
+            <exception cref="T:System.IO.FileNotFoundException">
+            If the assembly specified in the generated resource name could not be found.
+            </exception>
+        </member>
+        <member name="M:Spring.IO.AssemblyResource.GetFullAssemblyResourceName(System.String,System.Type)">
+            <summary>
+            Constructs a "assembly://assemblyName/namespace/resourceName" qualified resource name 
+            using the given type to obtain the assembly name and the namespace.
+            </summary>
         </member>
         <member name="M:Spring.IO.AssemblyResource.GetStream">
             <summary>
