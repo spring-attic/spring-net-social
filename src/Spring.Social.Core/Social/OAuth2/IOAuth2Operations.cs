@@ -48,7 +48,7 @@ namespace Spring.Social.OAuth2
         /// Specifies whether to use client-side or server-side OAuth flow.
         /// </param>
         /// <param name="parameters">
-        /// Authorization parameters needed to build the URL.
+        /// Authorization parameters needed to build the URL. May be null.
         /// </param>
         /// <returns>
         /// The absolute authorize URL to redirect the user to for authorization.
@@ -57,11 +57,16 @@ namespace Spring.Social.OAuth2
 
         /// <summary>
         /// Construct the URL to redirect the user to for authentication. 
+        /// <para/>
         /// The authenticate URL differs from the authorizationUrl slightly in that it does not require the user to authorize the app multiple times.
         /// This provides a better user experience for "Sign in with Provider" scenarios.
         /// </summary>
-        /// <param name="grantType">Specifies whether to use client-side or server-side OAuth flow.</param>
-        /// <param name="parameters">Authorization parameters needed to build the URL.</param>
+        /// <param name="grantType">
+        /// Specifies whether to use client-side or server-side OAuth flow.
+        /// </param>
+        /// <param name="parameters">
+        /// Authorization parameters needed to build the URL. May be null.
+        /// </param>
         /// <returns>The absolute authenticate URL to redirect the user to for authorization.</returns>
         string BuildAuthenticateUrl(GrantType grantType, OAuth2Parameters parameters);
 

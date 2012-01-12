@@ -52,8 +52,12 @@ namespace Spring.OAuth2WindowsPhoneQuickStart.ViewModel
 
         public void Authenticate()
         {
-            this.AuthenticateUri = new Uri(this.FacebookServiceProvider.OAuthOperations.BuildAuthenticateUrl(
-                GrantType.AUTHORIZATION_CODE, new OAuth2Parameters(CallbackUrl, "publish_stream")));
+            OAuth2Parameters parameters = new OAuth2Parameters()
+            {
+                RedirectUrl = CallbackUrl,
+                Scope = "publish_stream"
+            };
+            this.AuthenticateUri = new Uri(this.FacebookServiceProvider.OAuthOperations.BuildAuthenticateUrl(GrantType.AUTHORIZATION_CODE, parameters));
         }
 
         public void AuthenticateCallback(string code)

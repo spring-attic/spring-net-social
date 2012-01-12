@@ -116,7 +116,7 @@ namespace Spring.Social.OAuth2
         /// Specifies whether to use client-side or server-side OAuth flow.
         /// </param>
         /// <param name="parameters">
-        /// Authorization parameters needed to build the URL.
+        /// Authorization parameters needed to build the URL. May be null.
         /// </param>
         /// <returns>
         /// The absolute authorize URL to redirect the user to for authorization.
@@ -128,11 +128,16 @@ namespace Spring.Social.OAuth2
 
         /// <summary>
         /// Construct the URL to redirect the user to for authentication.
+        /// <para/>
         /// The authenticate URL differs from the authorizationUrl slightly in that it does not require the user to authorize the app multiple times.
         /// This provides a better user experience for "Sign in with Provider" scenarios.
         /// </summary>
-        /// <param name="grantType">Specifies whether to use client-side or server-side OAuth flow.</param>
-        /// <param name="parameters">Authorization parameters needed to build the URL.</param>
+        /// <param name="grantType">
+        /// Specifies whether to use client-side or server-side OAuth flow.
+        /// </param>
+        /// <param name="parameters">
+        /// Authorization parameters needed to build the URL. May be null.
+        /// </param>
         /// <returns>The absolute authenticate URL to redirect the user to for authorization.</returns>
         public string BuildAuthenticateUrl(GrantType grantType, OAuth2Parameters parameters)
         {
@@ -463,9 +468,7 @@ namespace Spring.Social.OAuth2
 
         private static string BuildAuthUrl(string baseAuthUrl, GrantType grantType, OAuth2Parameters parameters)
         {
-            StringBuilder authUrl = new StringBuilder(baseAuthUrl)
-                .Append("&redirect_uri=")
-                .Append(HttpUtils.UrlEncode(parameters.RedirectUri));
+            StringBuilder authUrl = new StringBuilder(baseAuthUrl);
             if (grantType == GrantType.AUTHORIZATION_CODE)
             {
                 authUrl.Append("&response_type=code");
@@ -474,20 +477,12 @@ namespace Spring.Social.OAuth2
             {
                 authUrl.Append("&response_type=token");
             }
-            if (parameters.Scope != null)
+            if (parameters != null)
             {
-                authUrl.Append("&scope=").Append(HttpUtils.UrlEncode(parameters.Scope));
-            }
-            if (parameters.State != null)
-            {
-                authUrl.Append("&state={0}").Append(HttpUtils.UrlEncode(parameters.State));
-            }
-            if (parameters.AdditionalParameters != null)
-            {
-                foreach (string parameterName in parameters.AdditionalParameters)
+                foreach (string parameterName in parameters)
                 {
                     string parameterNameEncoded = HttpUtils.UrlEncode(parameterName);
-                    foreach (string parameterValue in parameters.AdditionalParameters.GetValues(parameterName))
+                    foreach (string parameterValue in parameters.GetValues(parameterName))
                     {
                         authUrl.AppendFormat("&{0}={1}", parameterNameEncoded, HttpUtils.UrlEncode(parameterValue));
                     }

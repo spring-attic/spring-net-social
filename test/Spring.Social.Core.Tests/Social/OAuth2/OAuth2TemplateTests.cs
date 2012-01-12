@@ -52,9 +52,10 @@ namespace Spring.Social.OAuth2
         [Test]
         public void BuildAuthorizeUrl_CodeResponseType()
         {
-            // TODO: Add OAuth2Parameters properties setters ?
-            OAuth2Parameters parameters = new OAuth2Parameters("http://www.someclient.com/connect/foo", "read,write");
-            string expected = AUTHORIZE_URL + "?client_id=client_id&redirect_uri=http%3A%2F%2Fwww.someclient.com%2Fconnect%2Ffoo&response_type=code&scope=read%2Cwrite";
+            OAuth2Parameters parameters = new OAuth2Parameters();
+            parameters.RedirectUrl = "http://www.someclient.com/connect/foo";
+            parameters.Scope = "read,write";
+            string expected = AUTHORIZE_URL + "?client_id=client_id&response_type=code&redirect_uri=http%3A%2F%2Fwww.someclient.com%2Fconnect%2Ffoo&scope=read%2Cwrite";
             string actual = oAuth2Template.BuildAuthorizeUrl(GrantType.AUTHORIZATION_CODE, parameters);
             Assert.AreEqual(expected, actual);
         }
@@ -62,8 +63,10 @@ namespace Spring.Social.OAuth2
 	    [Test]
 	    public void BuildAuthorizeUrl_TokenResponseType() 
         {
-		    OAuth2Parameters parameters = new OAuth2Parameters("http://www.someclient.com/connect/foo", "read,write");
-            string expected = AUTHORIZE_URL + "?client_id=client_id&redirect_uri=http%3A%2F%2Fwww.someclient.com%2Fconnect%2Ffoo&response_type=token&scope=read%2Cwrite";
+            OAuth2Parameters parameters = new OAuth2Parameters();
+            parameters.RedirectUrl = "http://www.someclient.com/connect/foo";
+            parameters.Scope = "read,write";
+            string expected = AUTHORIZE_URL + "?client_id=client_id&response_type=token&redirect_uri=http%3A%2F%2Fwww.someclient.com%2Fconnect%2Ffoo&scope=read%2Cwrite";
 		    string actual = oAuth2Template.BuildAuthorizeUrl(GrantType.IMPLICIT_GRANT, parameters);
 		    Assert.AreEqual(expected, actual);
 	    }
@@ -71,8 +74,9 @@ namespace Spring.Social.OAuth2
 	    [Test]
 	    public void BuildAuthorizeUrl_NoScopeInParameters() 
         {
-            OAuth2Parameters parameters = new OAuth2Parameters("http://www.someclient.com/connect/foo");
-            string expected = AUTHORIZE_URL + "?client_id=client_id&redirect_uri=http%3A%2F%2Fwww.someclient.com%2Fconnect%2Ffoo&response_type=code";
+            OAuth2Parameters parameters = new OAuth2Parameters();
+            parameters.RedirectUrl = "http://www.someclient.com/connect/foo";
+            string expected = AUTHORIZE_URL + "?client_id=client_id&response_type=code&redirect_uri=http%3A%2F%2Fwww.someclient.com%2Fconnect%2Ffoo";
 		    string actual = oAuth2Template.BuildAuthorizeUrl(GrantType.AUTHORIZATION_CODE, parameters);
 		    Assert.AreEqual(expected, actual);
 	    }
@@ -80,11 +84,13 @@ namespace Spring.Social.OAuth2
         [Test]
         public void BuildAuthorizeUrl_AdditionalParameters()
         {
-            OAuth2Parameters parameters = new OAuth2Parameters("http://www.someclient.com/connect/foo", "read,write");
-            parameters.AdditionalParameters.Add("display", "touch");
-            parameters.AdditionalParameters.Add("anotherparam", "somevalue1");
-            parameters.AdditionalParameters.Add("anotherparam", "somevalue2");
-            string expected = AUTHORIZE_URL + "?client_id=client_id&redirect_uri=http%3A%2F%2Fwww.someclient.com%2Fconnect%2Ffoo&response_type=token&scope=read%2Cwrite&display=touch&anotherparam=somevalue1&anotherparam=somevalue2";
+            OAuth2Parameters parameters = new OAuth2Parameters();
+            parameters.RedirectUrl = "http://www.someclient.com/connect/foo";
+            parameters.Scope = "read,write";
+            parameters.Add("display", "touch");
+            parameters.Add("anotherparam", "somevalue1");
+            parameters.Add("anotherparam", "somevalue2");
+            string expected = AUTHORIZE_URL + "?client_id=client_id&response_type=token&redirect_uri=http%3A%2F%2Fwww.someclient.com%2Fconnect%2Ffoo&scope=read%2Cwrite&display=touch&anotherparam=somevalue1&anotherparam=somevalue2";
             string actual = oAuth2Template.BuildAuthorizeUrl(GrantType.IMPLICIT_GRANT, parameters);
             Assert.AreEqual(expected, actual);
         }

@@ -18,6 +18,8 @@
 
 #endregion
 
+using System;
+using System.Runtime.Serialization;
 #if SILVERLIGHT
 using Spring.Collections.Specialized;
 #else
@@ -31,92 +33,87 @@ namespace Spring.Social.OAuth2
     /// </summary>
     /// <author>Roy Clarkson</author>
     /// <author>Bruno Baia (.NET)</author>
-    public class OAuth2Parameters
-    {
-        private string redirectUri;
-        private string scope;
-        private string state;
-        private NameValueCollection additionalParameters;
+#if !SILVERLIGHT && !CF_3_5
+    [Serializable]
+#endif
+    public class OAuth2Parameters : NameValueCollection
+    {        
+        private const string STATE = "state";	
+	    private const string SCOPE = "scope";
+        private const string REDIRECT_URL = "redirect_uri";
 
         /// <summary>
-        /// Creates a new authorization parameters instance.
+        /// Creates a new, empty instance of the <see cref="OAuth2Parameters"/> class. 
+        /// Use properties to add parameters after construction.
         /// </summary>
-        /// <param name="redirectUri">
-        /// The authorization callback url; this value must match the redirectUri registered with the provider (required).
-        /// </param>
-        public OAuth2Parameters(string redirectUri)
-            : this(redirectUri, null, null, null)
+        public OAuth2Parameters() :
+            base(StringComparer.OrdinalIgnoreCase)
         {
         }
 
+#if !SILVERLIGHT && !CF_3_5
         /// <summary>
-        /// Creates a new authorization parameters instance.
+        /// Creates a new instance of the <see cref="OAuth2Parameters"/> class.
         /// </summary>
-        /// <param name="redirectUri">
-        /// The authorization callback url; this value must match the redirectUri registered with the provider (required).
+        /// <param name="info">
+        /// The <see cref="SerializationInfo"/> that holds the serialized object data 
+        /// about the exception being thrown.
         /// </param>
-        /// <param name="scope">
-        /// The permissions the application is seeking with the authorization (optional).
+        /// <param name="context">
+        /// The <see cref="StreamingContext"/> that contains contextual information 
+        /// about the source or destination.
         /// </param>
-        public OAuth2Parameters(string redirectUri, string scope)
-            : this(redirectUri, scope, null, null)
+        protected OAuth2Parameters(SerializationInfo info, StreamingContext context)
+            : base(info, context)
         {
+        }
+#endif
+
+        /// <summary>
+        /// Gets or sets the authorization callback url.
+        /// <para/>
+        /// This value must match the redirectUri registered with the provider.
+        /// <para/>
+        /// This is optional per the OAuth 2 spec, but required by most OAuth 2 providers. 
+        /// </summary>
+        public string RedirectUrl
+        {
+            get { return this.GetFirst(REDIRECT_URL); }
+            set { this.Set(REDIRECT_URL, value); }
         }
 
         /// <summary>
-        /// Creates a new authorization parameters instance.
-        /// </summary>
-        /// <param name="redirectUri">
-        /// The authorization callback url; this value must match the redirectUri registered with the provider (required).
-        /// </param>
-        /// <param name="scope">
-        /// The permissions the application is seeking with the authorization (optional).
-        /// </param>
-        /// <param name="state">
-        /// An opaque key that must be included in the provider's authorization callback (optional).
-        /// </param>
-        /// <param name="additionalParameters">
-        /// Additional supported parameters to pass to the provider (optional).
-        /// </param>
-        public OAuth2Parameters(string redirectUri, string scope, string state, NameValueCollection additionalParameters)
-        {
-            this.redirectUri = redirectUri;
-            this.scope = scope;
-            this.state = state;
-            this.additionalParameters = additionalParameters ?? new NameValueCollection();
-        }
-
-        /// <summary>
-        /// Gets the authorization callback url; 
-        /// this value must match the redirectUri registered with the provider (required). 
-        /// </summary>
-        public string RedirectUri
-        {
-            get { return redirectUri; }
-        }
-
-        /// <summary>
-        /// Gets the permissions the application is seeking with the authorization (optional).
+        /// Gets or sets the permissions the application is seeking with the authorization (optional).
         /// </summary>
         public string Scope
         {
-            get { return scope; }
+            get { return this.GetFirst(SCOPE); }
+            set { this.Set(SCOPE, value); }
         }
 
         /// <summary>
-        /// Gets an opaque key that must be included in the provider's authorization callback (optional).
+        /// Gets or sets an opaque key that must be included in the provider's authorization callback (optional).
         /// </summary>
         public string State
         {
-            get { return state; }
+            get { return this.GetFirst(STATE); }
+            set { this.Set(STATE, value); }
         }
 
+
         /// <summary>
-        /// Gets additional supported parameters to pass to the provider (optional).
+        /// Returns the first value for the given key.
         /// </summary>
-        public NameValueCollection AdditionalParameters
+        /// <param name="key">The key.</param>
+        /// <returns>The first value for the specified key, or <see langword="null"/>.</returns>
+        protected string GetFirst(string key)
         {
-            get { return additionalParameters; }
+            string[] values = this.GetValues(key);
+            if (values == null || values.Length == 0)
+            {
+                return null;
+            }
+            return values[0];
         }
     }
 }

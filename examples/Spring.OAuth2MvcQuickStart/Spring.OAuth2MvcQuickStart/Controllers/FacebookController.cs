@@ -29,8 +29,12 @@ namespace Spring.OAuth1MvcQuickStart.Controllers
         // GET: /Facebook/SignIn
         public ActionResult SignIn()
         {
-            return Redirect(facebookProvider.OAuthOperations.BuildAuthorizeUrl(
-                GrantType.AUTHORIZATION_CODE, new OAuth2Parameters("http://localhost/Facebook/Callback", "publish_stream")));
+            OAuth2Parameters parameters = new OAuth2Parameters()
+            {
+                RedirectUrl = "http://localhost/Facebook/Callback", 
+                Scope = "publish_stream"
+            };
+            return Redirect(facebookProvider.OAuthOperations.BuildAuthorizeUrl(GrantType.AUTHORIZATION_CODE, parameters));
         }
 
         // GET: /Facebook/Callback

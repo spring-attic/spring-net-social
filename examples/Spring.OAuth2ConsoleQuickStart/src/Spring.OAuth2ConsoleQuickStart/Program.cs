@@ -22,9 +22,11 @@ namespace Spring.OAuth2ConsoleQuickStart
 
                 // OAuth 'dance'
                 // Authentication using the client-side authorization flow 
-                OAuth2Parameters parameters = new OAuth2Parameters(
-                    "https://www.facebook.com/connect/login_success.html",
-                    "offline_access,publish_stream");
+                OAuth2Parameters parameters = new OAuth2Parameters()
+                {
+                    RedirectUrl = "https://www.facebook.com/connect/login_success.html",
+                    Scope = "offline_access,publish_stream"
+                };
                 string authorizationUrl = facebookServiceProvider.OAuthOperations.BuildAuthorizeUrl(GrantType.IMPLICIT_GRANT, parameters);
                 Console.WriteLine("Redirect user to Facebook for authorization: " + authorizationUrl);
                 Process.Start(authorizationUrl);
