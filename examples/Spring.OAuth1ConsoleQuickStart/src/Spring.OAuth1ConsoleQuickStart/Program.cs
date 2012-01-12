@@ -33,7 +33,7 @@ namespace Spring.OAuth1ConsoleQuickStart
 #endif
                 Console.WriteLine("Done");
 
-                string authenticateUrl = twitterServiceProvider.OAuthOperations.BuildAuthorizeUrl(oauthToken.Value, OAuth1Parameters.NONE);
+                string authenticateUrl = twitterServiceProvider.OAuthOperations.BuildAuthorizeUrl(oauthToken.Value, null);
                 Console.WriteLine("Redirect user for authentication: " + authenticateUrl);
                 Process.Start(authenticateUrl);
 

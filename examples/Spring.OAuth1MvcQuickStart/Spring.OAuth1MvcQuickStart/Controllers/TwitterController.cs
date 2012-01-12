@@ -32,7 +32,7 @@ namespace Spring.OAuth1MvcQuickStart.Controllers
             OAuthToken requestToken = twitterProvider.OAuthOperations.FetchRequestTokenAsync("http://localhost/Twitter/Callback", null).Result;
             Session["RequestToken"] = requestToken;
 
-            return Redirect(twitterProvider.OAuthOperations.BuildAuthenticateUrl(requestToken.Value, OAuth1Parameters.NONE));
+            return Redirect(twitterProvider.OAuthOperations.BuildAuthenticateUrl(requestToken.Value, null));
         }
 
         // GET: /Twitter/Callback

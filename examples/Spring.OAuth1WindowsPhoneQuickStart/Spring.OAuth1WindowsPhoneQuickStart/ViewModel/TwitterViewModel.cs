@@ -57,7 +57,7 @@ namespace Spring.OAuth1WindowsPhoneQuickStart.ViewModel
                 r =>
                 {
                     this.requestOAuthToken = r.Response;
-                    this.AuthenticateUri = new Uri(this.TwitterServiceProvider.OAuthOperations.BuildAuthenticateUrl(r.Response.Value, OAuth1Parameters.NONE));
+                    this.AuthenticateUri = new Uri(this.TwitterServiceProvider.OAuthOperations.BuildAuthenticateUrl(r.Response.Value, null));
                 });
         }
 

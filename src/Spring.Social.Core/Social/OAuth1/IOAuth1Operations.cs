@@ -49,10 +49,7 @@ namespace Spring.Social.OAuth1
         /// Construct the URL to redirect the user to for authorization.
         /// </summary>
         /// <param name="requestToken">The request token value, to be encoded in the authorize URL.</param>
-        /// <param name="parameters">
-        /// Parameters to pass to the provider in the authorize URL. Should never be null; 
-        /// if there are no parameters to pass, set this argument value to OAuth1Parameters.NONE.
-        /// </param>
+        /// <param name="parameters">Parameters to pass to the provider in the authorize URL. May be null.</param>
         /// <returns>The absolute authorize URL to redirect the user to for authorization.</returns>
         string BuildAuthorizeUrl(string requestToken, OAuth1Parameters parameters);
 
@@ -62,10 +59,7 @@ namespace Spring.Social.OAuth1
         /// This provides a better user experience for "Sign in with Provider" scenarios.
         /// </summary>
         /// <param name="requestToken">The request token value, to be encoded in the authorize URL.</param>
-        /// <param name="parameters">
-        /// Parameters to pass to the provider in the authenticate URL. Should never be null; 
-        /// if there are no parameters to pass, set this argument value to OAuth1Parameters.NONE.
-        /// </param>
+        /// <param name="parameters">Parameters to pass to the provider in the authenticate URL. May be null.</param>
         /// <returns>The absolute authenticate URL to redirect the user to for authentication.</returns>
         string BuildAuthenticateUrl(string requestToken, OAuth1Parameters parameters);
 

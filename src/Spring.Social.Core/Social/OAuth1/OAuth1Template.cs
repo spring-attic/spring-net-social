@@ -146,10 +146,7 @@ namespace Spring.Social.OAuth1
         /// Construct the URL to redirect the user to for authorization.
         /// </summary>
         /// <param name="requestToken">The request token value, to be encoded in the authorize URL</param>
-        /// <param name="parameters">
-        /// Parameters to pass to the provider in the authorize URL. Should never be null; 
-        /// if there are no parameters to pass, set this argument value to OAuth1Parameters.NONE
-        /// </param>
+        /// <param name="parameters">Parameters to pass to the provider in the authorize URL. May be null.</param>
         /// <returns>The absolute authorize URL to redirect the user to for authorization</returns>
         public string BuildAuthorizeUrl(string requestToken, OAuth1Parameters parameters)
         {
@@ -162,10 +159,7 @@ namespace Spring.Social.OAuth1
         /// This provides a better user experience for "Sign in with Provider" scenarios.
         /// </summary>
         /// <param name="requestToken">The request token value, to be encoded in the authorize URL</param>
-        /// <param name="parameters">
-        /// Parameters to pass to the provider in the authenticate URL. Should never be null; 
-        /// if there are no parameters to pass, set this argument value to OAuth1Parameters.NONE
-        /// </param>
+        /// <param name="parameters">Parameters to pass to the provider in the authenticate URL. May be null.</param>
         /// <returns>The absolute authenticate URL to redirect the user to for authentication</returns>
         public string BuildAuthenticateUrl(string requestToken, OAuth1Parameters parameters)
         {
@@ -378,7 +372,8 @@ namespace Spring.Social.OAuth1
 
         /// <summary>
         /// Gets the consumer key to be read by subclasses. 
-        /// This may be useful when overriding <see cref="M:GetCustomAuthorizationParameters"/> and 
+        /// <para/>
+        /// This may be useful when overriding <see cref="M:AddCustomAuthorizationParameters"/> and 
         /// the consumer key is required in the authorization request.
         /// </summary>
         protected string ConsumerKey
@@ -400,13 +395,15 @@ namespace Spring.Social.OAuth1
         }
 
         /// <summary>
-        /// Returns a name-values collection of custom authorization parameters. 
+        /// Allows to add custom authorization parameters to the authorization URL.
+        /// <para/>
         /// May be overridden to return any provider-specific parameters that must be passed in the request to the authorization URL.
         /// </summary>
-        /// <returns>Custom authorization parameters.</returns>
-        protected virtual NameValueCollection GetCustomAuthorizationParameters()
+        /// <remarks>
+        /// Default implementation adds no parameters.
+        /// </remarks>
+        protected virtual void AddCustomAuthorizationParameters(NameValueCollection parameters)
         {
-            return null;
         }
 
         /// <summary>
@@ -449,43 +446,17 @@ namespace Spring.Social.OAuth1
         {
             StringBuilder authUrl = new StringBuilder(baseAuthUrl);
             authUrl.Append("?oauth_token=").Append(HttpUtils.UrlEncode(requestToken));
-            if (this.version == OAuth1Version.CORE_10)
+            NameValueCollection authorizationParameters = parameters ?? new NameValueCollection();
+            this.AddCustomAuthorizationParameters(authorizationParameters);
+            foreach (string additionalParameterName in authorizationParameters)
             {
-                authUrl.Append("&oauth_callback=").Append(HttpUtils.UrlEncode(parameters.CallbackUrl));
-            }
-            NameValueCollection additionalParameters = this.GetAdditionalParameters(parameters.AdditionalParameters);
-            if (additionalParameters != null)
-            {
-                foreach (string additionalParameterName in additionalParameters)
+                string additionalParameterNameEncoded = HttpUtils.UrlEncode(additionalParameterName);
+                foreach (string additionalParameterValue in authorizationParameters.GetValues(additionalParameterName))
                 {
-                    string additionalParameterNameEncoded = HttpUtils.UrlEncode(additionalParameterName);
-                    foreach (string additionalParameterValue in additionalParameters.GetValues(additionalParameterName))
-                    {
-                        authUrl.Append('&').Append(additionalParameterNameEncoded).Append('=').Append(HttpUtils.UrlEncode(additionalParameterValue));
-                    }
+                    authUrl.Append('&').Append(additionalParameterNameEncoded).Append('=').Append(HttpUtils.UrlEncode(additionalParameterValue));
                 }
             }
             return authUrl.ToString();
-        }
-
-        private NameValueCollection GetAdditionalParameters(NameValueCollection clientAdditionalParameters)
-        {
-            NameValueCollection customAuthorizeParameters = this.GetCustomAuthorizationParameters();
-            if (customAuthorizeParameters == null)
-            {
-                return clientAdditionalParameters;
-            }
-            else
-            {
-                if (clientAdditionalParameters != null)
-                {
-                    foreach (string clientAdditionalParameterName in clientAdditionalParameters)
-                    {
-                        customAuthorizeParameters.Add(clientAdditionalParameterName, clientAdditionalParameters[clientAdditionalParameterName]);
-                    }
-                }
-                return customAuthorizeParameters;
-            }
         }
     }
 }

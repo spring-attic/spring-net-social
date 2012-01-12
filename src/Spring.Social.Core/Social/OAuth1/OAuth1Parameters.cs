@@ -18,6 +18,8 @@
 
 #endregion
 
+using System;
+using System.Runtime.Serialization;
 #if SILVERLIGHT
 using Spring.Collections.Specialized;
 #else
@@ -31,54 +33,65 @@ namespace Spring.Social.OAuth1
     /// </summary>
     /// <author>Keith Donald</author>
     /// <author>Bruno Baia (.NET)</author>
-    public class OAuth1Parameters
+#if !SILVERLIGHT && !CF_3_5
+    [Serializable]
+#endif
+    public class OAuth1Parameters : NameValueCollection
     {
-        private string callbackUrl;
-        private NameValueCollection additionalParameters;
+        private const string OAUTH_CALLBACK = "oauth_callback";
 
         /// <summary>
-        /// Shared instance for passing zero authorization parameters (accepted for OAuth 1.0a-based flows).
+        /// Creates a new, empty instance of the <see cref="OAuth1Parameters"/> class. 
+        /// Use properties to add parameters after construction.
         /// </summary>
-        public static OAuth1Parameters NONE = new OAuth1Parameters(null, null);
-
-        /// <summary>
-        /// Creates a new OAuth1Parameters instance. 
-        /// </summary>
-        /// <param name="callbackUrl">
-        /// The authorization callback url; this value must be included for OAuth 1.0 providers (and NOT for OAuth 1.0a).
-        /// </param>
-        public OAuth1Parameters(string callbackUrl)
-            : this(callbackUrl, null)
+        public OAuth1Parameters() :
+            base(StringComparer.OrdinalIgnoreCase)
         {
         }
 
+#if !SILVERLIGHT && !CF_3_5
         /// <summary>
-        /// Creates a new OAuth1Parameters instance.
+        /// Creates a new instance of the <see cref="OAuth1Parameters"/> class.
         /// </summary>
-        /// <param name="callbackUrl">
-        /// The authorization callback url; this value must be included for OAuth 1.0 providers (and NOT for OAuth 1.0a).
+        /// <param name="info">
+        /// The <see cref="SerializationInfo"/> that holds the serialized object data 
+        /// about the exception being thrown.
         /// </param>
-        /// <param name="additionalParameters">Additional supported parameters to pass to the provider.</param>
-        public OAuth1Parameters(string callbackUrl, NameValueCollection additionalParameters)
+        /// <param name="context">
+        /// The <see cref="StreamingContext"/> that contains contextual information 
+        /// about the source or destination.
+        /// </param>
+        protected OAuth1Parameters(SerializationInfo info, StreamingContext context)
+            : base(info, context)
         {
-            this.callbackUrl = callbackUrl;
-            this.additionalParameters = additionalParameters;
         }
+#endif
 
         /// <summary>
-        /// Gets the authorization callback url; this value must be included for OAuth 1.0 providers (and NOT for OAuth 1.0a).
+        /// Gets or sets the authorization callback url.
+        /// <para/>
+        /// This value must be included for OAuth 1.0 providers (and NOT for OAuth 1.0a).
         /// </summary>
         public string CallbackUrl
         {
-            get { return callbackUrl; }
+            get { return this.GetFirst(OAUTH_CALLBACK); }
+            set { this.Set(OAUTH_CALLBACK, value); }
         }
 
+
         /// <summary>
-        /// Gets the additional supported parameters to pass to the provider.
+        /// Returns the first value for the given key.
         /// </summary>
-        public NameValueCollection AdditionalParameters
+        /// <param name="key">The key.</param>
+        /// <returns>The first value for the specified key, or <see langword="null"/>.</returns>
+        protected string GetFirst(string key)
         {
-            get { return additionalParameters; }
+            string[] values = this.GetValues(key);
+            if (values == null || values.Length == 0)
+            {
+                return null;
+            }
+            return values[0];
         }
     }
 }

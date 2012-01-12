@@ -57,20 +57,21 @@ namespace Spring.Social.OAuth1
 	    [Test]
 	    public void BuildAuthorizeUrl() 
         {
-            // TODO: Add OAuth1Parameters properties setters ?
-		    OAuth1Parameters parameters = new OAuth1Parameters("http://www.someclient.com/oauth/callback");
+		    OAuth1Parameters oauth10Parameters = new OAuth1Parameters();
+            oauth10Parameters.CallbackUrl = "http://www.someclient.com/oauth/callback";
 		    Assert.AreEqual(AUTHORIZE_URL + "?oauth_token=request_token", 
-                oauth10a.BuildAuthorizeUrl("request_token", OAuth1Parameters.NONE));
+                oauth10a.BuildAuthorizeUrl("request_token", null));
 		    Assert.AreEqual(AUTHORIZE_URL + "?oauth_token=request_token&oauth_callback=http%3A%2F%2Fwww.someclient.com%2Foauth%2Fcallback",
-				    oauth10.BuildAuthorizeUrl("request_token", parameters));
+                oauth10.BuildAuthorizeUrl("request_token", oauth10Parameters));
 	    }
 
         [Test]
         public void BuildAuthorizeUrl_CustomAuthorizeParameters()
         {
-            OAuth1Parameters parameters = new OAuth1Parameters("http://www.someclient.com/oauth/callback");
+            OAuth1Parameters oauth10Parameters = new OAuth1Parameters();
+            oauth10Parameters.CallbackUrl = "http://www.someclient.com/oauth/callback";
             Assert.AreEqual(AUTHORIZE_URL + "?oauth_token=request_token&oauth_callback=http%3A%2F%2Fwww.someclient.com%2Foauth%2Fcallback&custom_parameter=custom_parameter_value",
-                    customOauth10.BuildAuthorizeUrl("request_token", parameters));
+                    customOauth10.BuildAuthorizeUrl("request_token", oauth10Parameters));
         }
 
         [Test]
@@ -192,12 +193,9 @@ namespace Spring.Social.OAuth1
             {
             }
 
-            // TODO: API has change ?
-            protected override NameValueCollection GetCustomAuthorizationParameters()
+            protected override void AddCustomAuthorizationParameters(NameValueCollection parameters)
             {
-                NameValueCollection parameters = new NameValueCollection(1);
                 parameters.Add("custom_parameter", "custom_parameter_value");
-                return parameters;
             }
         }
 
