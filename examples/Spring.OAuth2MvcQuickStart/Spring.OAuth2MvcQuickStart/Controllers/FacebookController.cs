@@ -34,7 +34,7 @@ namespace Spring.OAuth1MvcQuickStart.Controllers
                 RedirectUrl = "http://localhost/Facebook/Callback", 
                 Scope = "publish_stream"
             };
-            return Redirect(facebookProvider.OAuthOperations.BuildAuthorizeUrl(GrantType.AUTHORIZATION_CODE, parameters));
+            return Redirect(facebookProvider.OAuthOperations.BuildAuthorizeUrl(GrantType.AuthorizationCode, parameters));
         }
 
         // GET: /Facebook/Callback

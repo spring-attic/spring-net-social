@@ -36,7 +36,7 @@ namespace Spring.Social.OAuth2
     {
         #region AbstractOAuth2ApiBinding implementation
 
-        public static OAuth2Version OAuth2Version = OAuth2Version.BEARER;
+        public static OAuth2Version OAuth2Version = OAuth2Version.Bearer;
 
         public AbstractOAuth2ApiBindingTests() 
             : base()
@@ -87,7 +87,7 @@ namespace Spring.Social.OAuth2
         [Test]
         public void RequestInterceptor_Draft10() 
         {
-            AbstractOAuth2ApiBindingTests.OAuth2Version = OAuth2Version.DRAFT_10;
+            AbstractOAuth2ApiBindingTests.OAuth2Version = OAuth2Version.Draft10;
             AbstractOAuth2ApiBindingTests apiBinding = new AbstractOAuth2ApiBindingTests("access_token");
             AssertThatRequestInterceptorWritesAuthorizationHeader(apiBinding, "OAuth access_token");
             apiBinding.UpdateStatus();
@@ -96,7 +96,7 @@ namespace Spring.Social.OAuth2
 	    [Test]
         public void RequestInterceptor_Draft8() 
         {
-            AbstractOAuth2ApiBindingTests.OAuth2Version = OAuth2Version.DRAFT_8;
+            AbstractOAuth2ApiBindingTests.OAuth2Version = OAuth2Version.Draft8;
             AbstractOAuth2ApiBindingTests apiBinding = new AbstractOAuth2ApiBindingTests("access_token");
             AssertThatRequestInterceptorWritesAuthorizationHeader(apiBinding, "Token token=\"access_token\"");
             apiBinding.UpdateStatus();

@@ -29,15 +29,15 @@ namespace Spring.Social.OAuth2
     public enum GrantType
     {
         /// <summary>
-        /// AUTHORIZATION_CODE denotes the server-side authorization flow, and is 
+        /// Denotes the server-side authorization flow, and is 
         /// associated with the response_type=code parameter value.
         /// </summary>
-        AUTHORIZATION_CODE,
+        AuthorizationCode,
 
         /// <summary>
-        /// IMPLICIT_GRANT denotes the client-side authorization flow and is 
+        /// Denotes the client-side authorization flow and is 
         /// associated with the response_type=token parameter value.
         /// </summary>
-        IMPLICIT_GRANT
+        ImplicitGrant
     }
 }

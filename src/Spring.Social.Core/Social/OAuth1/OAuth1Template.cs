@@ -71,7 +71,7 @@ namespace Spring.Social.OAuth1
         /// <param name="authorizeUrl">The authorize URL.</param>
         /// <param name="accessTokenUrl">The access token URL.</param>
         public OAuth1Template(string consumerKey, string consumerSecret, string requestTokenUrl, string authorizeUrl, string accessTokenUrl)
-            : this(consumerKey, consumerSecret, requestTokenUrl, authorizeUrl, accessTokenUrl, OAuth1Version.CORE_10_REVISION_A)
+            : this(consumerKey, consumerSecret, requestTokenUrl, authorizeUrl, accessTokenUrl, OAuth1Version.Core10a)
         {
         }
 
@@ -99,7 +99,7 @@ namespace Spring.Social.OAuth1
         /// <param name="authenticateUrl">The authenticate URL.</param>
         /// <param name="accessTokenUrl">The access token URL.</param>
         public OAuth1Template(string consumerKey, string consumerSecret, string requestTokenUrl, string authorizeUrl, string authenticateUrl, string accessTokenUrl)
-            : this(consumerKey, consumerSecret, requestTokenUrl, authorizeUrl, authenticateUrl, accessTokenUrl, OAuth1Version.CORE_10_REVISION_A)
+            : this(consumerKey, consumerSecret, requestTokenUrl, authorizeUrl, authenticateUrl, accessTokenUrl, OAuth1Version.Core10a)
         {
         }
 
@@ -194,7 +194,7 @@ namespace Spring.Social.OAuth1
         public Task<OAuthToken> FetchRequestTokenAsync(string callbackUrl, NameValueCollection additionalParameters)
         {
             IDictionary<string, string> oauthParameters = new Dictionary<string, string>(1);
-            if (version == OAuth1Version.CORE_10_REVISION_A)
+            if (version == OAuth1Version.Core10a)
             {
                 oauthParameters.Add("oauth_callback", callbackUrl);
             }
@@ -222,7 +222,7 @@ namespace Spring.Social.OAuth1
         {
             IDictionary<string, string> tokenParameters = new Dictionary<string, string>(2);
             tokenParameters.Add("oauth_token", requestToken.Value);
-            if (version == OAuth1Version.CORE_10_REVISION_A)
+            if (version == OAuth1Version.Core10a)
             {
                 tokenParameters.Add("oauth_verifier", requestToken.Verifier);
             }
@@ -252,7 +252,7 @@ namespace Spring.Social.OAuth1
         public OAuthToken FetchRequestToken(string callbackUrl, NameValueCollection additionalParameters)
         {
             IDictionary<string, string> oauthParameters = new Dictionary<string, string>(1);
-            if (version == OAuth1Version.CORE_10_REVISION_A)
+            if (version == OAuth1Version.Core10a)
             {
                 oauthParameters.Add("oauth_callback", callbackUrl);
             }
@@ -275,7 +275,7 @@ namespace Spring.Social.OAuth1
         {
             IDictionary<string, string> tokenParameters = new Dictionary<string, string>(2);
             tokenParameters.Add("oauth_token", requestToken.Value);
-            if (version == OAuth1Version.CORE_10_REVISION_A)
+            if (version == OAuth1Version.Core10a)
             {
                 tokenParameters.Add("oauth_verifier", requestToken.Verifier);
             }
@@ -307,7 +307,7 @@ namespace Spring.Social.OAuth1
         public RestOperationCanceler FetchRequestTokenAsync(string callbackUrl, NameValueCollection additionalParameters, Action<RestOperationCompletedEventArgs<OAuthToken>> operationCompleted)
         {
             IDictionary<string, string> oauthParameters = new Dictionary<string, string>(1);
-            if (version == OAuth1Version.CORE_10_REVISION_A)
+            if (version == OAuth1Version.Core10a)
             {
                 oauthParameters.Add("oauth_callback", callbackUrl);
             }
@@ -347,7 +347,7 @@ namespace Spring.Social.OAuth1
         {
             IDictionary<string, string> tokenParameters = new Dictionary<string, string>(2);
             tokenParameters.Add("oauth_token", requestToken.Value);
-            if (version == OAuth1Version.CORE_10_REVISION_A)
+            if (version == OAuth1Version.Core10a)
             {
                 tokenParameters.Add("oauth_verifier", requestToken.Verifier);
             }

@@ -58,13 +58,13 @@ namespace Spring.Social.OAuth2
         {
             switch (this.oauth2Version)
             {
-                case OAuth2Version.BEARER:
+                case OAuth2Version.Bearer:
                     request.Headers["Authorization"] = "Bearer " + accessToken;
                     break;
-                case OAuth2Version.DRAFT_10:
+                case OAuth2Version.Draft10:
                     request.Headers["Authorization"] = "OAuth " + accessToken;
                     break;
-                case OAuth2Version.DRAFT_8:
+                case OAuth2Version.Draft8:
                     request.Headers["Authorization"] = "Token token=\"" + accessToken + "\"";
                     break;
             }

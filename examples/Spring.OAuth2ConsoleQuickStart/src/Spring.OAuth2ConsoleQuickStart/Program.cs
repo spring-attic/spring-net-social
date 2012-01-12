@@ -27,7 +27,7 @@ namespace Spring.OAuth2ConsoleQuickStart
                     RedirectUrl = "https://www.facebook.com/connect/login_success.html",
                     Scope = "offline_access,publish_stream"
                 };
-                string authorizationUrl = facebookServiceProvider.OAuthOperations.BuildAuthorizeUrl(GrantType.IMPLICIT_GRANT, parameters);
+                string authorizationUrl = facebookServiceProvider.OAuthOperations.BuildAuthorizeUrl(GrantType.ImplicitGrant, parameters);
                 Console.WriteLine("Redirect user to Facebook for authorization: " + authorizationUrl);
                 Process.Start(authorizationUrl);
 

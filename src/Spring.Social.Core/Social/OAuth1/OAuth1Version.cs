@@ -35,11 +35,11 @@ namespace Spring.Social.OAuth1
         /// <summary>
         /// OAuth Core Version 1.0.
         /// </summary>       
-        CORE_10,
+        Core10,
 
         /// <summary>
         /// OAuth Core Version 1.0 Revision A.
         /// </summary>
-        CORE_10_REVISION_A
+        Core10a
     }
 }

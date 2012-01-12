@@ -469,11 +469,11 @@ namespace Spring.Social.OAuth2
         private static string BuildAuthUrl(string baseAuthUrl, GrantType grantType, OAuth2Parameters parameters)
         {
             StringBuilder authUrl = new StringBuilder(baseAuthUrl);
-            if (grantType == GrantType.AUTHORIZATION_CODE)
+            if (grantType == GrantType.AuthorizationCode)
             {
                 authUrl.Append("&response_type=code");
             }
-            else if (grantType == GrantType.IMPLICIT_GRANT)
+            else if (grantType == GrantType.ImplicitGrant)
             {
                 authUrl.Append("&response_type=token");
             }

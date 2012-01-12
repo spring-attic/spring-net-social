@@ -77,7 +77,7 @@ namespace Spring.Social.GitHub.Api.Impl
 
         protected override OAuth2Version GetOAuth2Version()
         {
-            return OAuth2Version.DRAFT_8;
+            return OAuth2Version.Draft8;
         }
 
         #region GitHub Membres

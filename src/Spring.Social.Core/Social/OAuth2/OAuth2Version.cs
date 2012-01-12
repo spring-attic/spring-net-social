@@ -36,16 +36,16 @@ namespace Spring.Social.OAuth2
         /// <summary>
         /// OAuth Version 2.0 using bearer tokens (since Draft 12).
         /// </summary>
-        BEARER,
+        Bearer,
 
         /// <summary>
         /// OAuth Version 2.0 Draft 10.
         /// </summary>
-        DRAFT_10,
+        Draft10,
 
         /// <summary>
         /// OAuth Version 2.0 Draft 8.
         /// </summary>
-        DRAFT_8  
+        Draft8  
     }
 }

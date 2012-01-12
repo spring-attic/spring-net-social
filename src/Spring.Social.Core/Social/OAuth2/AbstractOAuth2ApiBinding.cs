@@ -105,12 +105,12 @@ namespace Spring.Social.OAuth2
         /// Subclasses may override to return another version.
         /// </remarks>
         /// <returns>
-        /// By default, returns OAuth2Version.BEARER indicating versions of OAuth2 that apply the bearer token scheme.
+        /// By default, returns OAuth2Version.Bearer indicating versions of OAuth2 that apply the bearer token scheme.
         /// </returns>
         /// <see cref="OAuth2Version"/>
         protected virtual OAuth2Version GetOAuth2Version()
         {
-            return OAuth2Version.BEARER;
+            return OAuth2Version.Bearer;
         }
 
         /// <summary>

@@ -76,7 +76,7 @@ namespace Spring.Social.Facebook.Api.Impl
 
         protected override OAuth2Version GetOAuth2Version()
         {
-            return OAuth2Version.DRAFT_10;
+            return OAuth2Version.Draft10;
         }
 
         #region IFacebook Membres
