@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter id="serviceproviders" version="5.0" xmlns="http://docbook.org/ns/docbook"
+         xmlns:ns52="http://www.w3.org/2000/svg"
+         xmlns:ns5="http://www.w3.org/1999/xlink"
+         xmlns:ns4="http://www.w3.org/1998/Math/MathML"
+         xmlns:ns3="http://www.w3.org/1999/xhtml"
+         xmlns:ns="http://docbook.org/ns/docbook">
+	<title>Service Providers</title>
+
+	<section id="serviceproviders-oauth2">
+		<title>OAuth2 service providers</title>
+		<para>
+      OAuth 2 is rapidly becoming a preferred authorization protocol, and is used by major service providers such as Facebook and Github.
+      <sbr/>In Spring.NET Social, an <interfacename>IOAuth2ServiceProvider&lt;T&gt;</interfacename> instance is used to establish connections with a OAuth2-based service provider:
+			<programlisting language="csharp"><![CDATA[
+public interface IOAuth2ServiceProvider<T> : IServiceProvider<T> where T : IApiBinding
+{
+  IOAuth2Operations OAuthOperations { get; }
+
+  T GetApi(string accessToken);
+}]]></programlisting>
+		</para>
+    <para>
+      <literal>OAuthOperations</literal> property returns an API to use to conduct the authorization flow, or "OAuth Dance", with a service provider.
+      <sbr/>The result of this flow is an <classname>AccessGrant</classname> that can be used to obtain a strongly-typed binding to the ServiceProvider's API by calling <literal>GetApi</literal>.
+    </para>
+    <para>
+      The <interfacename>IOAuth2Operations</interfacename> interface is shown below:
+    </para>
+		<programlisting language="csharp"><![CDATA[
+public interface IOAuth2Operations
+{ 
+  string BuildAuthorizeUrl(GrantType grantType, OAuth2Parameters parameters);
+
+  string BuildAuthenticateUrl(GrantType grantType, OAuth2Parameters parameters);
+
+  AccessGrant ExchangeForAccess(string authorizationCode, string redirectUri, NameValueCollection additionalParameters);
+
+  AccessGrant RefreshAccess(string refreshToken, string scope, NameValueCollection additionalParameters);
+}]]></programlisting>			
+		<para>
+			Callers are first expected to call <literal>BuildAuthorizeUrl(GrantType, OAuth2Parameters)</literal> to construct the URL to redirect the user to for connection authorization.
+			<sbr/>Upon user authorization, the authorizationCode returned by the provider should be exchanged for an AccessGrant.
+      The AccessGrant should then used to get the ServiceProvider API.
+      <sbr/>This flow is illustrated below:
+		</para>
+		<mediaobject>
+			<imageobject>
+				<imagedata fileref="images/oauth2_flow.png" format="PNG" align="center"/>
+			</imageobject>
+		</mediaobject>
+   	<para>
+			As you can see, there is a back-and-forth conversation that takes place between the application and the service provider to grant the application access to the provider account.
+			<sbr/>This exchange, commonly known as the "OAuth Dance", follows these steps:
+		</para>
+		<orderedlist>
+			<listitem>
+				<para>
+					The flow starts by the application redirecting the user to the provider's authorization URL.
+					<sbr/>Here the provider displays a web page asking the user if he or she wishes to grant the application access to read and update their data.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					The user agrees to grant the application access.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					The service provider redirects the user back to the application (via the redirect URI), passing an authorization code as a parameter.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					The application exchanges the authorization code for an access grant.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					The service provider issues the access grant to the application.
+					<sbr/>The grant includes an access token and a refresh token.
+					<sbr/>One receipt of these tokens, the "OAuth dance" is complete.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					The application uses the AccessGrant to establish a connection between the local user account and the external provider account.
+					<sbr/>With the connection established, the application can now obtain a reference to the Service API and invoke the provider on behalf of the user.
+				</para>
+			</listitem>
+		</orderedlist>
+		<para>
+      The example code below shows use of a <classname>GitHubServiceProvider</classname> to create a connection to GitHub using the OAuth2 server-side flow illustrated above.
+      <sbr/>Here, <classname>GitHubServiceProvider</classname> implements <interfacename>IOAuth1ServiceProvider&lt;IGitHub&gt;</interfacename>:
+      <programlisting language="csharp"><![CDATA[
+GitHubServiceProvider serviceProvider = new GitHubServiceProvider("clientId", "clientSecret");
+IOAuth2Operations oauthOperations = serviceProvider.OAuthOperations;
+OAuth2Parameters parameters = new OAuth2Parameters();
+parameters.RedirectUri = "https://my-callback-url";
+string authorizeUrl = oauthOperations.BuildAuthorizeUrl(GrantType.AuthorizationCode, parameters);
+Response.Redirect(authorizeUrl);
+
+// upon receiving the callback from the provider:
+AccessGrant accessGrant = oauthOperations.ExchangeForAccess(authorizationCode, "https://my-callback-url", null);
+IGitHub gitHubApi = serviceProvider.GetApi(accessGrant);]]></programlisting>
+		</para>
+		<para>
+			The following example illustrates the client-side "implicit" authorization flow also supported by OAuth2.
+			<sbr/>The difference between this flow and the server-side "authorization code" flow above is the provider callback directly contains the access grant (no additional exchange is necessary).
+			<sbr/>This flow is appropriate for clients incapable of keeping the access grant credentials confidential, such as a mobile device or JavaScript-based user agent.
+			<programlisting language="java"><![CDATA[
+GitHubServiceProvider serviceProvider = new GitHubServiceProvider("clientId", "clientSecret");
+IOAuth2Operations oauthOperations = serviceProvider.OAuthOperations;
+OAuth2Parameters parameters = new OAuth2Parameters();
+parameters.RedirectUri = "https://my-callback-url";
+string authorizeUrl = oauthOperations.BuildAuthorizeUrl(GrantType.ImplicitGrant, parameters);
+Response.Redirect(authorizeUrl);
+
+// upon receiving the callback from the provider:
+AccessGrant accessGrant = new AccessGrant(accessToken);
+IGitHub gitHubApi = serviceProvider.GetApi(accessGrant);]]></programlisting>
+		</para>
+	</section>
+  
+	<section id="serviceproviders-oauth1">
+		<title>OAuth1 service providers</title>
+		OAuth 1 is the previous version of the OAuth protocol.
+		It is more complex than OAuth 2, and sufficiently different that it is supported separately.
+		Twitter, Linked In, and TripIt are some of the well-known ServiceProviders that use OAuth 1.
+		<sbr/>In Spring.NET Social, an <interfacename>IOAuth1ServiceProvider&lt;T&gt;</interfacename> instance is used to establish connections with a OAuth1-based service provider:
+			<programlisting language="csharp"><![CDATA[
+public interface IOAuth1ServiceProvider<T> : IServiceProvider<T> where T : IApiBinding
+{
+  IOAuth1Operations OAuthOperations { get; }
+
+  T GetApi(string accessToken, string secret);
+}]]></programlisting>
+		<para>
+			Like a OAuth2-based provider, <literal>OAuthOperations</literal> returns an API to use to conduct the authorization flow, or "OAuth Dance".
+			<sbr/>The result of the OAuth 1 flow is an <classname>OAuthToken</classname> that can be used to obtain a strongly-typed binding to the ServiceProvider's API by calling <literal>GetApi</literal>.
+    </para>
+    <para>
+      The OAuth1Operations interface is shown below:
+    </para>
+		<programlisting language="java"><![CDATA[
+public interface OAuth1Operations 
+{
+  OAuth1Version Version { get; }
+
+  OAuthToken FetchRequestToken(String callbackUrl, NameValueCollection additionalParameters);
+
+  string BuildAuthorizeUrl(string requestToken, OAuth1Parameters parameters);
+
+  string BuildAuthenticateUrl(string requestToken, OAuth1Parameters parameters);
+
+  OAuthToken ExchangeForAccessToken(AuthorizedRequestToken requestToken, NameValueCollection additionalParameters);
+}]]></programlisting>			
+		<para>
+			Callers are first expected to call fetchNewRequestToken(String) to obtain a temporary token from the ServiceProvider to use during the authorization session.
+			<sbr/>Next, callers should call <literal>BuildAuthorizeUrl(string, OAuth1Parameters)</literal> to construct the URL to redirect the user to for connection authorization.
+			<sbr/>Upon user authorization, the authorized request token returned by the provider should be exchanged for an access token.
+			The access token should then used to get the ServiceProvider API.
+      <sbr/>This flow is illustrated below:
+    </para>
+		<mediaobject>
+      <imageobject>
+				<imagedata fileref="images/oauth1_flow.png" format="PNG" align="center"/>
+			</imageobject>
+		</mediaobject>
+		<orderedlist>
+			<listitem>
+				<para>
+					The flow starts with the application asking for a request token.
+					<sbr/>The purpose of the request token is to obtain user approval and it can only be used to obtain an access token.
+					<sbr/>In OAuth 1.0a, the consumer callback URL is passed to the provider when asking for a request token.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					The service provider issues a request token to the consumer.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					The application redirects the user to the provider's authorization page, passing the request token as a parameter.
+					<sbr/>In OAuth 1.0, the callback URL is also passed as a parameter in this step.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					The service provider prompts the user to authorize the consumer application and the user agrees.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					The service provider redirects the user's browser back to the application (via the callback URL).
+					<sbr/>In OAuth 1.0a, this redirect includes a verifier code as a parameter. At this point, the request token is authorized.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					The application exchanges the authorized request token (including the verifier in OAuth 1.0a) for an access token.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					The service provider issues an access token to the consumer. The "dance" is now complete.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					The application uses the access token to establish a connection between the local user account and the external provider account.
+					<sbr/>With the connection established, the application can now obtain a reference to the Service API and invoke the provider on behalf of the user.
+				</para>
+			</listitem>				
+		</orderedlist>
+		<para>
+			The example code below shows use of a <classname>TwitterServiceProvider</classname> to create a connection to Twitter using the OAuth1 server-side flow illustrated above.
+			<sbr/>Here, <classname>TwitterServiceProvider</classname> implements <interfacename>IOAuth1ServiceProvider&lt;ITwitter&gt;</interfacename>:
+			<programlisting language="java"><![CDATA[
+TwitterServiceProvider serviceProvider = new TwitterServiceProvider("consumerKey", "consumerSecret");
+OAuth1Operations oauthOperations = serviceProvider.AuthOperations;
+OAuthToken requestToken = oauthOperations.FetchRequestToken("https://my-callback-url", null);
+string authorizeUrl = oauthOperations.BuildAuthorizeUrl(requestToken, null);
+Response.Redirect(authorizeUrl);
+
+// upon receiving the callback from the provider:
+OAuthToken accessToken = oauthOperations.ExchangeForAccessToken(new AuthorizedRequestToken(requestToken, oauthVerifier), null);
+ITwitter twitterApi = serviceProvider.GetApi(accessToken.Value, accessToken.Secret);]]></programlisting>
+		</para>
+	</section>
+</chapter>

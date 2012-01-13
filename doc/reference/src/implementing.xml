@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter id="implementing" version="5.0" xmlns="http://docbook.org/ns/docbook"
+         xmlns:ns52="http://www.w3.org/2000/svg"
+         xmlns:ns5="http://www.w3.org/1999/xlink"
+         xmlns:ns4="http://www.w3.org/1998/Math/MathML"
+         xmlns:ns3="http://www.w3.org/1999/xhtml"
+         xmlns:ns="http://docbook.org/ns/docbook">
+	<title>Adding Support for a New Service Provider</title>
+	<para>
+		Spring.NET Social makes it easy to add support for service providers that are not already supported by the framework.
+		<sbr/>If you review the existing client projects, such as Twitter and LinkedIn, you will discover they are implemented in a consistent manner and they apply a set of well-defined extension points.
+		<sbr/>In this chapter, you will learn how to add support for new service providers you wish to integrate into your applications.
+	</para>
+	<section id="service-providers-implementing">
+		<title>Process overview</title>
+		<para>
+			The process of adding support for a new service provider consists of several steps:
+			<orderedlist>
+				<listitem>
+					<para>Create a source project for the client code e.g. <code>Spring.Social.Twitter</code>.</para>
+				</listitem>
+				<listitem>
+					<para>Develop or integrate a binding to the provider's API e.g. <code>ITwitter</code>.</para>
+				</listitem>
+				<listitem>
+					<para>Create an <interfacename>IServiceProvider</interfacename> model that allows users to authorize with the remote provider and obtain authorized  API instances e.g. <code>TwitterServiceProvider</code>.</para>
+				</listitem>
+			</orderedlist>
+		</para>
+		<para>
+			The following sections of this chapter walk you through each of the steps with examples.
+		</para>
+	</section>
+	<section id="service-providers-implementing-project">
+		<title>Creating a source project for the provider client code</title>
+		<para>
+			We recommend the code for a new Social client code reside within the <code>Spring.Social.{providerId}</code> assembly,
+			where {providerId} is a unique identifier you assign to the service provider you are adding support for.
+		</para>
+		<para>
+			Within the assembly, we recommend the following namespace structure:
+			<table>
+				<title>Assembly Structure</title>
+				<tgroup cols="2">
+					<colspec align="left" />
+					<colspec colnum="1" colname="col1" colwidth="2*" />
+					<colspec colnum="2" colname="col2" colwidth="2*" />
+					<thead>
+						<row>
+							<entry align="center">Namespace</entry>
+							<entry align="center">Description</entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry>Spring.Social.{providerId}.Api</entry>
+							<entry>The public interface and types that defines the API binding.</entry>
+						</row>					
+						<row>
+							<entry>Spring.Social.{providerId}.Api.impl</entry>
+							<entry>The implementation of the API binding.</entry>
+						</row>					
+						<row>
+							<entry>Spring.Social.{providerId}.Connect</entry>
+							<entry>The types necessary to establish connections to the service provider.</entry>
+						</row>					
+					</tbody>					
+				</tgroup>
+			</table>
+		</para>
+		<para>
+			You can see this recommended structure in action by reviewing Twitter project:
+			<mediaobject>
+				<imageobject>
+					<imagedata fileref="images/spring-social-twitter-example.png" format="PNG" align="center" />
+				</imageobject>
+			</mediaobject>
+		</para>
+		<para>
+			Here, the central service API type, ITwitter, is located in the <literal>Api</literal> namespace along with its supporting operations types and data transfer object types.
+			<sbr/>The primary implementation of that interface, <classname>TwitterTemplate</classname>, is located in the <literal>Api.Impl</literal> namespace (along with other internal types that have been excluded from this view).
+      <sbr/>Finally, the <literal>Connect</literal> namespace contains the implementations of the <interfacename>IServiceProvider</interfacename> that enable connections to Twitter to be established.
+    </para>
+	</section>
+	<section id="service-providers-implementing-api">
+		<title>Developing a binding to the provider's API</title>
+		<para>
+			Spring.NET Social favors the development of strongly-typed bindings to external service provider APIs.
+			<sbr/>This provides a simple, domain-oriented interface for .NET applications to use to consume the API.
+		</para>
+		<section id="service-provider-implementing-api-new-designing">
+			<title>Designing a new API binding</title>
+			<para>
+				API developers retain full control over the design and implementation of their API bindings.
+				<sbr/>That said, we offer several design guidelines in an effort to improve overall consistency and quality:
+				<itemizedlist>
+					<listitem>
+            <para>
+              <emphasis>Favor separating the API binding interface from the implementation.</emphasis>
+              <sbr/>This is illustrated in the Twitter example in the previous section.
+              <sbr/>There, "Twitter" is the central API binding type and it is declared in the <literal>Spring.Social.Twitter.Api</literal> namespace with other public types.
+              <sbr/><classname>TwitterTemplate</classname> is the primary implementation of this interface and is located in the <literal>Spring.Social.Twitter.Api.Impl</literal> namespace along with other internal implementation types.
+            </para>
+					</listitem>
+					<listitem>
+						<para>
+							<emphasis>Favor organizing the API binding hierarchically by RESTful resource.</emphasis>
+              <sbr/>REST-based APIs typically expose access to a number of resources in an hierarchical manner.
+							<sbr/>For example, Twitter's API provides access to "status timelines", "searches", "lists", "direct messages", "friends", "geo location", and "users".
+							<sbr/>Rather than add all operations across these resources to a single flat "Twitter" interface, the ITwitter interface is organized hierarchically:
+							<programlisting language="csharp"><![CDATA[public interface ITwitter : IApiBinding
+{
+  IBlockOperations BlockOperations { get; }
+
+  IDirectMessageOperations DirectMessageOperations { get; }
+
+  IFriendOperations FriendOperations { get; }
+
+  IGeoOperations GeoOperations { get; }
+
+  IListOperations ListOperations { get; }
+  
+  ISearchOperations SearchOperations { get; }
+
+  ITimelineOperations TimelineOperations { get; }
+
+  IUserOperations UserOperations { get; }
+
+  IRestOperations RestOperations { get; }
+}]]></programlisting>
+						</para>
+						<para>
+              <interfacename>IDirectMessageOperations</interfacename>, for example, contains API bindings to Twitter's "direct messages" resource:
+							<programlisting language="csharp"><![CDATA[public interface IDirectMessageOperations
+{
+  IList<DirectMessage> GetDirectMessagesReceived();
+
+  IList<DirectMessage> GetDirectMessagesReceived(int page, int pageSize);
+
+  IList<DirectMessage> GetDirectMessagesReceived(int page, int pageSize, long sinceId, long maxId);
+
+  IList<DirectMessage> GetDirectMessagesSent();
+
+  IList<DirectMessage> GetDirectMessagesSent(int page, int pageSize);
+
+  IList<DirectMessage> GetDirectMessagesSent(int page, int pageSize, long sinceId, long maxId);
+
+  DirectMessage GetDirectMessage(long id);
+       
+  DirectMessage SendDirectMessage(string toScreenName, string text);
+
+  DirectMessage SendDirectMessage(long toUserId, string text);
+
+  void DeleteDirectMessage(long messageId);
+}]]></programlisting>
+						</para>
+					</listitem>
+				</itemizedlist>
+			</para>
+		</section>
+		<section id="service-provider-implementing-api-new-implementing">
+			<title>Implementing a new API binding</title>
+			<para>
+				API developers are free to implement their API binding with whatever REST/HTTP client they see fit.
+				<sbr/>That said, Spring.NET Social's existing bindings such as Twitter all use <ulink url="http://www.springframework.net/rest/">Spring.NET REST Client Framework</ulink>'s RestTemplate.
+				RestTemplate is a REST client that provides a uniform object mapping interface across a variety of data exchange formats (JSON, XML, etc).
+			</para>
+			<para>
+				Spring.NET Social has adopted a convention where each API implementation class is named "{ProviderId}Template" e.g. TwitterTemplate.
+				We favor this convention unless there is a good reason to deviate from it.
+				<sbr/>As discussed in the previous section, we recommend keeping implementation types separate from the public API types.
+        We also recommend keeping implementation details internal.
+      </para>
+			<para>
+				The way in which an API binding implementation is constructed will vary based on the API's authorization protocol.
+				For APIs secured with OAuth1, the consumerKey, consumerSecret, accessToken, and accessTokenSecret will be required for construction:
+				<programlisting language="csharp"><![CDATA[public TwitterTemplate(string consumerKey, string consumerSecret, string accessToken, string accessTokenSecret) 
+{ 
+  ... 
+}]]></programlisting>				
+			</para>
+			<para>
+				For OAuth2, only the access token should be required:
+				<programlisting language="csharp"><![CDATA[public GitHubTemplate(string accessToken) { 
+  ... 
+}]]></programlisting>
+			</para>
+			<para>
+				Each request made to the API server needs to be signed with the authorization credentials provided during construction of the binding.
+				<sbr/>This signing process consists of adding an "Authorization" header to each client request before it is executed.
+				<sbr/>For OAuth1, the process is quite complicated, and is used to support an elaborate request signature verification algorithm between the client and server.
+				<sbr/>For OAuth2, it is a lot simpler, but does still vary across the various drafts of the OAuth2 specification.
+			</para>
+			<para>
+				To encapsulate this complexity, for each authorization protocol Spring Social provides a base class you may extend from to
+				construct a pre-configured RestTemplate instance that performs the request signing for you. 
+        <sbr/>For OAuth1:
+				<programlisting language="csharp"><![CDATA[public class TwitterTemplate : AbstractOAuth1ApiBinding 
+{
+  public TwitterTemplate(string consumerKey, string consumerSecret, string accessToken, string accessTokenSecret) 
+    : base(consumerKey, consumerSecret, accessToken, accessTokenSecret);
+  {    
+  }
+}]]></programlisting>
+			</para>
+			<para>
+				An OAuth2 example:
+				<programlisting language="csharp"><![CDATA[public class GitHubTemplate : AbstractOAuth2ApiBinding 
+{
+  public GitHubTemplate(string accessToken) 
+    : base(accessToken);
+  {        
+  }
+}]]></programlisting>
+			</para>
+			<para>
+				Once configured as shown above, you simply implement call RestTemplate and implement the various API operations.
+				<sbr/>The existing Spring.NET Social client modules all invoke their RestTemplate instances in a standard manner:
+				<programlisting language="csharp"><![CDATA[public TwitterProfile GetUserProfile() 
+{
+  return this.RestTemplate.GetForObject<TwitterProfile>("account/verify_credentials.json");
+}]]></programlisting>
+			</para>
+			<para>
+				For complete implementation examples, consult the source of the existing API bindings included in Spring.NET Social projects.
+			</para>
+		</section>
+		<section id="service-provider-implementing-api-new-testing">
+			<title>Testing a new API binding</title>
+			<para>
+				As part of the RestTemplate component, <ulink url="http://www.springframework.net/rest/">Spring.NET REST Client Framework</ulink> includes a framework for unit testing RestTemplate based code.
+				<sbr/>This framework consists of a "MockRestServiceServer" that can be used to mock out API calls to the remote service provider.
+				<sbr/>This allows for the development of independent, performant, automated unit tests that verify client API binding and object mapping behavior.
+			</para>
+			<para>
+				To use, first create a <classname>MockRestServiceServer</classname> against the <classname>RestTemplate</classname> instance used by your API implementation:
+			</para>
+			<programlisting language="csharp"><![CDATA[TwitterTemplate twitter = new TwitterTemplate("consumerKey", "consumerSecret", "accessToken", "accessTokenSecret");
+MockRestServer mockServer = MockRestServiceServer.CreateServer(twitter.RestTemplate);]]></programlisting>
+			<para>
+				Then, for each test case, record expectations about how the server should be invoked and answer what it should respond with:
+			</para>
+			<programlisting language="csharp"><![CDATA[[Test]
+public void GetUserProfile() 
+{
+  HttpHeaders responseHeaders = new HttpHeaders();
+  responseHeaders.ContentType = MediaType.APPLICATION_JSON;
+    
+  mockServer.ExpectNewRequest()
+    .AndExpectUri("https://api.twitter.com/1/account/verify_credentials.json")
+    .AndExpectMethod(HttpMethod.GET)
+    .AndRespondWith(JsonResource("Verify_Credentials"), responseHeaders);
+
+  TwitterProfile profile = twitter.UserOperations.GetUserProfile();
+  Assert.AreEqual(161064614, profile.ID);
+  Assert.AreEqual("kdonald", profile.ScreenName);
+}]]></programlisting>
+			<para>
+				In the example above the response body is written from a 'Verify_Credentials.json' embedded resource file located in the same namespace as the test class:
+			</para>
+			<programlisting language="csharp"><![CDATA[private IResource JsonResource(string filename) 
+{
+  return new AssemblyResource("assembly://Spring.Social.Twitter.Tests/Spring.Social.Twitter.Api.Impl/" + filename + ".json");
+}]]></programlisting>
+			<para>
+				The content of the file should mirror the content the remote service provider would return, allowing the client JSON deserialization behavior to be fully tested:
+			</para>
+			<programlisting><![CDATA[{
+    "id":161064614,
+    "screen_name":"kdonald"
+}]]></programlisting>
+			<para>
+				For complete test examples, consult the source of the existing API bindings included in Spring.NET Social projects.
+			</para>
+		</section>				
+	</section>
+	<section id="service-providers-implementing-serviceprovider">
+		<title>Creating a ServiceProvider model</title>
+		<para>
+			As described in the previous section, a client binding to a secure API such as GitHub or Twitter requires valid user authorization credentials to work.
+			<sbr/>Such credentials are generally obtained by having your application conduct an authorization "dance" or handshake with the service provider.
+			<sbr/>Spring.NET Social provides the <interfacename>IServiceProvider&lt;T&gt;</interfacename> abstraction to handle this "authorization dance". 
+      The abstraction also acts as a factory for native API (T) instances.
+		</para>
+		<para>
+			Since the authorization dance is protocol-specific, an IServiceProvider specialization exists for each authorization protocol.
+			<sbr/>For example, if you are connecting to a OAuth2-based provider, you would implement <interfacename>IOAuth2ServiceProvider</interfacename>.
+			<sbr/>After you've done this, your implementation can be used to conduct the OAuth2 dance and obtain an authorized API instance.
+			<sbr/>The following sections describe the implementation steps for each ServiceProvider type.
+		</para>
+		<section id="service-providers-implementing-serviceprovider-oauth2">
+			<title>OAuth2</title>
+			<para>
+				To implement an OAuth2-based ServiceProvider, first create a subclass of <classname>AbstractOAuth2ServiceProvider&lt;T&gt;</classname> named {ProviderId}ServiceProvider.
+				<sbr/>Parameterize generic type T to be the binding to the ServiceProvider's API.
+				<sbr/>Define a single constructor that accepts an clientId and clientSecret.
+				<sbr/>Finally, implement <literal>GetApi(string)</literal> to return a new API instance.
+			</para>
+			<para>
+				See GitHub and Facebook samples as an example for OAuth2 based service provider:
+			</para>
+			<programlisting language="csharp"><![CDATA[public class GitHubServiceProvider : AbstractOAuth2ServiceProvider<IGitHub>
+{
+  public GitHubServiceProvider(string clientId, string clientSecret)
+    : base(new OAuth2Template(clientId, clientSecret,
+      "https://github.com/login/oauth/authorize",
+      "https://github.com/login/oauth/access_token"))
+  {
+  }
+
+  public override IGitHub GetApi(string accessToken)
+  {
+    return new GitHubTemplate(accessToken);
+  }
+}]]></programlisting>
+			<para>
+				In the constructor, you should call base class constructor, passing up the configured <classname>OAuth2Template</classname> that implements <interfacename>IOAuth2Operations</interfacename>.
+				<sbr/>The <classname>OAuth2Template</classname> will handle the "OAuth dance" with the provider, and should be configured with the provided clientId and clientSecret, along with the provider-specific authorizeUrl and accessTokenUrl.
+			</para>
+			<para>
+				Some providers support provider sign-in through an authentication URL that is distinct from the authorization URL.
+				Using the <classname>OAuth2Template</classname> constructor as shown above will assume that the authentication URL is the same as the authorization URL.
+				But you may specify a different authentication URL by using <classname>OAuth2Template</classname>'s other constructor.
+			</para>
+			<para>
+				In <literal>GetApi(string)</literal>, you should construct your API implementation, passing it the access token needed to make authorized requests for protected resources.
+			</para>
+		</section>
+		<section id="service-providers-implementing-serviceprovider-oauth1">
+			<title>OAuth1</title>
+			<para>
+        To implement an OAuth2-based ServiceProvider, first create a subclass of <classname>AbstractOAuth1ServiceProvider&lt;T&gt;</classname> named {ProviderId}ServiceProvider.
+        <sbr/>Parameterize generic type T to be the binding to the ServiceProvider's API.
+				<sbr/>Define a single constructor that accepts a consumerKey and consumerSecret.
+				<sbr/>Finally, implement <literal>GetApi(string, string)</literal> to return a new API instance.
+			</para>
+      <para>
+        See Twitter and LinkedIn samples as an example for OAuth1 based service provider:
+      </para>
+			<programlisting language="csharp"><![CDATA[public class TwitterServiceProvider : AbstractOAuth1ServiceProvider<ITwitter>
+{
+  public TwitterServiceProvider(string consumerKey, string consumerSecret)
+    : base(consumerKey, consumerSecret, new OAuth1Template(consumerKey, consumerSecret,
+      "https://api.twitter.com/oauth/request_token",
+      "https://api.twitter.com/oauth/authorize",
+      "https://api.twitter.com/oauth/authenticate",
+      "https://api.twitter.com/oauth/access_token"))
+  {
+  }
+
+  public override ITwitter GetApi(string accessToken, string secret)
+  {
+    return new TwitterTemplate(this.ConsumerKey, this.ConsumerSecret, accessToken, secret);
+  }
+}]]></programlisting>
+			<para>
+        In the constructor, you should call base class constructor, passing up the the consumerKey, secret, and configured <classname>OAuth1Template</classname> that implements <interfacename>IOAuth1Operations</interfacename>.
+        <sbr/>The <classname>OAuth1Template</classname> will handle the "OAuth dance" with the provider.
+        <sbr/>It should be configured with the provided consumerKey and consumerSecret, along with the provider-specific requestTokenUrl, authorizeUrl, authenticateUrl, and accessTokenUrl.
+        <sbr/>The authenticateUrl parameter is optional and may be left out if the provider doesn't have an authentication URL that is different than the authorization URL.
+      </para>			
+			<para>
+				As you can see here, <classname>OAuth1Template</classname> is constructed with Twitter's authentication URL (used for provider sign-in), which is distinct from their authorization URL.
+				<sbr/>Some providers don't have separate URLs for authentication and authorization.
+				<sbr/>In those cases, you can use <classname>OAuth1Template</classname>'s other constructor which doesn't take the authentication URL as a parameter.
+			</para>
+			<para>
+				In <literal>GetApi(string, string)</literal>, you should construct your API implementation, passing it the four tokens needed to make authorized requests for protected resources.
+			</para>
+		</section>
+		<note>
+			Consult the API documentation of the various service provider types for more information and subclassing options.
+		</note>
+	</section>
+</chapter>

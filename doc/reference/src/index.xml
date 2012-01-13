@@ -1,8 +1,11 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE book[
-  <!ENTITY overview                 SYSTEM "overview.xml">
-]>
-<book xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://docbook.org/ns/docbook/xi" version="5.0" xml:lang="en">
+  <!ENTITY introduction             SYSTEM "introduction.xml">
+  <!ENTITY serviceproviders         SYSTEM "serviceproviders.xml">
+  <!ENTITY implementing             SYSTEM "implementing.xml">
+  
+  ]>
+  <book xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://docbook.org/ns/docbook/xi" version="5.0" xml:lang="en">
   <bookinfo>
     <!-- auto-generated -->
     <title>Spring.NET Social Framework</title>
@@ -12,15 +15,15 @@
     <!-- auto-generated -->
     <copyright>Copyright 2012 SpringSource</copyright>
     <!-- auto-generated -->
-    <pubdate>Last Updated 1/6/2012</pubdate>
+    <pubdate>Last Updated 1/13/2012</pubdate>
     <authorgroup>
       <author>
         <firstname>Craig</firstname>
-        <surname>Walls (Java)</surname>
+        <surname>Walls</surname>
       </author>
       <author>
         <firstname>Keith</firstname>
-        <surname>Donald (Java)</surname>
+        <surname>Donald</surname>
       </author>
       <author>
         <firstname>Bruno</firstname>
@@ -36,4 +39,4 @@
       </para>
     </legalnotice>
   </bookinfo>
-  <toc />&overview;</book>
+  <toc />&introduction;&serviceproviders;&implementing;</book>

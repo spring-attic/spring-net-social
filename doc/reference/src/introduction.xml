@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter id="introduction" version="5.0" xmlns="http://docbook.org/ns/docbook"
+         xmlns:ns52="http://www.w3.org/2000/svg"
+         xmlns:ns5="http://www.w3.org/1999/xlink"
+         xmlns:ns4="http://www.w3.org/1998/Math/MathML"
+         xmlns:ns3="http://www.w3.org/1999/xhtml"
+         xmlns:ns="http://docbook.org/ns/docbook">
+  <title>Introduction</title>
+
+  <para>The Spring Social project enables your applications to establish Connections with Software-as-a-Service (SaaS) Providers such as Facebook and Twitter to invoke APIs on behalf of Users.</para>
+  
+  <section xml:id="introduction-overview">
+    <title>Overview</title>
+
+    <para>
+      <emphasis role="bold">Socializing applications</emphasis>
+    </para>    
+    <para>
+			The phrase "social networking" often refers to efforts aimed at bringing people together.
+			In the software world, those efforts take the form of online social networks such as Facebook, Twitter, and LinkedIn.
+			Over half a billion of this world's internet users have flocked to these services to keep frequent contact with family, friends, and colleagues.
+		</para>
+		<para>
+			Under the surface, however, these services are just software applications that gather, store, and process information.
+			Just like so many applications written before, these social networks have users who sign in and perform some activity offered by the service.
+		</para>
+		<para>
+			What makes these applications a little different than traditional applications is that the data that they collect represent some facet of their users' lives.
+			What's more, these applications are more than willing to share that data with other applications, as long as the user gives permission to do so.
+			This means that although these social networks are great at bringing people together, as software services they also excel at bringing applications together.
+		</para>
+		<para>
+			To illustrate, imagine that Paul is a member of an online movie club.
+			A function of the movie club application is to recommend movies for its members to watch and to let its members maintain a list of movies that they have seen and those that they plan to see.
+			When Paul sees a movie, he signs into the movie club site, checks the movie off of his viewing list, and indicates if he liked the movie or not.
+			Based on his responses, the movie club application can tailor future recommendations for Paul to see.
+		</para>
+		<para>
+			On its own, the movie club provides great value to Paul, as it helps him choose movies to watch.
+			But Paul is also a Facebook user. And many of Paul's Facebook friends also enjoy a good movie now and then.
+			If Paul were able to connect his movie club account with his Facebook profile, the movie club application could offer him a richer experience.
+			Perhaps when he sees a movie, the application could post a message on his Facebook wall indicating so.
+			Or when offering suggestions, the movie club could factor in the movies that his Facebook friends liked.
+		</para>
+		<para>
+			Social integration is a three-way conversation between a service provider, a service consumer, and a user who holds an account on both the provider and consumer.
+			All interactions between the consumer and the service provider are scoped to the context of the user's profile on the service provider.
+		</para>
+		<para>
+			In the narrative above, Facebook is the service provider, the movie club application is the service consumer, and Paul is the user of both.
+			The movie club application may interact with Facebook on behalf of Paul, accessing whatever Facebook data and functionality that Paul permits, including retrieving Paul's friends and posting messages to his wall.
+		</para>
+		<para>
+			From the user's perspective, both applications provide some valuable functionality.
+			But by connecting the user's account on the consumer application with his account on the provider application, the user brings together two applications that can now offer the user more value than they could individually.
+		</para>
+		<para>
+      With Spring.NET Social, your application can play the part of the service consumer, interacting with a service provider on behalf of its users.
+      Spring.NET Social helps establishing connections between local users and provider based on the authorization protocol used by the ServiceProvider.
+      Some service providers use OAuth, others use Basic Auth, others may use something else.
+      Spring.NET Social currently provides native support for OAuth-based service providers, including support for OAuth 1 and OAuth 2. 
+      This covers the leading social networks, such as Facebook and Twitter, all of which use OAuth to secure their APIs. 
+      Support for other authorization protocols can be added by extending the framework.
+    </para>
+
+    <para>
+      Spring.NET Social Framework supports the following .NET Frameworks : 
+      <itemizedlist>
+        <listitem>
+          <para>.NET 2.0</para>
+        </listitem>
+
+        <listitem>
+          <para>.NET Client Profile 3.5 and 4.0</para>
+        </listitem>
+
+        <listitem>
+          <para>Silverlight 4.0 and 5.0</para>
+        </listitem>
+
+        <listitem>
+          <para>Windows Phone 7.0 and 7.1</para>
+        </listitem>
+      </itemizedlist>
+    </para>
+    
+  </section>
+
+  <section id="introduction-extensions">
+    <title>Extensions</title>
+    <para>
+      In addition to the core Spring Social project, there are a number of provider-specific extensions that are released separately 
+      that provide connectivity and API bindings to popular SaaS providers. 
+      <sbr/>These client extensions are listed below:
+      <itemizedlist>
+      <listitem>
+        <para><ulink url="http://www.springframework.net/social-twitter/">Twitter</ulink></para>
+      </listitem>
+    </itemizedlist>
+    </para>
+  </section>
+
+  <section xml:id="introduction-licence">
+    <title>License Information</title>
+
+    <para>Spring.NET Social Framework is licensed according to the terms of the Apache License,
+    Version 2.0. The full text of this license are available online at <ulink
+    url="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</ulink>
+    . You can also view the full text of the license in the license.txt file
+    located in the root directory of the distribution.</para>
+  </section>
+</chapter>
