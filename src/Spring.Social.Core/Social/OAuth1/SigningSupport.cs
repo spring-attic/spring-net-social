@@ -218,11 +218,11 @@ namespace Spring.Social.OAuth1
             if (uri.Scheme == "http" && uri.Port == 80 ||
                 uri.Scheme == "https" && uri.Port == 443)
             {
-                return uri.GetComponents(UriComponents.Scheme | UriComponents.Host | UriComponents.Path, UriFormat.Unescaped);
+                return uri.GetComponents(UriComponents.Scheme | UriComponents.Host | UriComponents.Path, UriFormat.UriEscaped);
             }
             else
             {
-                return uri.GetComponents(UriComponents.Scheme | UriComponents.HostAndPort | UriComponents.Path, UriFormat.Unescaped);
+                return uri.GetComponents(UriComponents.Scheme | UriComponents.HostAndPort | UriComponents.Path, UriFormat.UriEscaped);
             }
         }
 
