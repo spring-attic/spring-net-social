@@ -1060,10 +1060,75 @@
             </remarks>
             <author>Bruno Baia</author>
         </member>
+        <member name="T:Spring.Http.Converters.ResourceHttpMessageConverter">
+            <summary>
+            Implementation of <see cref="T:Spring.Http.Converters.IHttpMessageConverter"/> that can read and write <see cref="T:Spring.IO.IResource"/>s.
+            </summary>
+            <remarks>
+            <para>
+            By default, this converter supports all media types.
+            </para>
+            <para>
+            A mapping between file extension and mime types is used to determine the Content-Type of written files. 
+            If no Content-Type is available, 'application/octet-stream' is used.
+            </para>
+            <para>
+            This can be overridden by setting the <see cref="P:SupportedMediaTypes"/> property.
+            </para>
+            </remarks>
+            <author>Arjen Poutsma</author>
+            <author>Bruno Baia (.NET)</author>
+        </member>
+        <member name="M:Spring.Http.Converters.ResourceHttpMessageConverter.#ctor">
+            <summary>
+            Creates a new instance of the <see cref="T:Spring.Http.Converters.FileInfoHttpMessageConverter"/>.
+            </summary>
+        </member>
+        <member name="M:Spring.Http.Converters.ResourceHttpMessageConverter.Supports(System.Type)">
+            <summary>
+            Indicates whether the given class is supported by this converter.
+            </summary>
+            <param name="type">The type to test for support.</param>
+            <returns><see langword="true"/> if supported; otherwise <see langword="false"/></returns>
+        </member>
+        <member name="M:Spring.Http.Converters.ResourceHttpMessageConverter.ReadInternal``1(Spring.Http.IHttpInputMessage)">
+            <summary>
+            Abstract template method that reads the actualy object. Invoked from <see cref="M:Read"/>.
+            </summary>
+            <typeparam name="T">The type of object to return.</typeparam>
+            <param name="message">The HTTP message to read from.</param>
+            <returns>The converted object.</returns>
+            <exception cref="T:Spring.Http.Converters.HttpMessageNotReadableException">In case of conversion errors</exception>
+        </member>
+        <member name="M:Spring.Http.Converters.ResourceHttpMessageConverter.WriteInternal(System.Object,Spring.Http.IHttpOutputMessage)">
+            <summary>
+            Abstract template method that writes the actual body. Invoked from <see cref="M:Write"/>.
+            </summary>
+            <param name="content">The object to write to the HTTP message.</param>
+            <param name="message">The HTTP message to write to.</param>
+            <exception cref="T:Spring.Http.Converters.HttpMessageNotWritableException">In case of conversion errors</exception>
+        </member>
+        <member name="M:Spring.Http.Converters.ResourceHttpMessageConverter.GetDefaultContentType(System.Object)">
+            <summary>
+            Returns the default content type for the given object. 
+            Called when <see cref="M:Write"/> is invoked without a specified content type parameter.
+            </summary>
+            <remarks>
+            This implementation uses the mapping between file extension and mime types is used 
+            to determine the Content-Type of written files. 
+            If no Content-Type is available, 'application/octet-stream' is used.
+            </remarks>
+            <param name="content">The object to return the content type for.</param>
+            <returns>The <see cref="T:Spring.Http.MediaType">content type</see>, or null if not known.</returns>
+        </member>
+        <member name="P:Spring.Http.Converters.ResourceHttpMessageConverter.MimeMapping">
+            <summary>
+            Gets or sets the mapping between file extension and mime types.
+            </summary>
+        </member>
         <member name="M:Spring.Http.Converters.FileInfoHttpMessageConverter.#ctor">
             <summary>
-            Creates a new instance of the <see cref="T:Spring.Http.Converters.FileInfoHttpMessageConverter"/> 
-            with 'application/octet-stream', and '*/*' media types.
+            Creates a new instance of the <see cref="T:Spring.Http.Converters.FileInfoHttpMessageConverter"/>.
             </summary>
         </member>
         <member name="M:Spring.Http.Converters.FileInfoHttpMessageConverter.CanRead(System.Type,Spring.Http.MediaType)">
@@ -1113,16 +1178,6 @@
             </param>
             <param name="message">The HTTP message to write to.</param>
             <exception cref="T:Spring.Http.Converters.HttpMessageNotWritableException">In case of conversion errors</exception>
-        </member>
-        <member name="P:Spring.Http.Converters.FileInfoHttpMessageConverter.MimeMapping">
-            <summary>
-            Gets or sets the mapping between file extension and mime types.
-            </summary>
-        </member>
-        <member name="P:Spring.Http.Converters.FileInfoHttpMessageConverter.SupportedMediaTypes">
-            <summary>
-            Gets the list of <see cref="T:Spring.Http.MediaType"/> objects supported by this converter.
-            </summary>  
         </member>
         <member name="T:Spring.Http.Converters.FormHttpMessageConverter">
             <summary>
@@ -1443,6 +1498,33 @@
             Default value is <c>false</c>.
             </summary>
         </member>
+        <member name="T:Spring.Http.Converters.Json.JsonHttpMessageConverter">
+            <summary>
+            Implementation of <see cref="T:Spring.Http.Converters.IHttpMessageConverter"/> that can read and write JSON 
+            using <see cref="T:System.Runtime.Serialization.Json.DataContractJsonSerializer"/>.
+            </summary>
+            <remarks>
+            By default, this converter supports 'application/json' media type. 
+            This can be overridden by setting the <see cref="P:SupportedMediaTypes"/> property.
+            </remarks>
+            <author>Bruno Baia</author>
+        </member>
+        <member name="M:Spring.Http.Converters.Json.JsonHttpMessageConverter.#ctor">
+            <summary>
+            Creates a new instance of the <see cref="T:Spring.Http.Converters.Json.JsonHttpMessageConverter"/> 
+            with the media type 'application/json'. 
+            </summary>
+        </member>
+        <member name="M:Spring.Http.Converters.Json.JsonHttpMessageConverter.#ctor(System.Boolean)">
+            <summary>
+            Creates a new instance of the <see cref="T:Spring.Http.Converters.Json.JsonHttpMessageConverter"/> 
+            with the media type 'application/json'. 
+            </summary>
+            <param name="requiresAttribute">
+            If <c>true</c>, supports only classes decorated with 
+            <see cref="T:System.Runtime.Serialization.DataContractAttribute"/> and <see cref="T:System.Runtime.Serialization.CollectionDataContractAttribute"/>. 
+            </param>
+        </member>
         <member name="T:Spring.Http.Converters.Json.SpringJsonHttpMessageConverter">
             <summary>
             Implementation of <see cref="T:Spring.Http.Converters.IHttpMessageConverter"/> that can read and write JSON 
@@ -1476,7 +1558,7 @@
             Creates a new instance of the <see cref="T:Spring.Http.Converters.Json.SpringJsonHttpMessageConverter"/> 
             with the media type 'application/json'.
             </summary>
-            <param name="mapper">A <see cref="T:Spring.Json.JsonMapper"/> to use for converting custom types.</param>
+            <param name="mapper">A <see cref="P:Spring.Http.Converters.Json.SpringJsonHttpMessageConverter.JsonMapper"/> to use for converting custom types.</param>
         </member>
         <member name="M:Spring.Http.Converters.Json.SpringJsonHttpMessageConverter.CanRead(System.Type,Spring.Http.MediaType)">
             <summary>
@@ -1522,70 +1604,9 @@
             <param name="message">The HTTP message to write to.</param>
             <exception cref="T:Spring.Http.Converters.HttpMessageNotWritableException">In case of conversion errors</exception>
         </member>
-        <member name="T:Spring.Http.Converters.ResourceHttpMessageConverter">
+        <member name="P:Spring.Http.Converters.Json.SpringJsonHttpMessageConverter.JsonMapper">
             <summary>
-            Implementation of <see cref="T:Spring.Http.Converters.IHttpMessageConverter"/> that can read and write <see cref="T:Spring.IO.IResource"/>s.
-            </summary>
-            <remarks>
-            <para>
-            By default, this converter supports all media types.
-            </para>
-            <para>
-            A mapping between file extension and mime types is used to determine the Content-Type of written files. 
-            If no Content-Type is available, 'application/octet-stream' is used.
-            </para>
-            <para>
-            This can be overridden by setting the <see cref="P:SupportedMediaTypes"/> property.
-            </para>
-            </remarks>
-            <author>Arjen Poutsma</author>
-            <author>Bruno Baia (.NET)</author>
-        </member>
-        <member name="M:Spring.Http.Converters.ResourceHttpMessageConverter.#ctor">
-            <summary>
-            Creates a new instance of the <see cref="T:Spring.Http.Converters.FileInfoHttpMessageConverter"/>.
-            </summary>
-        </member>
-        <member name="M:Spring.Http.Converters.ResourceHttpMessageConverter.Supports(System.Type)">
-            <summary>
-            Indicates whether the given class is supported by this converter.
-            </summary>
-            <param name="type">The type to test for support.</param>
-            <returns><see langword="true"/> if supported; otherwise <see langword="false"/></returns>
-        </member>
-        <member name="M:Spring.Http.Converters.ResourceHttpMessageConverter.ReadInternal``1(Spring.Http.IHttpInputMessage)">
-            <summary>
-            Abstract template method that reads the actualy object. Invoked from <see cref="M:Read"/>.
-            </summary>
-            <typeparam name="T">The type of object to return.</typeparam>
-            <param name="message">The HTTP message to read from.</param>
-            <returns>The converted object.</returns>
-            <exception cref="T:Spring.Http.Converters.HttpMessageNotReadableException">In case of conversion errors</exception>
-        </member>
-        <member name="M:Spring.Http.Converters.ResourceHttpMessageConverter.WriteInternal(System.Object,Spring.Http.IHttpOutputMessage)">
-            <summary>
-            Abstract template method that writes the actual body. Invoked from <see cref="M:Write"/>.
-            </summary>
-            <param name="content">The object to write to the HTTP message.</param>
-            <param name="message">The HTTP message to write to.</param>
-            <exception cref="T:Spring.Http.Converters.HttpMessageNotWritableException">In case of conversion errors</exception>
-        </member>
-        <member name="M:Spring.Http.Converters.ResourceHttpMessageConverter.GetDefaultContentType(System.Object)">
-            <summary>
-            Returns the default content type for the given object. 
-            Called when <see cref="M:Write"/> is invoked without a specified content type parameter.
-            </summary>
-            <remarks>
-            This implementation uses the mapping between file extension and mime types is used 
-            to determine the Content-Type of written files. 
-            If no Content-Type is available, 'application/octet-stream' is used.
-            </remarks>
-            <param name="content">The object to return the content type for.</param>
-            <returns>The <see cref="T:Spring.Http.MediaType">content type</see>, or null if not known.</returns>
-        </member>
-        <member name="P:Spring.Http.Converters.ResourceHttpMessageConverter.MimeMapping">
-            <summary>
-            Gets or sets the mapping between file extension and mime types.
+            Gets the underlying <see cref="P:Spring.Http.Converters.Json.SpringJsonHttpMessageConverter.JsonMapper"/> used for converting custom types.
             </summary>
         </member>
         <member name="T:Spring.Http.Converters.StringHttpMessageConverter">
@@ -2671,26 +2692,6 @@
             <exception cref="T:System.IO.FileNotFoundException">
             If the assembly specified in the supplied <paramref name="resourceName"/> could not be found.
             </exception>
-        </member>
-        <member name="M:Spring.IO.AssemblyResource.#ctor(System.String,System.Type)">
-            <summary>
-            Creates a new instance of the <see cref="T:Spring.IO.AssemblyResource"/> class. 
-            Generates the full assembly resource name from a file name and a type used to obtain the assembly name and the namespace.
-            </summary>
-            <param name="resourceName">The name of the file in the assembly.</param>
-            <param name="type">The type to determine the assembly and the namespace.</param>
-            <exception cref="T:System.UriFormatException">
-            If the generated resource name did not conform to the expected format.
-            </exception>
-            <exception cref="T:System.IO.FileNotFoundException">
-            If the assembly specified in the generated resource name could not be found.
-            </exception>
-        </member>
-        <member name="M:Spring.IO.AssemblyResource.GetFullAssemblyResourceName(System.String,System.Type)">
-            <summary>
-            Constructs a "assembly://assemblyName/namespace/resourceName" qualified resource name 
-            using the given type to obtain the assembly name and the namespace.
-            </summary>
         </member>
         <member name="M:Spring.IO.AssemblyResource.GetStream">
             <summary>
