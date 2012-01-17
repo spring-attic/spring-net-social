@@ -261,10 +261,16 @@ namespace Spring.Social.OAuth1
 
             public long GenerateNonce(long timestamp)
             {
-                return timestamp + random.Next();
+                int number;
+                lock (syncRoot)
+                {
+                    number = random.Next();
+                }
+                return timestamp + number;
             }
 
             private static Random random = new Random();
+            private static object syncRoot = new object();
         }
     }
 }
