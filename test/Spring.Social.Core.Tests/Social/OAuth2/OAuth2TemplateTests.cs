@@ -35,7 +35,7 @@ namespace Spring.Social.OAuth2
     /// <author>Craig Walls</author>
     /// <author>Bruno Baia (.NET)</author>
     [TestFixture]
-    public class OAuth1TemplateTests
+    public class OAuth2TemplateTests
     {
         private static string AUTHORIZE_URL = "http://www.someprovider.com/oauth/authorize";
 	    private static string ACCESS_TOKEN_URL = "http://www.someprovider.com/oauth/accessToken";
@@ -195,7 +195,7 @@ namespace Spring.Social.OAuth2
                 .AndExpectUri(ACCESS_TOKEN_URL)
                 .AndExpectMethod(HttpMethod.POST)
                 .AndExpectBody("client_id=client_id&client_secret=client_secret&code=code&redirect_uri=http%3A%2F%2Fwww.someclient.com%2Fcallback&grant_type=authorization_code")
-                .AndRespondWith(new AssemblyResource("assembly://Spring.Social.Core.Tests/Spring.Social.OAuth2/" + responseFile), responseHeaders);
+                .AndRespondWith(new AssemblyResource(responseFile, typeof(OAuth2TemplateTests)), responseHeaders);
 
 #if NET_4_0 || SILVERLIGHT_5
             AccessGrant accessGrant = oAuth2Template.ExchangeForAccessAsync("code", "http://www.someclient.com/callback", null).Result;
@@ -214,7 +214,7 @@ namespace Spring.Social.OAuth2
                 .AndExpectUri(ACCESS_TOKEN_URL)
                 .AndExpectMethod(HttpMethod.POST)
                 .AndExpectBody("client_id=client_id&client_secret=client_secret&refresh_token=r3fr35h_t0k3n&grant_type=refresh_token")
-                .AndRespondWith(new AssemblyResource("assembly://Spring.Social.Core.Tests/Spring.Social.OAuth2/" + responseFile), responseHeaders);
+                .AndRespondWith(new AssemblyResource(responseFile, typeof(OAuth2TemplateTests)), responseHeaders);
 
 #if NET_4_0 || SILVERLIGHT_5
 		    AccessGrant accessGrant = oAuth2Template.RefreshAccessAsync("r3fr35h_t0k3n", null, null).Result;

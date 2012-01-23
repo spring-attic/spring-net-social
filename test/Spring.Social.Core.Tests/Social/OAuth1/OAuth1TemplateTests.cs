@@ -90,7 +90,7 @@ namespace Spring.Social.OAuth1
                 .AndExpectHeaderContains("Authorization", "oauth_nonce=\"")
                 .AndExpectHeaderContains("Authorization", "oauth_signature=\"")
                 .AndExpectHeaderContains("Authorization", "oauth_timestamp=\"")
-                .AndRespondWith(new AssemblyResource("assembly://Spring.Social.Core.Tests/Spring.Social.OAuth1/RequestToken.formencoded"), responseHeaders);
+                .AndRespondWith(EmbeddedResource("RequestToken.formencoded"), responseHeaders);
 
 #if NET_4_0 || SILVERLIGHT_5
             OAuthToken requestToken = oauth10a.FetchRequestTokenAsync("http://www.someclient.com/oauth/callback", null).Result;
@@ -116,7 +116,7 @@ namespace Spring.Social.OAuth1
                 .AndExpectHeaderContains("Authorization", "oauth_nonce=\"")
                 .AndExpectHeaderContains("Authorization", "oauth_signature=\"")
                 .AndExpectHeaderContains("Authorization", "oauth_timestamp=\"")
-                .AndRespondWith(new AssemblyResource("assembly://Spring.Social.Core.Tests/Spring.Social.OAuth1/RequestToken.formencoded"), responseHeaders);
+                .AndRespondWith(EmbeddedResource("RequestToken.formencoded"), responseHeaders);
 
 #if NET_4_0 || SILVERLIGHT_5
             OAuthToken requestToken = oauth10.FetchRequestTokenAsync("http://www.someclient.com/oauth/callback", null).Result;
@@ -144,7 +144,7 @@ namespace Spring.Social.OAuth1
                 .AndExpectHeaderContains("Authorization", "oauth_nonce=\"")
                 .AndExpectHeaderContains("Authorization", "oauth_signature=\"")
                 .AndExpectHeaderContains("Authorization", "oauth_timestamp=\"")
-                .AndRespondWith(new AssemblyResource("assembly://Spring.Social.Core.Tests/Spring.Social.OAuth1/AccessToken.formencoded"), responseHeaders);
+                .AndRespondWith(EmbeddedResource("AccessToken.formencoded"), responseHeaders);
 
             OAuthToken requestToken = new OAuthToken("1234567890", "abcdefghijklmnop");
 #if NET_4_0 || SILVERLIGHT_5
@@ -172,7 +172,7 @@ namespace Spring.Social.OAuth1
                 .AndExpectHeaderContains("Authorization", "oauth_nonce=\"")
                 .AndExpectHeaderContains("Authorization", "oauth_signature=\"")
                 .AndExpectHeaderContains("Authorization", "oauth_timestamp=\"")
-                .AndRespondWith(new AssemblyResource("assembly://Spring.Social.Core.Tests/Spring.Social.OAuth1/AccessToken.formencoded"), responseHeaders);
+                .AndRespondWith(EmbeddedResource("AccessToken.formencoded"), responseHeaders);
 
             OAuthToken requestToken = new OAuthToken("1234567890", "abcdefghijklmnop");
 #if NET_4_0 || SILVERLIGHT_5
@@ -182,6 +182,11 @@ namespace Spring.Social.OAuth1
 #endif
             Assert.AreEqual("9876543210", accessToken.Value);
             Assert.AreEqual("ponmlkjihgfedcba", accessToken.Secret);
+        }
+
+        private IResource EmbeddedResource(string filename)
+        {
+            return new AssemblyResource(filename, typeof(OAuth1TemplateTests));
         }
 	
         #region CustomOAuth1Template
