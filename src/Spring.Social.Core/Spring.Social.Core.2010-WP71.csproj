@@ -56,10 +56,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Social\ApiException.cs" />
     <Compile Include="Social\IApiBinding.cs" />
     <Compile Include="Social\IServiceProvider.cs" />
-    <Compile Include="Social\NotAuthorizedException.cs" />
     <Compile Include="Social\OAuth1\AbstractOAuth1ApiBinding.cs" />
     <Compile Include="Social\OAuth1\AbstractOAuth1ServiceProvider.cs" />
     <Compile Include="Social\OAuth1\AuthorizedRequestToken.cs" />
@@ -81,8 +79,6 @@
     <Compile Include="Social\OAuth2\OAuth2RequestInterceptor.cs" />
     <Compile Include="Social\OAuth2\OAuth2Template.cs" />
     <Compile Include="Social\OAuth2\OAuth2Version.cs" />
-    <Compile Include="Social\OperationNotPermittedException.cs" />
-    <Compile Include="Social\ServerException.cs" />
     <Compile Include="Social\SocialException.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />

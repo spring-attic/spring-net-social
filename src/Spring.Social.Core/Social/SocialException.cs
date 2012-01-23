@@ -28,11 +28,11 @@ namespace Spring.Social
     /// </summary>
     /// <remarks>
     /// This exception class is abstract, as it is too generic for actual use. 
-    /// When a SocialException is thrown, it should be one of the more specific subclasses.
+    /// When a <see cref="SocialException"/> is thrown, it should be one of the more specific subclasses.
     /// </remarks>
     /// <author>Craig Walls</author>
     /// <author>Bruno Baia (.NET)</author>
-#if !SILVERLIGHT && !CF_3_5
+#if !SILVERLIGHT
     [Serializable]
 #endif
     public abstract class SocialException : Exception
@@ -50,13 +50,13 @@ namespace Spring.Social
         /// Creates a new instance of the <see cref="SocialException"/> class.
         /// </summary>
         /// <param name="message">A message about the exception.</param>
-        /// <param name="rootCause">The root exception that is being wrapped.</param>
-        protected SocialException(string message, Exception rootCause)
-            : base(message, rootCause)
+        /// <param name="innerException">The inner exception that is the cause of the current exception.</param>
+        protected SocialException(string message, Exception innerException)
+            : base(message, innerException)
         {
         }
 
-#if !SILVERLIGHT && !CF_3_5
+#if !SILVERLIGHT
         /// <summary>
         /// Creates a new instance of the <see cref="SocialException"/> class.
         /// </summary>
