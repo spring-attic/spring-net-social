@@ -19,54 +19,45 @@ namespace Spring.OAuth1ConsoleQuickStart
 
         static void Main(string[] args)
         {
+#if NET_4_0
             try
             {
                 TwitterServiceProvider twitterServiceProvider = new TwitterServiceProvider(TwitterConsumerKey, TwitterConsumerSecret);
 
-                // OAuth 'dance'
+                /* OAuth 'dance' */
+
                 // Authentication using Out-of-band/PIN Code Authentication
                 Console.Write("Getting request token...");
-#if NET_4_0
                 OAuthToken oauthToken = twitterServiceProvider.OAuthOperations.FetchRequestTokenAsync("oob", null).Result;
-#else
-                OAuthToken oauthToken = twitterServiceProvider.OAuthOperations.FetchRequestToken("oob", null);
-#endif
                 Console.WriteLine("Done");
 
                 string authenticateUrl = twitterServiceProvider.OAuthOperations.BuildAuthorizeUrl(oauthToken.Value, null);
                 Console.WriteLine("Redirect user for authentication: " + authenticateUrl);
                 Process.Start(authenticateUrl);
-
-                Console.WriteLine("Enter PIN Code:");
+                Console.WriteLine("Enter PIN Code from Twitter authorization page:");
                 string pinCode = Console.ReadLine();
 
                 Console.Write("Getting access token...");
                 AuthorizedRequestToken requestToken = new AuthorizedRequestToken(oauthToken, pinCode);
-#if NET_4_0
                 OAuthToken oauthAccessToken = twitterServiceProvider.OAuthOperations.ExchangeForAccessTokenAsync(requestToken, null).Result;
-#else
-                OAuthToken oauthAccessToken = twitterServiceProvider.OAuthOperations.ExchangeForAccessToken(requestToken, null);
-#endif
                 Console.WriteLine("Done");
 
-                // API
+                /* API */
+
                 ITwitter twitter = twitterServiceProvider.GetApi(oauthAccessToken.Value, oauthAccessToken.Secret);
                 Console.WriteLine("Enter your status message:");
                 string message = Console.ReadLine();
-#if NET_4_0
+
                 twitter.UpdateStatusAsync(message).Wait();
-#else
-                twitter.UpdateStatus(message);
-#endif
                 Console.WriteLine("Status updated!");
             }
-#if NET_4_0
             catch (AggregateException ae)
             {
                 ae.Handle(ex =>
                     {
                         if (ex is HttpResponseException)
                         {
+                            Console.WriteLine(ex.Message);
                             Console.WriteLine(((HttpResponseException)ex).GetResponseBodyAsString());
                             return true;
                         }
@@ -74,8 +65,40 @@ namespace Spring.OAuth1ConsoleQuickStart
                     });
             }
 #else
+            try
+            {
+                TwitterServiceProvider twitterServiceProvider = new TwitterServiceProvider(TwitterConsumerKey, TwitterConsumerSecret);
+
+                /* OAuth 'dance' */
+
+                // Authentication using Out-of-band/PIN Code Authentication
+                Console.Write("Getting request token...");
+                OAuthToken oauthToken = twitterServiceProvider.OAuthOperations.FetchRequestToken("oob", null);
+                Console.WriteLine("Done");
+
+                string authenticateUrl = twitterServiceProvider.OAuthOperations.BuildAuthorizeUrl(oauthToken.Value, null);
+                Console.WriteLine("Redirect user for authentication: " + authenticateUrl);
+                Process.Start(authenticateUrl);
+                Console.WriteLine("Enter PIN Code from Twitter authorization page:");
+                string pinCode = Console.ReadLine();
+
+                Console.Write("Getting access token...");
+                AuthorizedRequestToken requestToken = new AuthorizedRequestToken(oauthToken, pinCode);
+                OAuthToken oauthAccessToken = twitterServiceProvider.OAuthOperations.ExchangeForAccessToken(requestToken, null);
+                Console.WriteLine("Done");
+
+                /* API */
+
+                ITwitter twitter = twitterServiceProvider.GetApi(oauthAccessToken.Value, oauthAccessToken.Secret);
+                Console.WriteLine("Enter your status message:");
+                string message = Console.ReadLine();
+                
+                twitter.UpdateStatus(message);
+                Console.WriteLine("Status updated!");
+            }
             catch (HttpResponseException ex)
             {
+                Console.WriteLine(ex.Message);
                 Console.WriteLine(ex.GetResponseBodyAsString());
             }
 #endif

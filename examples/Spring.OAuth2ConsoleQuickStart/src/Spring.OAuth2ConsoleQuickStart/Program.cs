@@ -2,8 +2,8 @@
 using System.Diagnostics;
 
 using Spring.Rest.Client;
-using Spring.Social.Facebook.Api;
 using Spring.Social.OAuth2;
+using Spring.Social.Facebook.Api;
 
 namespace Spring.OAuth2ConsoleQuickStart
 {
@@ -20,7 +20,8 @@ namespace Spring.OAuth2ConsoleQuickStart
             {
                 FacebookServiceProvider facebookServiceProvider = new FacebookServiceProvider(FacebookApiId, FacebookApiSecret);
 
-                // OAuth 'dance'
+                /* OAuth 'dance' */
+
                 // Authentication using the client-side authorization flow 
                 OAuth2Parameters parameters = new OAuth2Parameters()
                 {
@@ -30,11 +31,11 @@ namespace Spring.OAuth2ConsoleQuickStart
                 string authorizationUrl = facebookServiceProvider.OAuthOperations.BuildAuthorizeUrl(GrantType.ImplicitGrant, parameters);
                 Console.WriteLine("Redirect user to Facebook for authorization: " + authorizationUrl);
                 Process.Start(authorizationUrl);
-
-                Console.WriteLine("Enter access token from success url ('access_token' uri parameter):");
+                Console.WriteLine("Enter 'access_token' query string parameter from success url:");
                 string accessToken = Console.ReadLine();
 
-                // API
+                /* API */
+
                 IFacebook facebook = facebookServiceProvider.GetApi(accessToken);
                 Console.WriteLine("Enter your status message:");
                 string message = Console.ReadLine();
@@ -52,6 +53,7 @@ namespace Spring.OAuth2ConsoleQuickStart
                     {
                         if (ex is HttpResponseException)
                         {
+                            Console.WriteLine(ex.Message);
                             Console.WriteLine(((HttpResponseException)ex).GetResponseBodyAsString());
                             return true;
                         }
@@ -61,6 +63,7 @@ namespace Spring.OAuth2ConsoleQuickStart
 #else
             catch (HttpResponseException ex)
             {
+                Console.WriteLine(ex.Message);
                 Console.WriteLine(ex.GetResponseBodyAsString());
             }
 #endif
