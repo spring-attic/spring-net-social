@@ -2502,8 +2502,7 @@
         </member>
         <member name="T:Spring.IO.AbstractResource">
             <summary>
-            Convenience base class for <see cref="T:Spring.IO.IResource"/> implementations 
-            based on a resource name.
+            Convenience base class for <see cref="T:Spring.IO.IResource"/> implementations.
             </summary>
             <author>Bruno Baia</author>
             <seealso cref="T:Spring.IO.IResource"/>
@@ -2556,11 +2555,10 @@
             or <see langword="null"/> if the source cannot be represented by an <see cref="T:System.Uri"/>.
             </summary>
         </member>
-        <member name="M:Spring.IO.AbstractResource.#ctor(System.String)">
+        <member name="M:Spring.IO.AbstractResource.#ctor">
             <summary>
             Creates a new instance of the <see cref="T:Spring.IO.AbstractResource"/> class.
             </summary>
-            <param name="resourceName">A string representation of the resource.</param>
         </member>
         <member name="M:Spring.IO.AbstractResource.GetStream">
             <summary>
@@ -2593,21 +2591,13 @@
             <param name="resourceName">The name of the resource.</param>
             <returns>The name of the resource without the protocol name.</returns>
         </member>
-        <member name="M:Spring.IO.AbstractResource.ToString">
-            <summary>
-            Returns a <see cref="T:System.String"/> that represents the current resource.
-            </summary>
-            <returns>
-            A <see cref="T:System.String"/> that represents the current resource.
-            </returns>
-        </member>
         <member name="P:Spring.IO.AbstractResource.IsOpen">
             <summary>
             Gets a value indicating whether or not this resource represents a handle with an open stream? 
             Returns <see langword="true"/> if the source cannot be read multiple times.
             </summary>
             <remarks>
-            This default implementation, always returns <see langword="false"/>.
+            This implementation always returns <see langword="false"/>.
             </remarks>
         </member>
         <member name="P:Spring.IO.AbstractResource.Uri">
@@ -2646,6 +2636,23 @@
             If the assembly specified in the supplied <paramref name="resourceName"/> could not be found.
             </exception>
         </member>
+        <member name="M:Spring.IO.AssemblyResource.#ctor(System.String,System.Type)">
+            <summary>
+            Creates a new instance of the <see cref="T:Spring.IO.AssemblyResource"/> class.
+            <para/>
+            Uses the specified <paramref name="type"/> to obtain the assembly and namespace for the resource.
+            </summary>
+            <param name="fileName">The name of the file in the assembly.</param>
+            <param name="type">The type to determine the assembly and the namespace.</param>
+        </member>
+        <member name="M:Spring.IO.AssemblyResource.Initialize(System.String,System.String,System.Reflection.Assembly)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Spring.IO.AssemblyResource"/> class. 
+            </summary>
+            <param name="fileName">The name of the file in the assembly.</param>
+            <param name="ns">The namespace to use to generate the full resource name.</param>
+            <param name="assembly">The assembly containing the resource.</param>
+        </member>
         <member name="M:Spring.IO.AssemblyResource.GetStream">
             <summary>
             Returns a <see cref="T:System.IO.Stream"/> for this resource.
@@ -2671,6 +2678,8 @@
         <member name="P:Spring.IO.AssemblyResource.Uri">
             <summary>
             Gets the <see cref="T:System.Uri"/> handle for this resource.
+            <para/>
+            The URI follows the format 'assembly://assemblyName/namespace/resourceName'.
             </summary>
         </member>
         <member name="T:Spring.IO.ByteArrayResource">
@@ -2719,7 +2728,7 @@
             Returns <see langword="true"/> if the source cannot be read multiple times.
             </summary>
             <remarks>
-            This default implementation, always returns <see langword="false"/>.
+            This implementation always returns <see langword="false"/>.
             </remarks>
         </member>
         <member name="P:Spring.IO.ByteArrayResource.Uri">
@@ -2728,7 +2737,7 @@
             or <see langword="null"/> if the source cannot be represented by an <see cref="T:System.Uri"/>.
             </summary>
             <remarks>
-            This default implementation always returns <see langword="null"/>, 
+            This implementation always returns <see langword="null"/>, 
             assuming that the resource cannot be represented as an <see cref="T:System.Uri"/>.
             </remarks>
         </member>
@@ -2832,7 +2841,7 @@
             Returns <see langword="true"/> if the source cannot be read multiple times.
             </summary>
             <remarks>
-            This default implementation, always returns <see langword="true"/>.
+            This implementation always returns <see langword="true"/>.
             </remarks>
         </member>
         <member name="P:Spring.IO.StreamResource.Uri">
@@ -2841,7 +2850,7 @@
             or <see langword="null"/> if the source cannot be represented by an <see cref="T:System.Uri"/>.
             </summary>
             <remarks>
-            This default implementation always returns <see langword="null"/>, 
+            This implementation always returns <see langword="null"/>, 
             assuming that the resource cannot be represented as an <see cref="T:System.Uri"/>.
             </remarks>
         </member>
@@ -3391,10 +3400,9 @@
         </member>
         <member name="T:Spring.Rest.Client.HttpResponseException">
             <summary>
-            Base class for exceptions based on a <see cref="T:System.Net.HttpStatusCode"/>.
+            Base class for exceptions based on a response message.
             </summary>
-            <author>Arjen Poutsma</author>
-            <author>Bruno Baia (.NET)</author>
+            <author>Bruno Baia</author>
         </member>
         <member name="T:Spring.Rest.Client.RestClientException">
             <summary>
@@ -3445,11 +3453,13 @@
             Default encoding for responses as string.
             </summary>
         </member>
-        <member name="M:Spring.Rest.Client.HttpResponseException.#ctor(Spring.Http.HttpResponseMessage{System.Byte[]})">
+        <member name="M:Spring.Rest.Client.HttpResponseException.#ctor(System.Uri,Spring.Http.HttpMethod,Spring.Http.HttpResponseMessage{System.Byte[]})">
             <summary>
             Creates a new instance of <see cref="T:Spring.Rest.Client.HttpResponseException"/> 
             based on an HTTP response message.
             </summary>
+            <param name="requestUri">The HTTP request URI.</param>
+            <param name="requestMethod">The HTTP request method.</param>
             <param name="response">The HTTP response message.</param>
         </member>
         <member name="M:Spring.Rest.Client.HttpResponseException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
@@ -3485,16 +3495,28 @@
             </summary>
             <returns>The response body.</returns>
         </member>
+        <member name="P:Spring.Rest.Client.HttpResponseException.RequestUri">
+            <summary>
+            Gets the HTTP request URI.
+            </summary>
+        </member>
+        <member name="P:Spring.Rest.Client.HttpResponseException.RequestMethod">
+            <summary>
+            Gets the HTTP request method.
+            </summary>
+        </member>
         <member name="P:Spring.Rest.Client.HttpResponseException.Response">
             <summary>
             Gets the HTTP response message.
             </summary>
         </member>
-        <member name="M:Spring.Rest.Client.HttpClientErrorException.#ctor(Spring.Http.HttpResponseMessage{System.Byte[]})">
+        <member name="M:Spring.Rest.Client.HttpClientErrorException.#ctor(System.Uri,Spring.Http.HttpMethod,Spring.Http.HttpResponseMessage{System.Byte[]})">
             <summary>
             Creates a new instance of <see cref="T:Spring.Rest.Client.HttpClientErrorException"/> 
             based on an HTTP response message.
             </summary>
+            <param name="requestUri">The HTTP request URI.</param>
+            <param name="requestMethod">The HTTP request method.</param>
             <param name="response">The HTTP response message.</param>
         </member>
         <member name="M:Spring.Rest.Client.HttpClientErrorException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
@@ -3517,11 +3539,13 @@
             <author>Arjen Poutsma</author>
             <author>Bruno Baia (.NET)</author>
         </member>
-        <member name="M:Spring.Rest.Client.HttpServerErrorException.#ctor(Spring.Http.HttpResponseMessage{System.Byte[]})">
+        <member name="M:Spring.Rest.Client.HttpServerErrorException.#ctor(System.Uri,Spring.Http.HttpMethod,Spring.Http.HttpResponseMessage{System.Byte[]})">
             <summary>
             Creates a new instance of <see cref="T:Spring.Rest.Client.HttpServerErrorException"/> 
             based on an HTTP response message.
             </summary>
+            <param name="requestUri">The HTTP request URI.</param>
+            <param name="requestMethod">The HTTP request method.</param>
             <param name="response">The HTTP response message.</param>
         </member>
         <member name="M:Spring.Rest.Client.HttpServerErrorException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
@@ -3574,23 +3598,27 @@
             <author>Arjen Poutsma</author>
             <author>Bruno Baia (.NET)</author>
         </member>
-        <member name="M:Spring.Rest.Client.IResponseErrorHandler.HasError(Spring.Http.Client.IClientHttpResponse)">
+        <member name="M:Spring.Rest.Client.IResponseErrorHandler.HasError(System.Uri,Spring.Http.HttpMethod,Spring.Http.Client.IClientHttpResponse)">
             <summary>
             Indicates whether the given response has any errors.
-            </summary>
-            <remarks>
+            <para/>
             Implementations will typically inspect the status code of the response.
-            </remarks>
+            </summary>
+            <param name="requestUri">The request URI.</param>
+            <param name="requestMethod">The request method.</param>
             <param name="response">The response to inspect.</param>
             <returns>
             <see langword="true"/> if the response has an error; otherwise <see langword="false"/>.
             </returns>
         </member>
-        <member name="M:Spring.Rest.Client.IResponseErrorHandler.HandleError(Spring.Http.Client.IClientHttpResponse)">
+        <member name="M:Spring.Rest.Client.IResponseErrorHandler.HandleError(System.Uri,Spring.Http.HttpMethod,Spring.Http.Client.IClientHttpResponse)">
             <summary>
             Handles the error in the given response. 
-            This method is only called when <see cref="M:HasError"/> has returned <see langword="true"/>.
+            <para/>
+            This method is only called when HasError() method has returned <see langword="true"/>.
             </summary>
+            <param name="requestUri">The request URI.</param>
+            <param name="requestMethod">The request method.</param>
             <param name="response">The response with the error</param>
         </member>
         <member name="T:Spring.Rest.Client.IResponseExtractor`1">
@@ -6389,24 +6417,27 @@
             <author>Arjen Poutsma</author>
             <author>Bruno Baia (.NET)</author>
         </member>
-        <member name="M:Spring.Rest.Client.Support.DefaultResponseErrorHandler.HasError(Spring.Http.Client.IClientHttpResponse)">
+        <member name="M:Spring.Rest.Client.Support.DefaultResponseErrorHandler.HasError(System.Uri,Spring.Http.HttpMethod,Spring.Http.Client.IClientHttpResponse)">
             <summary>
             Indicates whether the given response has any errors.
+            <para/>
+            This implementation delegates to HasError(HttpStatusCode) method with the response status code.
             </summary>
-            <remarks>
-            This implementation delegates to <see cref="M:HasError(HttpStatusCode)"/> 
-            with the response status code.
-            </remarks>
+            <param name="requestUri">The request URI.</param>
+            <param name="requestMethod">The request method.</param>
             <param name="response">The response to inspect.</param>
             <returns>
             <see langword="true"/> if the response has an error; otherwise <see langword="false"/>.
             </returns>
         </member>
-        <member name="M:Spring.Rest.Client.Support.DefaultResponseErrorHandler.HandleError(Spring.Http.Client.IClientHttpResponse)">
+        <member name="M:Spring.Rest.Client.Support.DefaultResponseErrorHandler.HandleError(System.Uri,Spring.Http.HttpMethod,Spring.Http.Client.IClientHttpResponse)">
             <summary>
             Handles the error in the given response. 
-            This method is only called when <see cref="M:HasError"/> has returned <see langword="true"/>.
+            <para/>
+            This method is only called when HasError() method has returned <see langword="true"/>.
             </summary>
+            <param name="requestUri">The request URI.</param>
+            <param name="requestMethod">The request method.</param>
             <param name="response">The response with the error</param>
         </member>
         <member name="M:Spring.Rest.Client.Support.DefaultResponseErrorHandler.HasError(System.Net.HttpStatusCode)">
@@ -6418,12 +6449,14 @@
             <see langword="true"/> if the response has an error; otherwise <see langword="false"/>.
             </returns>
         </member>
-        <member name="M:Spring.Rest.Client.Support.DefaultResponseErrorHandler.HandleError(Spring.Http.HttpResponseMessage{System.Byte[]})">
+        <member name="M:Spring.Rest.Client.Support.DefaultResponseErrorHandler.HandleError(System.Uri,Spring.Http.HttpMethod,Spring.Http.HttpResponseMessage{System.Byte[]})">
             <summary>
             Throws an exception if the response status code is a client code error (4xx) 
             or a server code error (5xx). 
             This method is only called when <see cref="M:HasError"/> has returned <see langword="true"/>.
             </summary>
+            <param name="requestUri">The request URI.</param>
+            <param name="requestMethod">The request method.</param>
             <param name="response">The response message with the error</param>
             <exception cref="T:Spring.Rest.Client.HttpClientErrorException">If the response status code is a client error (4xx).</exception>
             <exception cref="T:Spring.Rest.Client.HttpServerErrorException">If the response status code is a server error (4xx).</exception>
