@@ -1,4 +1,3 @@
-Rhino.Mocks 3.6
 NUnit 2.5.10
 Common.Logging 2.0
 Spring.Rest 1.1.0
