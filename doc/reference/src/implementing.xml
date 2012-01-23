@@ -234,6 +234,7 @@
 			</para>
 			<para>
 				To use, first create a <classname>MockRestServiceServer</classname> against the <classname>RestTemplate</classname> instance used by your API implementation:
+        <sbr/>In this example, <classname>TwitterTemplate</classname> uses a <classname>RestTemplate</classname> to consume Twitter REST API resources.
 			</para>
 			<programlisting language="csharp"><![CDATA[TwitterTemplate twitter = new TwitterTemplate("consumerKey", "consumerSecret", "accessToken", "accessTokenSecret");
 MockRestServer mockServer = MockRestServiceServer.CreateServer(twitter.RestTemplate);]]></programlisting>
@@ -247,27 +248,30 @@ public void GetUserProfile()
   responseHeaders.ContentType = MediaType.APPLICATION_JSON;
     
   mockServer.ExpectNewRequest()
-    .AndExpectUri("https://api.twitter.com/1/account/verify_credentials.json")
-    .AndExpectMethod(HttpMethod.GET)
-    .AndRespondWith(JsonResource("Verify_Credentials"), responseHeaders);
+    .AndExpectUri("https://api.twitter.com/1/statuses/update.json")
+    .AndExpectMethod(HttpMethod.POST)
+    .AndExpectHeader("Content-Type", "application/x-www-form-urlencoded")
+    .AndExpectBody("status=Test+Message")
+    .AndRespondWith(JsonResource("Status"), responseHeaders);
 
-  TwitterProfile profile = twitter.UserOperations.GetUserProfile();
-  Assert.AreEqual(161064614, profile.ID);
-  Assert.AreEqual("kdonald", profile.ScreenName);
+  Tweet tweet = twitter.UserOperations.UpdateStatus("Test Message");
+  Assert.AreEqual(12345, tweet.ID);
+  Assert.AreEqual("Test Message", tweet.Text);
 }]]></programlisting>
 			<para>
-				In the example above the response body is written from a 'Verify_Credentials.json' embedded resource file located in the same namespace as the test class:
+				In the example above the response body is written from a 'Status.json' embedded resource file located in the same namespace as the test class:
 			</para>
 			<programlisting language="csharp"><![CDATA[private IResource JsonResource(string filename) 
 {
-  return new AssemblyResource("assembly://Spring.Social.Twitter.Tests/Spring.Social.Twitter.Api.Impl/" + filename + ".json");
+  return new AssemblyResource(filename + ".json", typeof(TwitterTemplateTests));
 }]]></programlisting>
 			<para>
 				The content of the file should mirror the content the remote service provider would return, allowing the client JSON deserialization behavior to be fully tested:
 			</para>
 			<programlisting><![CDATA[{
-    "id":161064614,
-    "screen_name":"kdonald"
+  "id" : 12345,
+  "text" : "Tweet 1",
+  ...
 }]]></programlisting>
 			<para>
 				For complete test examples, consult the source of the existing API bindings included in Spring.NET Social projects.

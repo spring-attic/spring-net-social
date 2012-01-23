@@ -83,6 +83,10 @@
         </listitem>
       </itemizedlist>
     </para>
+
+    <note>
+      <para>Spring.NET Social depends on the <ulink url="http://www.springframework.net/rest/">Spring.NET REST Client</ulink> Framework.</para>
+    </note>
     
   </section>
 
@@ -93,9 +97,15 @@
       that provide connectivity and API bindings to popular SaaS providers. 
       <sbr/>These client extensions are listed below:
       <itemizedlist>
-      <listitem>
-        <para><ulink url="http://www.springframework.net/social-twitter/">Twitter</ulink></para>
-      </listitem>
+        <listitem>
+          <para><ulink url="http://www.springframework.net/social-twitter/">Twitter</ulink></para>
+        </listitem>
+        <listitem>
+          <para><ulink url="http://www.springframework.net/social-dropbox/">Dropbox</ulink></para>
+        </listitem>
+        <listitem>
+          <para><ulink url="http://www.springframework.net/social-linkedin/">LinkedIn</ulink></para>
+        </listitem>
     </itemizedlist>
     </para>
   </section>
