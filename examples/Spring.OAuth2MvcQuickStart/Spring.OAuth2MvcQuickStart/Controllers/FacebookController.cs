@@ -43,7 +43,7 @@ namespace Spring.OAuth1MvcQuickStart.Controllers
             AccessGrant accessGrant = facebookProvider.OAuthOperations.ExchangeForAccessAsync(
                 code, "http://localhost/Facebook/Callback", null).Result;
 
-            Session["FacebookClient"] = facebookProvider.GetApi(accessGrant.AccessToken);
+            Session["AccessGrant"] = accessGrant;
 
             return View();
         }
@@ -58,7 +58,8 @@ namespace Spring.OAuth1MvcQuickStart.Controllers
         [HttpPost]
         public ActionResult UpdateStatus(string status)
         {
-            IFacebook facebookClient = Session["FacebookClient"] as IFacebook;
+            AccessGrant accessGrant = Session["AccessGrant"] as AccessGrant;
+            IFacebook facebookClient = facebookProvider.GetApi(accessGrant.AccessToken);
 
             facebookClient.UpdateStatusAsync(status).Wait();
 

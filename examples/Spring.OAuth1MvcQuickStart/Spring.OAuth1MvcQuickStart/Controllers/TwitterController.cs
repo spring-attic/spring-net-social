@@ -42,7 +42,7 @@ namespace Spring.OAuth1MvcQuickStart.Controllers
             AuthorizedRequestToken authorizedRequestToken = new AuthorizedRequestToken(requestToken, oauth_verifier);
             OAuthToken token = twitterProvider.OAuthOperations.ExchangeForAccessTokenAsync(authorizedRequestToken, null).Result;
 
-            Session["TwitterClient"] = twitterProvider.GetApi(token.Value, token.Secret);
+            Session["AccessToken"] = token;
 
             return View();
         }
@@ -57,7 +57,8 @@ namespace Spring.OAuth1MvcQuickStart.Controllers
         [HttpPost]
         public ActionResult UpdateStatus(string status)
         {
-            ITwitter twitterClient = Session["TwitterClient"] as ITwitter;
+            OAuthToken token = Session["AccessToken"] as OAuthToken;
+            ITwitter twitterClient = twitterProvider.GetApi(token.Value, token.Secret);
 
             twitterClient.UpdateStatusAsync(status).Wait();
 
