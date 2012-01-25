@@ -28,7 +28,7 @@ using Spring.Rest.Client;
 
 namespace Spring.Social.Twitter.Api
 {
-    // See spring-net-social-twitter project : https://github.com/SpringSource/spring-net-social-twitter
+    // See Spring.NET Social project: http://www.springframework.net/social-twitter/
 
     // Interface specifying a basic set of operations for interacting with Twitter.
     public interface ITwitter : IApiBinding

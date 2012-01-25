@@ -25,7 +25,7 @@ using Spring.Social.Twitter.Api.Impl;
 
 namespace Spring.Social.Twitter.Api
 {
-    // See spring-net-social-twitter project : https://github.com/SpringSource/spring-net-social-twitter
+    // See Spring.NET Social project: http://www.springframework.net/social-twitter/
 
     // Twitter ServiceProvider implementation.
     public class TwitterServiceProvider : AbstractOAuth1ServiceProvider<ITwitter>

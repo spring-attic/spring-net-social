@@ -34,7 +34,7 @@ using Spring.Social.OAuth1;
 
 namespace Spring.Social.Twitter.Api.Impl
 {
-    // See spring-net-social-twitter project : https://github.com/SpringSource/spring-net-social-twitter
+    // See Spring.NET Social project: http://www.springframework.net/social-twitter/
 
     // This is the central class for interacting with Twitter.
     public class TwitterTemplate : AbstractOAuth1ApiBinding, ITwitter
