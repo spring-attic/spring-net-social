@@ -27,6 +27,8 @@ using Spring.Rest.Client;
 
 namespace Spring.Social.LinkedIn.Api
 {
+    // See Spring.NET Social LinkedIn: http://www.springframework.net/social-linkedin/
+
     // Interface specifying a basic set of operations for interacting with LinkedIn.
     public interface ILinkedIn : IApiBinding
     {

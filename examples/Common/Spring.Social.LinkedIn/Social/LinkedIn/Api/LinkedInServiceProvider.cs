@@ -25,6 +25,8 @@ using Spring.Social.LinkedIn.Api.Impl;
 
 namespace Spring.Social.LinkedIn.Api
 {
+    // See Spring.NET Social LinkedIn: http://www.springframework.net/social-linkedin/
+
     // LinkedIn ServiceProvider implementation.
     public class LinkedInServiceProvider : AbstractOAuth1ServiceProvider<ILinkedIn>
     {

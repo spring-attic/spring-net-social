@@ -22,6 +22,8 @@ using System.Runtime.Serialization;
 
 namespace Spring.Social.LinkedIn.Api
 {
+    // See Spring.NET Social LinkedIn: http://www.springframework.net/social-linkedin/
+
     // Represents a LinkedIn profile (incomplete)
     [DataContract(Name="person", Namespace="")]
     public class LinkedInProfile

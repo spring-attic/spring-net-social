@@ -31,10 +31,12 @@ using Spring.Http.Converters.Xml;
 
 namespace Spring.Social.LinkedIn.Api.Impl
 {
+    // See Spring.NET Social LinkedIn: http://www.springframework.net/social-linkedin/
+
     // This is the central class for interacting with LinkedIn.
     public class LinkedInTemplate : AbstractOAuth1ApiBinding, ILinkedIn
     {
-        private static readonly Uri API_URI_BASE = new Uri("http://api.linkedin.com/v1/people/");
+        private static readonly Uri API_URI_BASE = new Uri("https://api.linkedin.com/v1/people/");
         private const string PROFILE_URL = "{id}:(first-name,last-name)";
 
         // Create a new instance of LinkedInTemplate.
