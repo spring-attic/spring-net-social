@@ -226,20 +226,24 @@ namespace Spring.Social.OAuth1
             }
         }
 
+        private const string UNRESERVED_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_.~";
+
         // http://oauth.net/core/1.0a/#rfc.section.5.1
-        private static string OAuthEncode(string url)
+        private static string OAuthEncode(string data)
         {
-            string urlEncoded = HttpUtils.UrlEncode(url);
-            if (urlEncoded == null)
+            StringBuilder result = new StringBuilder();
+            foreach (char symbol in data)
             {
-                return null;
+                if (UNRESERVED_CHARS.IndexOf(symbol) != -1)
+                {
+                    result.Append(symbol);
+                }
+                else
+                {
+                    result.Append('%' + String.Format("{0:X2}", (int)symbol));
+                }
             }
-            return urlEncoded
-                .Replace("!", "%21")
-                .Replace("'", "%27")
-                .Replace("(", "%28")
-                .Replace(")", "%29")
-                .Replace("*", "%2A");
+            return result.ToString();
         }
 
         #endregion
