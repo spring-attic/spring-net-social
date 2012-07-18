@@ -213,7 +213,7 @@ namespace Spring.Social.OAuth1
         /// An authorized request token and verifier. The verifier will be ignored for OAuth 1.0 providers
         /// </param>
         /// <param name="additionalParameters">
-        /// Any additional query parameters to be sent when fetching the access token
+        /// Any additional query parameters to be sent when exchanching for an access token.
         /// </param>
         /// <returns>
         /// A <code>Task&lt;T&gt;</code> that represents the asynchronous operation that can return the access token.
@@ -268,7 +268,7 @@ namespace Spring.Social.OAuth1
         /// An authorized request token and verifier. The verifier will be ignored for OAuth 1.0 providers.
         /// </param>
         /// <param name="additionalParameters">
-        /// Any additional query parameters to be sent when fetching the access token.
+        /// Any additional query parameters to be sent when exchanching for an access token.
         /// </param>
         /// <returns>The access token.</returns>
         public OAuthToken ExchangeForAccessToken(AuthorizedRequestToken requestToken, NameValueCollection additionalParameters)
@@ -334,7 +334,7 @@ namespace Spring.Social.OAuth1
         /// An authorized request token and verifier. The verifier will be ignored for OAuth 1.0 providers
         /// </param>
         /// <param name="additionalParameters">
-        /// Any additional query parameters to be sent when fetching the access token.
+        /// Any additional query parameters to be sent when exchanching for an access token.
         /// </param>
         /// <param name="operationCompleted">
         /// The <code>Action&lt;T&gt;</code> to perform when the asynchronous request completes. 
