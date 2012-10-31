@@ -456,13 +456,11 @@ namespace Spring.Social.OAuth2
         private AccessGrant ExtractAccessGrant(JsonValue response)
         {
             string accessToken = response.GetValue<string>("access_token");
-            string scope = response.ContainsName("scope") ? response.GetValue<string>("scope") : null;
-            string refreshToken = response.ContainsName("refresh_token") ? response.GetValue<string>("refresh_token") : null;
+            string scope = response.GetValueOrDefault<string>("scope");
+            string refreshToken = response.GetValueOrDefault<string>("refresh_token");
             int? expiresIn = null;
-            if (response.ContainsName("expires_in"))
-            {
-                try { expiresIn = response.GetValue<int?>("expires_in"); } catch (JsonException) { }
-            }
+            try { expiresIn = response.GetValueOrDefault<int?>("expires_in"); } catch (JsonException) { }
+
             return this.CreateAccessGrant(accessToken, scope, refreshToken, expiresIn, response);
         }
 
