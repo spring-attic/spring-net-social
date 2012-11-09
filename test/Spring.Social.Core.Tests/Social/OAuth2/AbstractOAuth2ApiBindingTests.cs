@@ -113,7 +113,7 @@ namespace Spring.Social.OAuth2
                 .AndExpectMethod(HttpMethod.POST)
                 .AndExpectHeader("Content-Type", MediaType.APPLICATION_FORM_URLENCODED.ToString())
                 .AndExpectHeader("Authorization", expectedAuthorizationHeaderValue)
-                .AndExpectBody("status=Hello+there!");
+                .AndExpectBody("status=Hello+there%21");
         }
     }
 }

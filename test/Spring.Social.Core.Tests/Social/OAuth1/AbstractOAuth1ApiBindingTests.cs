@@ -87,7 +87,7 @@ namespace Spring.Social.OAuth1
                 .AndExpectHeaderContains("Authorization", "oauth_token=\"access_token\"")
                 .AndExpectHeaderContains("Authorization", "oauth_timestamp=\"")
                 .AndExpectHeaderContains("Authorization", "oauth_signature=\"")
-                .AndExpectBody("status=Hello+there!");
+                .AndExpectBody("status=Hello+there%21");
 
             apiBinding.UpdateStatus();
         }
