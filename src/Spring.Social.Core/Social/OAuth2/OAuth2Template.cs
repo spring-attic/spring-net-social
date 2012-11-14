@@ -332,7 +332,7 @@ namespace Spring.Social.OAuth2
                 .ContinueWith<AccessGrant>(task =>
                     {
                         return this.ExtractAccessGrant(task.Result);
-                    });
+                    }, TaskContinuationOptions.ExecuteSynchronously);
         }
 #else
 #if !SILVERLIGHT

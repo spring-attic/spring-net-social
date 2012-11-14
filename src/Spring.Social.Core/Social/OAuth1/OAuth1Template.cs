@@ -203,7 +203,7 @@ namespace Spring.Social.OAuth1
                 .ContinueWith<OAuthToken>(task =>
                 {
                     return this.CreateOAuthToken(task.Result["oauth_token"], task.Result["oauth_token_secret"], task.Result);
-                });
+                }, TaskContinuationOptions.ExecuteSynchronously);
         }
 
         /// <summary>
@@ -231,7 +231,7 @@ namespace Spring.Social.OAuth1
                 .ContinueWith<OAuthToken>(task =>
                 {
                     return this.CreateOAuthToken(task.Result["oauth_token"], task.Result["oauth_token_secret"], task.Result);
-                });
+                }, TaskContinuationOptions.ExecuteSynchronously);
         }
 #else
 #if !SILVERLIGHT
