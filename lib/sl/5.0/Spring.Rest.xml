@@ -6544,6 +6544,11 @@
             <author>Arjen Poutsma</author>
             <author>Bruno Baia (.NET)</author>
         </member>
+        <member name="F:Spring.Rest.Client.Support.HttpEntityRequestCallback.requestEntity">
+            <summary>
+            The underlying <see cref="T:Spring.Http.HttpEntity"/> used by the request.
+            </summary>
+        </member>
         <member name="M:Spring.Rest.Client.Support.HttpEntityRequestCallback.#ctor(System.Object,System.Collections.Generic.IList{Spring.Http.Converters.IHttpMessageConverter})">
             <summary>
             Creates a new instance of <see cref="T:Spring.Rest.Client.Support.HttpEntityRequestCallback"/>.
@@ -6628,6 +6633,11 @@
             <typeparam name="T">The response body type.</typeparam>
             <author>Arjen Poutsma</author>
             <author>Bruno Baia (.NET)</author>
+        </member>
+        <member name="F:Spring.Rest.Client.Support.MessageConverterResponseExtractor`1.messageConverters">
+            <summary>
+            The underlying list of <see cref="T:Spring.Http.Converters.IHttpMessageConverter"/> used to extract data from the response.
+            </summary>
         </member>
         <member name="M:Spring.Rest.Client.Support.MessageConverterResponseExtractor`1.#ctor(System.Collections.Generic.IList{Spring.Http.Converters.IHttpMessageConverter})">
             <summary>
