@@ -18,7 +18,7 @@
   <property name="product.url" value="http://www.springframework.net/" />
   <property name="product.description" value="Allows you to connect your applications with SaaS providers such as Facebook and Twitter" />
   
-  <property name="product.version" value="1.0.0" />
+  <property name="product.version" value="1.0.1" />
   <!-- alpha / beta# / rc# -->
   <property name="product.releasetype" value="" />
   <property name="product.fullname" value="${product.name} ${product.version}" if="${(product.releasetype == '')}" />
@@ -229,6 +229,7 @@
       <fileset basedir="${root.dir}">
         <include name="*.sln"/>
         <include name="readme.txt"/>
+        <include name="changelog.txt"/>
         <include name="license.txt"/>
         <include name="examples\**"/>
         <include name="lib\**"/>

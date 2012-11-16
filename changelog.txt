@@ -1,0 +1,12 @@
+SPRING.NET SOCIAL FRAMEWORK CHANGELOG
+=====================================
+http://www.springframework.net/social/
+
+Release Version 1.0.1 November 16, 2012
+
+Bug
+[SPRNETSOCIAL-2] - Improve OAuth1 encoding
+
+Task
+[SPRNETSOCIAL-1] - Update Spring REST version to 1.1.1
+

@@ -1,11 +1,11 @@
-The Spring.NET Social project, Release 1.0.0 (January 23, 2012)
----------------------------------------------------------------
+The Spring.NET Social project, Release 1.0.1 (November 16, 2012)
+----------------------------------------------------------------
 http://www.springframework.net/social/
 
 
 1. INTRODUCTION
 
-The 1.0.0 release of Spring.NET Social contains
+The 1.0.1 release of Spring.NET Social contains
 	
 	* An extensible service provider framework, supporting OAuth1 and OAuth2, 
 	  that greatly simplifies the process of connecting local user accounts to hosted provider accounts.
