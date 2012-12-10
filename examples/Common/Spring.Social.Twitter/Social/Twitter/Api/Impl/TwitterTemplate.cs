@@ -39,7 +39,7 @@ namespace Spring.Social.Twitter.Api.Impl
     // This is the central class for interacting with Twitter.
     public class TwitterTemplate : AbstractOAuth1ApiBinding, ITwitter
     {
-        private static readonly Uri API_URI_BASE = new Uri("https://api.twitter.com/1/");
+        private static readonly Uri API_URI_BASE = new Uri("https://api.twitter.com/1.1/");
         private const string TWEET_URL = "statuses/update.json";
 
         // Create a new instance of TwitterTemplate.
