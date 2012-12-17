@@ -98,6 +98,18 @@ namespace Spring.Social.LinkedIn.Api.Impl
         }
 #endif
 
+        /// <summary>
+        /// Gets the underlying <see cref="IRestOperations"/> object allowing for consumption of LinkedIn endpoints 
+        /// that may not be otherwise covered by the API binding. 
+        /// </summary>
+        /// <remarks>
+        /// The <see cref="IRestOperations"/> object returned is configured to include an OAuth "Authorization" header on all requests.
+        /// </remarks>
+        public IRestOperations RestOperations
+        {
+            get { return this.RestTemplate; }
+        }
+
         #endregion
 
         /*

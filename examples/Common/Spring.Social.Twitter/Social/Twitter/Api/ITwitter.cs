@@ -23,8 +23,9 @@ using System;
 using System.Threading.Tasks;
 #else
 using Spring.Http;
-using Spring.Rest.Client;
 #endif
+
+using Spring.Rest.Client;
 
 namespace Spring.Social.Twitter.Api
 {
@@ -44,5 +45,14 @@ namespace Spring.Social.Twitter.Api
         // Asynchronously updates the user's status.
         RestOperationCanceler UpdateStatusAsync(string status, Action<RestOperationCompletedEventArgs<HttpResponseMessage>> operationCompleted);
 #endif
+
+        /// <summary>
+        /// Gets the underlying <see cref="IRestOperations"/> object allowing for consumption of Twitter endpoints 
+        /// that may not be otherwise covered by the API binding. 
+        /// </summary>
+        /// <remarks>
+        /// The <see cref="IRestOperations"/> object returned is configured to include an OAuth "Authorization" header on all requests.
+        /// </remarks>
+        IRestOperations RestOperations { get; }
     }
 }

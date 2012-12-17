@@ -21,12 +21,10 @@
 using System;
 #if NET_4_0 || SILVERLIGHT_5
 using System.Threading.Tasks;
-#else
-using Spring.Http;
-using Spring.Rest.Client;
 #endif
 
 using Spring.Json;
+using Spring.Rest.Client;
 
 namespace Spring.Social.Do.Api
 {
@@ -44,5 +42,14 @@ namespace Spring.Social.Do.Api
         // Asynchronously retrieves the authenticated user's Do profile.
         RestOperationCanceler GetUserProfileAsync(Action<RestOperationCompletedEventArgs<JsonValue>> operationCompleted);
 #endif
+
+        /// <summary>
+        /// Gets the underlying <see cref="IRestOperations"/> object allowing for consumption of Do endpoints 
+        /// that may not be otherwise covered by the API binding. 
+        /// </summary>
+        /// <remarks>
+        /// The <see cref="IRestOperations"/> object returned is configured to include an OAuth "Authorization" header on all requests.
+        /// </remarks>
+        IRestOperations RestOperations { get; }
     }
 }

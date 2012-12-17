@@ -21,9 +21,9 @@
 using System;
 #if NET_4_0 || SILVERLIGHT_5
 using System.Threading.Tasks;
-#else
-using Spring.Rest.Client;
 #endif
+
+using Spring.Rest.Client;
 
 namespace Spring.Social.LinkedIn.Api
 {
@@ -43,5 +43,14 @@ namespace Spring.Social.LinkedIn.Api
         // Asynchronously retrieves the user's LinkedIn profile Name.
         RestOperationCanceler GetUserProfileAsync(Action<RestOperationCompletedEventArgs<LinkedInProfile>> operationCompleted);
 #endif
+
+        /// <summary>
+        /// Gets the underlying <see cref="IRestOperations"/> object allowing for consumption of LinkedIn endpoints 
+        /// that may not be otherwise covered by the API binding. 
+        /// </summary>
+        /// <remarks>
+        /// The <see cref="IRestOperations"/> object returned is configured to include an OAuth "Authorization" header on all requests.
+        /// </remarks>
+        IRestOperations RestOperations { get; }
     }
 }

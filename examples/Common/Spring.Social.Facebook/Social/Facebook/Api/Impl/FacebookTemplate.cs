@@ -65,6 +65,7 @@ namespace Spring.Social.Facebook.Api.Impl
         protected override IList<IHttpMessageConverter> GetMessageConverters()
         {
             IList<IHttpMessageConverter> converters = base.GetMessageConverters();
+            //converters.Add(new StringHttpMessageConverter()); // For debugging
             //converters.Add(new DataContractHttpMessageConverter()); // DataContractSerializer
             //converters.Add(new XElementHttpMessageConverter()); // Linq to XML
             //converters.Add(new DataContractJsonHttpMessageConverter()); // DataContractJsonSerializer
@@ -107,6 +108,18 @@ namespace Spring.Social.Facebook.Api.Impl
             return this.RestTemplate.PostForMessageAsync(PROFILE_URL, content, operationCompleted, "me");
         }
 #endif
+
+        /// <summary>
+        /// Gets the underlying <see cref="IRestOperations"/> object allowing for consumption of Facebook endpoints 
+        /// that may not be otherwise covered by the API binding. 
+        /// </summary>
+        /// <remarks>
+        /// The <see cref="IRestOperations"/> object returned is configured to include an OAuth "Authorization" header on all requests.
+        /// </remarks>
+        public IRestOperations RestOperations
+        {
+            get { return this.RestTemplate; }
+        }
 
         #endregion
     }
