@@ -29,7 +29,6 @@ using Spring.Collections.Specialized;
 using System.Collections.Specialized;
 #endif
 
-
 using Spring.Json;
 using Spring.Rest.Client;
 using Spring.Http.Converters;
@@ -41,8 +40,8 @@ namespace Spring.Social.GitHub.Api.Impl
     // This is the central class for interacting with GitHub.
     public class GitHubTemplate : AbstractOAuth2ApiBinding, IGitHub
     {
-        private static readonly Uri API_URI_BASE = new Uri("https://github.com/api/v2/json/");
-        private const string PROFILE_URL = "user/show";
+        private static readonly Uri API_URI_BASE = new Uri("https://api.github.com/");
+        private const string PROFILE_PATH = "user";
 
         // Create a new instance of GitHubTemplate.
         // This constructor creates a new GitHubTemplate able to perform unauthenticated operations against GitHub's API.
@@ -67,6 +66,7 @@ namespace Spring.Social.GitHub.Api.Impl
         protected override IList<IHttpMessageConverter> GetMessageConverters()
         {
             IList<IHttpMessageConverter> converters = base.GetMessageConverters();
+            converters.Add(new StringHttpMessageConverter()); // For debugging
             //converters.Add(new DataContractHttpMessageConverter()); // DataContractSerializer
             //converters.Add(new XElementHttpMessageConverter()); // Linq to XML
             //converters.Add(new DataContractJsonHttpMessageConverter()); // DataContractJsonSerializer
@@ -77,43 +77,29 @@ namespace Spring.Social.GitHub.Api.Impl
 
         protected override OAuth2Version GetOAuth2Version()
         {
-            return OAuth2Version.Draft8;
+            return OAuth2Version.Bearer;
         }
 
-        #region GitHub Membres
+        #region IGitHub Membres
 
 #if NET_4_0 || SILVERLIGHT_5
-        // Asynchronously retrieves the user's GitHub profile Name.
-        public Task<string> GetProfileNameAsync()
+        // Asynchronously retrieves the authenticated user's GitHub profile.
+        public Task<JsonValue> GetUserProfileAsync()
         {
-            return this.RestTemplate.GetForObjectAsync<JsonValue>(PROFILE_URL)
-                .ContinueWith<string>(task =>
-                    {
-                        return task.Result.GetValue("user").GetValue<string>("name");
-                    });
+            return this.RestTemplate.GetForObjectAsync<JsonValue>(PROFILE_PATH);
         }
 #else
 #if !SILVERLIGHT
-        // Retrieves the user's GitHub profile Name.
-        public string GetProfileName()
+        // Retrieves the authenticated user's GitHub profile.
+        public JsonValue GetUserProfile()
         {
-            JsonValue result = this.RestTemplate.GetForObject<JsonValue>(PROFILE_URL);
-            return result.GetValue("user").GetValue<string>("name");
+            return this.RestTemplate.GetForObject<JsonValue>(PROFILE_PATH);
         }
 #endif
-        // Asynchronously retrieves the user's GitHub profile Name.
-        public RestOperationCanceler GetProfileNameAsync(Action<RestOperationCompletedEventArgs<string>> operationCompleted)
+        // Asynchronously retrieves the authenticated user's GitHub profile.
+        public RestOperationCanceler GetUserProfileAsync(Action<RestOperationCompletedEventArgs<JsonValue>> operationCompleted)
         {
-            return this.RestTemplate.GetForObjectAsync<JsonValue>(PROFILE_URL, 
-                 r =>
-                 {
-                     string response = null;
-                     if (r.Error == null)
-                     {
-                         response = r.Response.GetValue("user").GetValue<string>("name");
-                     }
-                     operationCompleted(new RestOperationCompletedEventArgs<string>(response, r.Error, r.Cancelled, r.UserState));
-                 });
+            return this.RestTemplate.GetForObjectAsync<JsonValue>(PROFILE_PATH, operationCompleted);
         }
 #endif
 

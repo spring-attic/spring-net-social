@@ -26,21 +26,23 @@ using Spring.Http;
 using Spring.Rest.Client;
 #endif
 
+using Spring.Json;
+
 namespace Spring.Social.GitHub.Api
 {
     // Interface specifying a basic set of operations for interacting with GitHub.
     public interface IGitHub : IApiBinding
     {
 #if NET_4_0 || SILVERLIGHT_5
-        // Asynchronously retrieves the user's GitHub profile Name.
-        Task<string> GetProfileNameAsync();
+        // Asynchronously retrieves the authenticated user's GitHub profile.
+        Task<JsonValue> GetUserProfileAsync();
 #else
 #if !SILVERLIGHT
-        // Retrieves the user's GitHub profile Name.
-        string GetProfileName();
+        // Retrieves the authenticated user's GitHub profile.
+        JsonValue GetUserProfile();
 #endif
-        // Asynchronously retrieves the user's GitHub profile Name.
-        RestOperationCanceler GetProfileNameAsync(Action<RestOperationCompletedEventArgs<string>> operationCompleted);
+        // Asynchronously retrieves the authenticated user's GitHub profile.
+        RestOperationCanceler GetUserProfileAsync(Action<RestOperationCompletedEventArgs<JsonValue>> operationCompleted);
 #endif
     }
 }
