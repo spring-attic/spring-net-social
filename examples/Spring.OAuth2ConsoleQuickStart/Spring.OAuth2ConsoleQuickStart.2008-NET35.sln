@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spring.Social.Facebook.2008
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spring.Social.GitHub.2008-NET35", "..\Common\Spring.Social.Github\Spring.Social.GitHub.2008-NET35.csproj", "{BA978258-8AD4-4233-9DF5-959E08195962}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spring.Social.Do.2008-NET35", "..\Common\Spring.Social.Do\Spring.Social.Do.2008-NET35.csproj", "{5B9782A8-D8A4-2343-DF95-59E096819592}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,10 @@ Global
 		{BA978258-8AD4-4233-9DF5-959E08195962}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BA978258-8AD4-4233-9DF5-959E08195962}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BA978258-8AD4-4233-9DF5-959E08195962}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B9782A8-D8A4-2343-DF95-59E096819592}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B9782A8-D8A4-2343-DF95-59E096819592}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B9782A8-D8A4-2343-DF95-59E096819592}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B9782A8-D8A4-2343-DF95-59E096819592}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
