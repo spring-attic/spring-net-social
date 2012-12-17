@@ -86,6 +86,13 @@
       <Project>{A9978258-8AD4-4233-9DF5-959E08195962}</Project>
       <Name>Spring.Social.Facebook.2010-NET40</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Common\Spring.Social.Github\Spring.Social.GitHub.2010-NET40.csproj">
+      <Project>{BA978258-8AD4-4233-9DF5-959E08195962}</Project>
+      <Name>Spring.Social.GitHub.2010-NET40</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Program.cs.github" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

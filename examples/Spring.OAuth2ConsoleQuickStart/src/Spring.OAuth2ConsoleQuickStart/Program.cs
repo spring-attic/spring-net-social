@@ -22,7 +22,7 @@ namespace Spring.OAuth2ConsoleQuickStart
 
                 /* OAuth 'dance' */
 
-                // Authentication using the client-side authorization flow 
+                // Authentication using the implicit grant flow 
                 OAuth2Parameters parameters = new OAuth2Parameters()
                 {
                     RedirectUrl = "https://www.facebook.com/connect/login_success.html",
