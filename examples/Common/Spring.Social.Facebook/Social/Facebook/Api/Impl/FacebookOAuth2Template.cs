@@ -41,7 +41,8 @@ namespace Spring.Social.Facebook.Api.Impl
         public FacebookOAuth2Template(string clientId, string clientSecret)
             : base(clientId, clientSecret, 
                 "https://graph.facebook.com/oauth/authorize", 
-                "https://graph.facebook.com/oauth/access_token")
+                "https://graph.facebook.com/oauth/access_token",
+                true)
         {
         }
 

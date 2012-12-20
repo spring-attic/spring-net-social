@@ -31,7 +31,8 @@ namespace Spring.Social.GitHub.Api
         public GitHubServiceProvider(String clientId, String clientSecret)
             : base(new OAuth2Template(clientId, clientSecret,
                 "https://github.com/login/oauth/authorize",
-                "https://github.com/login/oauth/access_token"))
+                "https://github.com/login/oauth/access_token", 
+                true))
         {
         }
 

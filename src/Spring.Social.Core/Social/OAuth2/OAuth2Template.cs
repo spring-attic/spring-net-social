@@ -34,6 +34,7 @@ using Spring.Util;
 using Spring.Json;
 using Spring.Rest.Client;
 using Spring.Http;
+using Spring.Http.Client.Interceptor;
 using Spring.Http.Converters;
 using Spring.Http.Converters.Json;
 
@@ -53,6 +54,7 @@ namespace Spring.Social.OAuth2
         private string authorizeUrl;
         private string authenticateUrl;
         private RestTemplate restTemplate;
+        private bool useParametersForClientAuthentication;
 
         /// <summary>
         /// Gets a reference to the REST client used to perform OAuth2 calls. 
@@ -63,26 +65,92 @@ namespace Spring.Social.OAuth2
         }
 
         /// <summary>
-        /// Creates an OAuth2Template.
+        /// Gets a value indicating whether to pass client credentials to the provider as parameters 
+        /// instead of using HTTP Basic authentication.
+        /// </summary>
+        public bool UseParametersForClientAuthentication
+        {
+            get { return useParametersForClientAuthentication; }
+        }
+
+        /// <summary>
+        /// Creates an OAuth2Template for a given set of client credentials. 
+        /// <para/>
+        /// Assumes that the authorization URL is the same as the authentication URL.
         /// </summary>
         /// <param name="clientId">The client identifier.</param>
         /// <param name="clientSecret">The client password.</param>
-        /// <param name="authorizeUrl">The URL of the provider's authorization endpoint.</param>
-        /// <param name="accessTokenUrl">The URL of the provider's access token endpoint.</param>
+        /// <param name="authorizeUrl">
+        /// The base URL to redirect to when doing authorization code or implicit grant authorization.
+        /// </param>
+        /// <param name="accessTokenUrl">
+        /// The URL at which an authorization code, refresh token, or user credentials may be exchanged for an access token.
+        /// </param>
         public OAuth2Template(string clientId, string clientSecret, string authorizeUrl, string accessTokenUrl)
-            : this(clientId, clientSecret, authorizeUrl, null, accessTokenUrl)
+            : this(clientId, clientSecret, authorizeUrl, null, accessTokenUrl, false)
         {
         }
 
         /// <summary>
-        /// Creates an OAuth2Template.
+        /// Creates an OAuth2Template for a given set of client credentials. 
+        /// <para/>
+        /// Assumes that the authorization URL is the same as the authentication URL.
         /// </summary>
         /// <param name="clientId">The client identifier.</param>
         /// <param name="clientSecret">The client password.</param>
-        /// <param name="authorizeUrl">The URL of the provider's authorization endpoint.</param>
-        /// <param name="authenticateUrl">The URL of the provider's end-user authorization endpoint.</param>
-        /// <param name="accessTokenUrl">The URL of the provider's access token endpoint.</param>
+        /// <param name="authorizeUrl">
+        /// The base URL to redirect to when doing authorization code or implicit grant authorization.
+        /// </param>
+        /// <param name="accessTokenUrl">
+        /// The URL at which an authorization code, refresh token, or user credentials may be exchanged for an access token.
+        /// </param>
+        /// <param name="useParametersForClientAuthentication">
+        /// A value indicating whether to pass client credentials to the provider as parameters 
+        /// instead of using HTTP Basic authentication.
+        /// </param>
+        public OAuth2Template(string clientId, string clientSecret, string authorizeUrl, string accessTokenUrl, bool useParametersForClientAuthentication)
+            : this(clientId, clientSecret, authorizeUrl, null, accessTokenUrl, useParametersForClientAuthentication)
+        {
+        }
+
+        /// <summary>
+        /// Creates an OAuth2Template for a given set of client credentials. 
+        /// </summary>
+        /// <param name="clientId">The client identifier.</param>
+        /// <param name="clientSecret">The client password.</param>
+        /// <param name="authorizeUrl">
+        /// The base URL to redirect to when doing authorization code or implicit grant authorization.
+        /// </param>
+        /// <param name="authenticateUrl">
+        /// The URL to redirect to when doing authentication via authorization code grant.
+        /// </param>
+        /// <param name="accessTokenUrl">
+        /// The URL at which an authorization code, refresh token, or user credentials may be exchanged for an access token.
+        /// </param>
         public OAuth2Template(string clientId, string clientSecret, string authorizeUrl, string authenticateUrl, string accessTokenUrl)
+            : this(clientId, clientSecret, authorizeUrl, authenticateUrl, accessTokenUrl, false)
+        {
+        }
+
+        /// <summary>
+        /// Creates an OAuth2Template for a given set of client credentials. 
+        /// </summary>
+        /// <param name="clientId">The client identifier.</param>
+        /// <param name="clientSecret">The client password.</param>
+        /// <param name="authorizeUrl">
+        /// The base URL to redirect to when doing authorization code or implicit grant authorization.
+        /// </param>
+        /// <param name="authenticateUrl">
+        /// The URL to redirect to when doing authentication via authorization code grant.
+        /// </param>
+        /// <param name="accessTokenUrl">
+        /// The URL at which an authorization code, refresh token, or user credentials may be exchanged for an access token.
+        /// </param>
+        /// <param name="useParametersForClientAuthentication">
+        /// A value indicating whether to pass client credentials to the provider as parameters 
+        /// instead of using HTTP Basic authentication.
+        /// </param>
+        public OAuth2Template(string clientId, string clientSecret, string authorizeUrl, string authenticateUrl, string accessTokenUrl, bool useParametersForClientAuthentication)
         {
             ArgumentUtils.AssertNotNull(clientId, "clientId");
             ArgumentUtils.AssertNotNull(clientSecret, "clientSecret");
@@ -105,6 +173,12 @@ namespace Spring.Social.OAuth2
             this.accessTokenUrl = accessTokenUrl;
 
             this.restTemplate = this.CreateRestTemplate();
+
+            this.useParametersForClientAuthentication = useParametersForClientAuthentication;
+            if (!this.useParametersForClientAuthentication)
+            {
+                restTemplate.RequestInterceptors.Add(new BasicSigningRequestInterceptor(clientId, clientSecret));
+            }
         }
 
         #region IOAuth2Operations Members
@@ -170,6 +244,32 @@ namespace Spring.Social.OAuth2
         public Task<AccessGrant> ExchangeForAccessAsync(string authorizationCode, string redirectUri, NameValueCollection additionalParameters)
         {
             NameValueCollection request = this.CreateExchangeForAccessRequest(authorizationCode, redirectUri, additionalParameters);
+            return this.PostForAccessGrantAsync(this.accessTokenUrl, request);
+        }
+
+        public Task<AccessGrant> ExchangeCredentialsForAccessAsync(string username, string password, NameValueCollection additionalParameters)
+        {
+            NameValueCollection request = this.CreateExchangeCredentialsForAccessRequest(username, password, additionalParameters);
+            return this.PostForAccessGrantAsync(this.accessTokenUrl, request);
+        }
+
+        /// <summary>
+        /// Asynchronously retrieves the client access grant using OAuth 2 client credentials flow.
+        /// </summary>
+        /// <returns>The access grant when the client is acting on its own behalf.</returns>
+        public Task<AccessGrant> AuthenticateClientAsync()
+        {
+            return this.AuthenticateClientAsync(null);
+        }
+
+        /// <summary>
+        /// Asynchronously retrieves the client access grant using OAuth 2 client credentials flow.
+        /// </summary>
+        /// <param name="scope">The optional scope to get for the access grant.</param>
+        /// <returns>The access grant when the client is acting on its own behalf.</returns>
+        public Task<AccessGrant> AuthenticateClientAsync(string scope)
+        {
+            NameValueCollection request = this.CreateAuthenticateClientRequest(scope);
             return this.PostForAccessGrantAsync(this.accessTokenUrl, request);
         }
 
@@ -417,8 +517,11 @@ namespace Spring.Social.OAuth2
         private NameValueCollection CreateExchangeForAccessRequest(string authorizationCode, string redirectUri, NameValueCollection additionalParameters)
         {
             NameValueCollection request = new NameValueCollection();
-            request.Add("client_id", this.clientId);
-            request.Add("client_secret", this.clientSecret);
+            if (this.useParametersForClientAuthentication)
+            {
+                request.Add("client_id", this.clientId);
+                request.Add("client_secret", this.clientSecret);
+            }
             request.Add("code", authorizationCode);
             request.Add("redirect_uri", redirectUri);
             request.Add("grant_type", "authorization_code");
@@ -432,11 +535,51 @@ namespace Spring.Social.OAuth2
             return request;
         }
 
+        private NameValueCollection CreateExchangeCredentialsForAccessRequest(string username, string password, NameValueCollection additionalParameters)
+        {
+            NameValueCollection request = new NameValueCollection();
+            if (this.UseParametersForClientAuthentication)
+            {
+                request.Add("client_id", this.clientId);
+                request.Add("client_secret", this.clientSecret);
+            }
+            request.Add("username", username);
+            request.Add("password", password);
+            request.Add("grant_type", "password");
+            if (additionalParameters != null)
+            {
+                foreach (string parameterName in additionalParameters)
+                {
+                    request.Add(parameterName, additionalParameters[parameterName]);
+                }
+            }
+            return request;
+        }
+
+        private NameValueCollection CreateAuthenticateClientRequest(string scope)
+        {
+            NameValueCollection request = new NameValueCollection();
+            if (this.UseParametersForClientAuthentication)
+            {
+                request.Add("client_id", this.clientId);
+                request.Add("client_secret", this.clientSecret);
+            }
+            request.Add("grant_type", "client_credentials");
+            if (scope != null)
+            {
+                request.Add("scope", scope);
+            }
+            return request;
+        }
+
         private NameValueCollection CreateRefreshAccessRequest(string refreshToken, string scope, NameValueCollection additionalParameters)
         {
             NameValueCollection request = new NameValueCollection();
-            request.Add("client_id", this.clientId);
-            request.Add("client_secret", this.clientSecret);
+            if (this.useParametersForClientAuthentication)
+            {
+                request.Add("client_id", this.clientId);
+                request.Add("client_secret", this.clientSecret);
+            }
             request.Add("refresh_token", refreshToken);
             if (scope != null)
             {
