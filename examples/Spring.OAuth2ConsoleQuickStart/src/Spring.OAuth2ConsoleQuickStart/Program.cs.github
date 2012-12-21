@@ -22,7 +22,9 @@ namespace Spring.OAuth2ConsoleQuickStart
 
                 /* OAuth 'dance' */
 
-                // Authentication using the authorization code grant flow
+                #region Authorization code grant flow
+
+                // Client is acting on behalf of a user (server-side flow)
                 OAuth2Parameters parameters = new OAuth2Parameters()
                 {
                     RedirectUrl = "http://localhost/GitHub/Callback",
@@ -41,6 +43,8 @@ namespace Spring.OAuth2ConsoleQuickStart
                 AccessGrant oauthAccessToken = gitHubServiceProvider.OAuthOperations.ExchangeForAccess(code, "http://localhost/GitHub/Callback", null);
 #endif
                 Console.WriteLine("Done");
+
+				#endregion
 
                 /* API */
 

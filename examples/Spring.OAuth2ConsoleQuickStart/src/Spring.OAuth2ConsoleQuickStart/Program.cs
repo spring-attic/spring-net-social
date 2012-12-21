@@ -22,7 +22,21 @@ namespace Spring.OAuth2ConsoleQuickStart
 
                 /* OAuth 'dance' */
 
-                // Authentication using the implicit grant flow 
+                #region Client credentials grant flow
+/*
+                // Client is acting on its own behalf
+#if NET_4_0
+                AccessGrant oauthAccessToken = facebookServiceProvider.OAuthOperations.AuthenticateClientAsync(null).Result;
+#else
+                AccessGrant oauthAccessToken = facebookServiceProvider.OAuthOperations.AuthenticateClient(null);
+#endif
+                string accessToken = oauthAccessToken.AccessToken;
+*/
+                #endregion
+
+                #region Implicit grant flow
+
+                // Client is acting on behalf of a user (client-side flow)
                 OAuth2Parameters parameters = new OAuth2Parameters()
                 {
                     RedirectUrl = "https://www.facebook.com/connect/login_success.html",
@@ -34,11 +48,39 @@ namespace Spring.OAuth2ConsoleQuickStart
                 Console.WriteLine("Enter 'access_token' query string parameter from success url:");
                 string accessToken = Console.ReadLine();
 
+                #endregion
+
+                #region Authorization code grant flow
+/*
+                // Client is acting on behalf of a user (server-side flow)
+                OAuth2Parameters parameters = new OAuth2Parameters()
+                {
+                    RedirectUrl = "https://www.facebook.com/connect/login_success.html",
+                    Scope = "offline_access,publish_stream"
+                };
+                string authorizationUrl = facebookServiceProvider.OAuthOperations.BuildAuthorizeUrl(GrantType.AuthorizationCode, parameters);
+                Console.WriteLine("Redirect user to Facebook for authorization: " + authorizationUrl);
+                Process.Start(authorizationUrl);
+                Console.WriteLine("Enter 'code' query string parameter from callback url:");
+                string code = Console.ReadLine();
+
+                Console.Write("Getting access token...");
+#if NET_4_0
+                AccessGrant oauthAccessToken = facebookServiceProvider.OAuthOperations.ExchangeForAccessAsync(code, "https://www.facebook.com/connect/login_success.html", null).Result;
+#else
+                AccessGrant oauthAccessToken = doServiceProvider.OAuthOperations.ExchangeForAccess(code, "https://www.facebook.com/connect/login_success.html", null);
+#endif
+                Console.WriteLine("Done");
+                string accessToken = oauthAccessToken.AccessToken;
+*/
+                #endregion
+
                 /* API */
 
                 IFacebook facebook = facebookServiceProvider.GetApi(accessToken);
                 Console.WriteLine("Enter your status message:");
                 string message = Console.ReadLine();
+                // This will fail with Client credentials grant flow
 #if NET_4_0
                 facebook.UpdateStatusAsync(message).Wait();
 #else
