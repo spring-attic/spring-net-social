@@ -99,8 +99,7 @@ namespace Spring.Social.OAuth2
 	    [Test]
 	    public void ExchangeForAccess_JsonResponse() 
         {
-		    // The OAuth 2 spec draft specifies JSON as the response content type. Gowalla and Github return the access token this way.
-            AccessGrant accessGrant = this.GetAccessGrant(MediaType.APPLICATION_JSON, false, "AccessToken.json");
+            AccessGrant accessGrant = this.ExchangeForAccess(false, "AccessToken.json");
 
 		    Assert.AreEqual("8d0a88a5c4f1ae4937ad864cafa8e857", accessGrant.AccessToken);
 		    Assert.AreEqual("6b0411401bf8751e34f57feb29fb8e32", accessGrant.RefreshToken);
@@ -114,8 +113,7 @@ namespace Spring.Social.OAuth2
         [Test]
         public void ExchangeForAccess_ParamBasedClientAuthentication_JsonResponse()
         {
-            // The OAuth 2 spec draft specifies JSON as the response content type. Gowalla and Github return the access token this way.
-            AccessGrant accessGrant = this.GetAccessGrant(MediaType.APPLICATION_JSON, true, "AccessToken.json");
+            AccessGrant accessGrant = this.ExchangeForAccess(true, "AccessToken.json");
 
             Assert.AreEqual("8d0a88a5c4f1ae4937ad864cafa8e857", accessGrant.AccessToken);
             Assert.AreEqual("6b0411401bf8751e34f57feb29fb8e32", accessGrant.RefreshToken);
@@ -129,8 +127,7 @@ namespace Spring.Social.OAuth2
 	    [Test]
 	    public void ExchangeForAccess_JsonResponse_NoExpiresIn() 
         {
-		    // The OAuth 2 spec draft specifies JSON as the response content type. Gowalla and Github return the access token this way.
-            AccessGrant accessGrant = this.GetAccessGrant(MediaType.APPLICATION_JSON, false, "AccessToken_NoExpiresIn.json");
+            AccessGrant accessGrant = this.ExchangeForAccess(false, "AccessToken_NoExpiresIn.json");
 
 		    Assert.AreEqual("8d0a88a5c4f1ae4937ad864cafa8e857", accessGrant.AccessToken);
 		    Assert.AreEqual("6b0411401bf8751e34f57feb29fb8e32", accessGrant.RefreshToken);
@@ -141,7 +138,7 @@ namespace Spring.Social.OAuth2
 	    [Test]
 	    public void ExchangeForAccess_JsonResponse_NoExpiresInOrScope() 
         {
-            AccessGrant accessGrant = this.GetAccessGrant(MediaType.APPLICATION_JSON, false, "AccessToken_NoExpiresInOrScope.json");
+            AccessGrant accessGrant = this.ExchangeForAccess(false, "AccessToken_NoExpiresInOrScope.json");
 
 		    Assert.AreEqual("8d0a88a5c4f1ae4937ad864cafa8e857", accessGrant.AccessToken);
 		    Assert.AreEqual("6b0411401bf8751e34f57feb29fb8e32", accessGrant.RefreshToken);
@@ -152,7 +149,7 @@ namespace Spring.Social.OAuth2
 	    [Test]
 	    public void ExchangeForAccess_JsonResponse_ExpiresInAsString() 
         {
-            AccessGrant accessGrant = this.GetAccessGrant(MediaType.APPLICATION_JSON, false, "AccessToken_ExpiresInAsString.json");
+            AccessGrant accessGrant = this.ExchangeForAccess(false, "AccessToken_ExpiresInAsString.json");
 
 		    Assert.AreEqual("8d0a88a5c4f1ae4937ad864cafa8e857", accessGrant.AccessToken);
 		    Assert.AreEqual("6b0411401bf8751e34f57feb29fb8e32", accessGrant.RefreshToken);
@@ -166,7 +163,7 @@ namespace Spring.Social.OAuth2
 	    [Test]
 	    public void ExchangeForAccess_JsonResponse_ExpiresInAsNonNumericString() 
         {
-            AccessGrant accessGrant = this.GetAccessGrant(MediaType.APPLICATION_JSON, false, "AccessToken_ExpiresInAsNonNumericString.json");
+            AccessGrant accessGrant = this.ExchangeForAccess(false, "AccessToken_ExpiresInAsNonNumericString.json");
 
 		    Assert.AreEqual("8d0a88a5c4f1ae4937ad864cafa8e857", accessGrant.AccessToken);
 		    Assert.AreEqual("6b0411401bf8751e34f57feb29fb8e32", accessGrant.RefreshToken);
@@ -174,10 +171,38 @@ namespace Spring.Social.OAuth2
 		    Assert.AreEqual("read", accessGrant.Scope);
 	    }
 
+        [Test]
+        public void ExchangeCredentialsForAccess_JsonResponse()
+        {
+            AccessGrant accessGrant = this.ExchangeCredentialsForAccess(false, "AccessToken.json");
+
+            Assert.AreEqual("8d0a88a5c4f1ae4937ad864cafa8e857", accessGrant.AccessToken);
+            Assert.AreEqual("6b0411401bf8751e34f57feb29fb8e32", accessGrant.RefreshToken);
+            DateTime approximateExpirationTime = DateTime.UtcNow.AddMilliseconds(40735000);
+            DateTime actualExpirationTime = accessGrant.ExpireTime.Value;
+            //allow for 1 second of wiggle room on expiration time.
+            Assert.IsTrue((approximateExpirationTime - actualExpirationTime).Milliseconds < 1000);
+            Assert.AreEqual("read", accessGrant.Scope);
+        }
+
+        [Test]
+        public void ExchangeCredentialsForAccess_ParamBasedClientAuthentication_JsonResponse()
+        {
+            AccessGrant accessGrant = this.ExchangeCredentialsForAccess(true, "AccessToken.json");
+
+            Assert.AreEqual("8d0a88a5c4f1ae4937ad864cafa8e857", accessGrant.AccessToken);
+            Assert.AreEqual("6b0411401bf8751e34f57feb29fb8e32", accessGrant.RefreshToken);
+            DateTime approximateExpirationTime = DateTime.UtcNow.AddMilliseconds(40735000);
+            DateTime actualExpirationTime = accessGrant.ExpireTime.Value;
+            //allow for 1 second of wiggle room on expiration time.
+            Assert.IsTrue((approximateExpirationTime - actualExpirationTime).Milliseconds < 1000);
+            Assert.AreEqual("read", accessGrant.Scope);
+        }
+
 	    [Test]
 	    public void RefreshAccessToken_JsonResponse() 
         {
-            AccessGrant accessGrant = this.RefreshToken(MediaType.APPLICATION_JSON, false, "RefreshToken.json");
+            AccessGrant accessGrant = this.RefreshAcces(false, "RefreshToken.json");
 
 		    Assert.AreEqual("8d0a88a5c4f1ae4937ad864cafa8e857", accessGrant.AccessToken);
 		    Assert.AreEqual("6b0411401bf8751e34f57feb29fb8e32", accessGrant.RefreshToken);
@@ -191,7 +216,7 @@ namespace Spring.Social.OAuth2
         [Test]
         public void RefreshAccessToken_ParamBasedClientAuthentication_JsonResponse()
         {
-            AccessGrant accessGrant = this.RefreshToken(MediaType.APPLICATION_JSON, true, "RefreshToken.json");
+            AccessGrant accessGrant = this.RefreshAcces(true, "RefreshToken.json");
 
             Assert.AreEqual("8d0a88a5c4f1ae4937ad864cafa8e857", accessGrant.AccessToken);
             Assert.AreEqual("6b0411401bf8751e34f57feb29fb8e32", accessGrant.RefreshToken);
@@ -205,7 +230,7 @@ namespace Spring.Social.OAuth2
 	    [Test]
 	    public void RefreshAccessToken_JsonResponse_NoExpiresIn() 
         {
-            AccessGrant accessGrant = this.RefreshToken(MediaType.APPLICATION_JSON, false, "RefreshToken_NoExpiresIn.json");
+            AccessGrant accessGrant = this.RefreshAcces(false, "RefreshToken_NoExpiresIn.json");
 
 		    Assert.AreEqual("8d0a88a5c4f1ae4937ad864cafa8e857", accessGrant.AccessToken);
 		    Assert.AreEqual("6b0411401bf8751e34f57feb29fb8e32", accessGrant.RefreshToken);
@@ -216,12 +241,12 @@ namespace Spring.Social.OAuth2
 
 	    // private helpers
 
-        private AccessGrant GetAccessGrant(MediaType responseContentType, bool expectParamBasedClientAuthentication, string responseFile) 
+        private AccessGrant ExchangeForAccess(bool expectParamBasedClientAuthentication, string responseFile) 
         {
             OAuth2Template testedOAuth2Template = expectParamBasedClientAuthentication ? oAuth2TemplateParamBasedClientAuthentication : oAuth2Template;
 
 		    HttpHeaders responseHeaders = new HttpHeaders();
-		    responseHeaders.ContentType = responseContentType;
+            responseHeaders.ContentType = MediaType.APPLICATION_JSON;
             MockRestServiceServer mockServer = MockRestServiceServer.CreateServer(testedOAuth2Template.RestTemplate);
             IRequestActions requestActions = mockServer.ExpectNewRequest()
                 .AndExpectUri(ACCESS_TOKEN_URL)
@@ -241,12 +266,39 @@ namespace Spring.Social.OAuth2
             return accessGrant;
 	    }
 
-        private AccessGrant RefreshToken(MediaType responseContentType, bool expectParamBasedClientAuthentication, string responseFile) 
+        private AccessGrant ExchangeCredentialsForAccess(bool expectParamBasedClientAuthentication, string responseFile)
+        {
+            OAuth2Template testedOAuth2Template = expectParamBasedClientAuthentication ? oAuth2TemplateParamBasedClientAuthentication : oAuth2Template;
+
+            HttpHeaders responseHeaders = new HttpHeaders();
+            responseHeaders.ContentType = MediaType.APPLICATION_JSON;
+            MockRestServiceServer mockServer = MockRestServiceServer.CreateServer(testedOAuth2Template.RestTemplate);
+            IRequestActions requestActions = mockServer.ExpectNewRequest()
+                .AndExpectUri(ACCESS_TOKEN_URL)
+                .AndExpectMethod(HttpMethod.POST)
+                .AndExpectBody((expectParamBasedClientAuthentication ? "client_id=client_id&client_secret=client_secret&" : "") + "username=habuma&password=letmein01&grant_type=password&scope=read%2Cwrite");
+            if (!expectParamBasedClientAuthentication)
+            {
+                requestActions.AndExpectHeader("Authorization", "Basic Y2xpZW50X2lkOmNsaWVudF9zZWNyZXQ=");
+            }
+            requestActions.AndRespondWith(new AssemblyResource(responseFile, typeof(OAuth2TemplateTests)), responseHeaders);
+
+            OAuth2Parameters parameters = new OAuth2Parameters();
+            parameters.Scope = "read,write";
+#if NET_4_0 || SILVERLIGHT_5
+            AccessGrant accessGrant = testedOAuth2Template.ExchangeCredentialsForAccessAsync("habuma", "letmein01", parameters).Result;
+#else
+            AccessGrant accessGrant = testedOAuth2Template.ExchangeCredentialsForAccess("habuma", "letmein01", parameters);
+#endif
+            return accessGrant;
+        }
+
+        private AccessGrant RefreshAcces(bool expectParamBasedClientAuthentication, string responseFile) 
         {
             OAuth2Template testedOAuth2Template = expectParamBasedClientAuthentication ? oAuth2TemplateParamBasedClientAuthentication : oAuth2Template;
 
 		    HttpHeaders responseHeaders = new HttpHeaders();
-		    responseHeaders.ContentType = responseContentType;
+            responseHeaders.ContentType = MediaType.APPLICATION_JSON;
             MockRestServiceServer mockServer = MockRestServiceServer.CreateServer(testedOAuth2Template.RestTemplate);
 		    IRequestActions requestActions = mockServer.ExpectNewRequest()
                 .AndExpectUri(ACCESS_TOKEN_URL)

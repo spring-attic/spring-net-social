@@ -42,7 +42,7 @@ namespace Spring.Social.OAuth2
     public interface IOAuth2Operations
     {
         /// <summary>
-        /// Construct the URL to redirect the user to for authorization.
+        /// Constructs the URL to redirect the user to for authorization.
         /// </summary>
         /// <param name="grantType">
         /// Specifies whether to use client-side or server-side OAuth flow.
@@ -56,7 +56,7 @@ namespace Spring.Social.OAuth2
         string BuildAuthorizeUrl(GrantType grantType, OAuth2Parameters parameters);
 
         /// <summary>
-        /// Construct the URL to redirect the user to for authentication. 
+        /// Constructs the URL to redirect the user to for authentication. 
         /// <para/>
         /// The authenticate URL differs from the authorizationUrl slightly in that it does not require the user to authorize the app multiple times.
         /// This provides a better user experience for "Sign in with Provider" scenarios.
@@ -72,7 +72,7 @@ namespace Spring.Social.OAuth2
 
 #if NET_4_0 || SILVERLIGHT_5
         /// <summary>
-        /// Asynchronously exchange the authorization code for an access grant.
+        /// Asynchronously exchanges the authorization code for an access grant.
         /// </summary>
         /// <param name="authorizationCode">
         /// The authorization code returned by the provider upon user authorization.
@@ -87,6 +87,19 @@ namespace Spring.Social.OAuth2
         /// A <code>Task&lt;T&gt;</code> that represents the asynchronous operation that can return the OAuth2 access token.
         /// </returns>
         Task<AccessGrant> ExchangeForAccessAsync(string authorizationCode, string redirectUri, NameValueCollection additionalParameters);
+
+        /// <summary>
+        /// Asynchronously exchanges user credentials for an access grant using OAuth2's Resource Owner Credentials Grant (aka, "password" grant).
+        /// </summary>
+        /// <param name="username">The user's username on the provider.</param>
+        /// <param name="password">The user's password on the provider.</param>
+        /// <param name="additionalParameters">
+        /// Any additional parameters to be sent when exchanging the credentials for an access grant. Should not be encoded.
+        /// </param>
+        /// <returns>
+        /// A <code>Task&lt;T&gt;</code> that represents the asynchronous operation that can return the OAuth2 access token.
+        /// </returns>
+        Task<AccessGrant> ExchangeCredentialsForAccessAsync(string username, string password, NameValueCollection additionalParameters);
 
         /// <summary>
         /// Asynchronously refreshes a previous access grant.
@@ -105,7 +118,7 @@ namespace Spring.Social.OAuth2
 #else
 #if !SILVERLIGHT
         /// <summary>
-        /// Exchange the authorization code for an access grant.
+        /// Exchanges the authorization code for an access grant.
         /// </summary>
         /// <param name="authorizationCode">
         /// The authorization code returned by the provider upon user authorization.
@@ -118,6 +131,17 @@ namespace Spring.Social.OAuth2
         /// </param>
         /// <returns>The OAuth2 access token.</returns>
         AccessGrant ExchangeForAccess(string authorizationCode, string redirectUri, NameValueCollection additionalParameters);
+
+        /// <summary>
+        /// Exchanges user credentials for an access grant using OAuth2's Resource Owner Credentials Grant (aka, "password" grant).
+        /// </summary>
+        /// <param name="username">The user's username on the provider.</param>
+        /// <param name="password">The user's password on the provider.</param>
+        /// <param name="additionalParameters">
+        /// Any additional parameters to be sent when exchanging the credentials for an access grant. Should not be encoded.
+        /// </param>
+        /// <returns>The OAuth2 access token.</returns>
+        AccessGrant ExchangeCredentialsForAccess(string username, string password, NameValueCollection additionalParameters);
 
         /// <summary>
         /// Refreshes a previous access grant.
@@ -133,7 +157,7 @@ namespace Spring.Social.OAuth2
         AccessGrant RefreshAccess(string refreshToken, string scope, NameValueCollection additionalParameters);
 #endif
         /// <summary>
-        /// Exchange the authorization code for an access grant.
+        /// Asynchronously exchanges the authorization code for an access grant.
         /// </summary>
         /// <param name="authorizationCode">
         /// The authorization code returned by the provider upon user authorization.
@@ -154,7 +178,24 @@ namespace Spring.Social.OAuth2
         RestOperationCanceler ExchangeForAccessAsync(string authorizationCode, string redirectUri, NameValueCollection additionalParameters, Action<RestOperationCompletedEventArgs<AccessGrant>> operationCompleted);
 
         /// <summary>
-        /// Refreshes a previous access grant.
+        /// Asynchronously exchanges user credentials for an access grant using OAuth2's Resource Owner Credentials Grant (aka, "password" grant).
+        /// </summary>
+        /// <param name="username">The user's username on the provider.</param>
+        /// <param name="password">The user's password on the provider.</param>
+        /// <param name="additionalParameters">
+        /// Any additional parameters to be sent when exchanging the credentials for an access grant. Should not be encoded.
+        /// </param>
+        /// <param name="operationCompleted">
+        /// The <code>Action&lt;T&gt;</code> to perform when the asynchronous request completes. 
+        /// Provides the OAuth2 access token.
+        /// </param>
+        /// <returns>
+        /// A <see cref="RestOperationCanceler"/> instance that allows to cancel the asynchronous operation.
+        /// </returns>
+        RestOperationCanceler ExchangeCredentialsForAccessAsync(string username, string password, NameValueCollection additionalParameters, Action<RestOperationCompletedEventArgs<AccessGrant>> operationCompleted);
+
+        /// <summary>
+        /// Asynchronously refreshes a previous access grant.
         /// </summary>
         /// <param name="refreshToken">The refresh token from the previous access grant.</param>
         /// <param name="scope">

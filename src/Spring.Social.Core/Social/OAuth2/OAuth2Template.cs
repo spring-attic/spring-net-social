@@ -73,6 +73,8 @@ namespace Spring.Social.OAuth2
             get { return useParametersForClientAuthentication; }
         }
 
+        #region Contructors
+
         /// <summary>
         /// Creates an OAuth2Template for a given set of client credentials. 
         /// <para/>
@@ -181,10 +183,12 @@ namespace Spring.Social.OAuth2
             }
         }
 
+        #endregion
+
         #region IOAuth2Operations Members
 
         /// <summary>
-        /// Construct the URL to redirect the user to for authorization.
+        /// Constructs the URL to redirect the user to for authorization.
         /// </summary>
         /// <param name="grantType">
         /// Specifies whether to use client-side or server-side OAuth flow.
@@ -201,7 +205,7 @@ namespace Spring.Social.OAuth2
         }
 
         /// <summary>
-        /// Construct the URL to redirect the user to for authentication.
+        /// Constructs the URL to redirect the user to for authentication.
         /// <para/>
         /// The authenticate URL differs from the authorizationUrl slightly in that it does not require the user to authorize the app multiple times.
         /// This provides a better user experience for "Sign in with Provider" scenarios.
@@ -227,7 +231,7 @@ namespace Spring.Social.OAuth2
 
 #if NET_4_0 || SILVERLIGHT_5
         /// <summary>
-        /// Asynchronously exchange the authorization code for an access grant.
+        /// Asynchronously exchanges the authorization code for an access grant.
         /// </summary>
         /// <param name="authorizationCode">
         /// The authorization code returned by the provider upon user authorization.
@@ -247,29 +251,20 @@ namespace Spring.Social.OAuth2
             return this.PostForAccessGrantAsync(this.accessTokenUrl, request);
         }
 
+        /// <summary>
+        /// Asynchronously exchanges user credentials for an access grant using OAuth2's Resource Owner Credentials Grant (aka, "password" grant).
+        /// </summary>
+        /// <param name="username">The user's username on the provider.</param>
+        /// <param name="password">The user's password on the provider.</param>
+        /// <param name="additionalParameters">
+        /// Any additional parameters to be sent when exchanging the credentials for an access grant. Should not be encoded.
+        /// </param>
+        /// <returns>
+        /// A <code>Task&lt;T&gt;</code> that represents the asynchronous operation that can return the OAuth2 access token.
+        /// </returns>
         public Task<AccessGrant> ExchangeCredentialsForAccessAsync(string username, string password, NameValueCollection additionalParameters)
         {
             NameValueCollection request = this.CreateExchangeCredentialsForAccessRequest(username, password, additionalParameters);
-            return this.PostForAccessGrantAsync(this.accessTokenUrl, request);
-        }
-
-        /// <summary>
-        /// Asynchronously retrieves the client access grant using OAuth 2 client credentials flow.
-        /// </summary>
-        /// <returns>The access grant when the client is acting on its own behalf.</returns>
-        public Task<AccessGrant> AuthenticateClientAsync()
-        {
-            return this.AuthenticateClientAsync(null);
-        }
-
-        /// <summary>
-        /// Asynchronously retrieves the client access grant using OAuth 2 client credentials flow.
-        /// </summary>
-        /// <param name="scope">The optional scope to get for the access grant.</param>
-        /// <returns>The access grant when the client is acting on its own behalf.</returns>
-        public Task<AccessGrant> AuthenticateClientAsync(string scope)
-        {
-            NameValueCollection request = this.CreateAuthenticateClientRequest(scope);
             return this.PostForAccessGrantAsync(this.accessTokenUrl, request);
         }
 
@@ -294,7 +289,7 @@ namespace Spring.Social.OAuth2
 #else
 #if !SILVERLIGHT
         /// <summary>
-        /// Exchange the authorization code for an access grant.
+        /// Exchanges the authorization code for an access grant.
         /// </summary>
         /// <param name="authorizationCode">
         /// The authorization code returned by the provider upon user authorization.
@@ -309,6 +304,21 @@ namespace Spring.Social.OAuth2
         public AccessGrant ExchangeForAccess(string authorizationCode, string redirectUri, NameValueCollection additionalParameters)
         {
             NameValueCollection request = this.CreateExchangeForAccessRequest(authorizationCode, redirectUri, additionalParameters);
+            return this.PostForAccessGrant(this.accessTokenUrl, request);
+        }
+
+        /// <summary>
+        /// Exchanges user credentials for an access grant using OAuth2's Resource Owner Credentials Grant (aka, "password" grant).
+        /// </summary>
+        /// <param name="username">The user's username on the provider.</param>
+        /// <param name="password">The user's password on the provider.</param>
+        /// <param name="additionalParameters">
+        /// Any additional parameters to be sent when exchanging the credentials for an access grant. Should not be encoded.
+        /// </param>
+        /// <returns>The OAuth2 access token.</returns>
+        public AccessGrant ExchangeCredentialsForAccess(string username, string password, NameValueCollection additionalParameters)
+        {
+            NameValueCollection request = this.CreateExchangeCredentialsForAccessRequest(username, password, additionalParameters);
             return this.PostForAccessGrant(this.accessTokenUrl, request);
         }
 
@@ -330,7 +340,7 @@ namespace Spring.Social.OAuth2
         }
 #endif
         /// <summary>
-        /// Exchange the authorization code for an access grant.
+        /// Asynchronously exchanges the authorization code for an access grant.
         /// </summary>
         /// <param name="authorizationCode">
         /// The authorization code returned by the provider upon user authorization.
@@ -355,7 +365,28 @@ namespace Spring.Social.OAuth2
         }
 
         /// <summary>
-        /// Refreshes a previous access grant.
+        /// Asynchronously exchanges user credentials for an access grant using OAuth2's Resource Owner Credentials Grant (aka, "password" grant).
+        /// </summary>
+        /// <param name="username">The user's username on the provider.</param>
+        /// <param name="password">The user's password on the provider.</param>
+        /// <param name="additionalParameters">
+        /// Any additional parameters to be sent when exchanging the credentials for an access grant. Should not be encoded.
+        /// </param>
+        /// <param name="operationCompleted">
+        /// The <code>Action&lt;T&gt;</code> to perform when the asynchronous request completes. 
+        /// Provides the OAuth2 access token.
+        /// </param>
+        /// <returns>
+        /// A <see cref="RestOperationCanceler"/> instance that allows to cancel the asynchronous operation.
+        /// </returns>
+        public RestOperationCanceler ExchangeCredentialsForAccessAsync(string username, string password, NameValueCollection additionalParameters, Action<RestOperationCompletedEventArgs<AccessGrant>> operationCompleted)
+        {
+            NameValueCollection request = this.CreateExchangeCredentialsForAccessRequest(username, password, additionalParameters);
+            return this.PostForAccessGrantAsync(this.accessTokenUrl, request, operationCompleted);
+        }
+
+        /// <summary>
+        /// Asynchronously refreshes a previous access grant.
         /// </summary>
         /// <param name="refreshToken">The refresh token from the previous access grant.</param>
         /// <param name="scope">
@@ -538,7 +569,7 @@ namespace Spring.Social.OAuth2
         private NameValueCollection CreateExchangeCredentialsForAccessRequest(string username, string password, NameValueCollection additionalParameters)
         {
             NameValueCollection request = new NameValueCollection();
-            if (this.UseParametersForClientAuthentication)
+            if (this.useParametersForClientAuthentication)
             {
                 request.Add("client_id", this.clientId);
                 request.Add("client_secret", this.clientSecret);
@@ -552,22 +583,6 @@ namespace Spring.Social.OAuth2
                 {
                     request.Add(parameterName, additionalParameters[parameterName]);
                 }
-            }
-            return request;
-        }
-
-        private NameValueCollection CreateAuthenticateClientRequest(string scope)
-        {
-            NameValueCollection request = new NameValueCollection();
-            if (this.UseParametersForClientAuthentication)
-            {
-                request.Add("client_id", this.clientId);
-                request.Add("client_secret", this.clientSecret);
-            }
-            request.Add("grant_type", "client_credentials");
-            if (scope != null)
-            {
-                request.Add("scope", scope);
             }
             return request;
         }
