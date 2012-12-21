@@ -286,6 +286,20 @@ namespace Spring.Social.OAuth2
             NameValueCollection request = this.CreateRefreshAccessRequest(refreshToken, scope, additionalParameters);
             return this.PostForAccessGrantAsync(this.accessTokenUrl, request);
         }
+
+        /// <summary>
+        /// Asynchronously retrieves the client access grant using OAuth 2 client credentials flow.
+        /// </summary>
+        /// <param name="scope">The optional scope to get for the access grant.</param>
+        /// <returns>
+        /// A <code>Task&lt;T&gt;</code> that represents the asynchronous operation that can return 
+        /// the OAuth2 access token when the client is acting on its own behalf.
+        /// </returns>
+        public Task<AccessGrant> AuthenticateClientAsync(string scope)
+        {
+            NameValueCollection request = this.CreateAuthenticateClientRequest(scope);
+            return this.PostForAccessGrantAsync(this.accessTokenUrl, request);
+        }
 #else
 #if !SILVERLIGHT
         /// <summary>
@@ -336,6 +350,19 @@ namespace Spring.Social.OAuth2
         public AccessGrant RefreshAccess(string refreshToken, string scope, NameValueCollection additionalParameters)
         {
             NameValueCollection request = this.CreateRefreshAccessRequest(refreshToken, scope, additionalParameters);
+            return this.PostForAccessGrant(this.accessTokenUrl, request);
+        }
+
+        /// <summary>
+        /// Retrieves the client access grant using OAuth 2 client credentials flow.
+        /// </summary>
+        /// <param name="scope">The optional scope to get for the access grant.</param>
+        /// <returns>
+        /// The OAuth2 access token when the client is acting on its own behalf.
+        /// </returns>
+        public AccessGrant AuthenticateClient(string scope)
+        {
+            NameValueCollection request = this.CreateAuthenticateClientRequest(scope);
             return this.PostForAccessGrant(this.accessTokenUrl, request);
         }
 #endif
@@ -405,6 +432,23 @@ namespace Spring.Social.OAuth2
         public RestOperationCanceler RefreshAccessAsync(string refreshToken, string scope, NameValueCollection additionalParameters, Action<RestOperationCompletedEventArgs<AccessGrant>> operationCompleted)
         {
             NameValueCollection request = this.CreateRefreshAccessRequest(refreshToken, scope, additionalParameters);
+            return this.PostForAccessGrantAsync(this.accessTokenUrl, request, operationCompleted);
+        }
+
+        /// <summary>
+        /// Asynchronously retrieves the client access grant using OAuth 2 client credentials flow.
+        /// </summary>
+        /// <param name="scope">The optional scope to get for the access grant.</param>
+        /// <param name="operationCompleted">
+        /// The <code>Action&lt;T&gt;</code> to perform when the asynchronous request completes. 
+        /// Provides the OAuth2 access token when the client is acting on its own behalf.
+        /// </param>
+        /// <returns>
+        /// A <see cref="RestOperationCanceler"/> instance that allows to cancel the asynchronous operation.
+        /// </returns>
+        public RestOperationCanceler AuthenticateClientAsync(string scope, Action<RestOperationCompletedEventArgs<AccessGrant>> operationCompleted)
+        {
+            NameValueCollection request = this.CreateAuthenticateClientRequest(scope);
             return this.PostForAccessGrantAsync(this.accessTokenUrl, request, operationCompleted);
         }
 #endif
@@ -607,6 +651,22 @@ namespace Spring.Social.OAuth2
                 {
                     request.Add(parameterName, additionalParameters[parameterName]);
                 }
+            }
+            return request;
+        }
+
+        private NameValueCollection CreateAuthenticateClientRequest(string scope)
+        {
+            NameValueCollection request = new NameValueCollection();
+            if (this.useParametersForClientAuthentication)
+            {
+                request.Add("client_id", this.clientId);
+                request.Add("client_secret", this.clientSecret);
+            }
+            request.Add("grant_type", "client_credentials");
+            if (scope != null)
+            {
+                request.Add("scope", scope);
             }
             return request;
         }

@@ -237,6 +237,32 @@ namespace Spring.Social.OAuth2
 		    Assert.IsNull(accessGrant.ExpireTime);
 		    Assert.IsNull(accessGrant.Scope);
 	    }
+
+        [Test]
+        public void AuthenticateClient_JsonResponse()
+        {
+            AccessGrant accessGrant = this.AuthenticateClient(false, "AccessToken_NoUser.json");
+
+            Assert.AreEqual("8d0a88a5c4f1ae4937ad864cafa8e857", accessGrant.AccessToken);
+            DateTime approximateExpirationTime = DateTime.UtcNow.AddMilliseconds(40735000);
+            DateTime actualExpirationTime = accessGrant.ExpireTime.Value;
+            //allow for 1 second of wiggle room on expiration time.
+            Assert.IsTrue((approximateExpirationTime - actualExpirationTime).Milliseconds < 1000);
+            Assert.AreEqual("read,write", accessGrant.Scope);
+        }
+
+        [Test]
+        public void AuthenticateClient_ParamBasedClientAuthentication_JsonResponse()
+        {
+            AccessGrant accessGrant = this.AuthenticateClient(true, "AccessToken_NoUser.json");
+
+            Assert.AreEqual("8d0a88a5c4f1ae4937ad864cafa8e857", accessGrant.AccessToken);
+            DateTime approximateExpirationTime = DateTime.UtcNow.AddMilliseconds(40735000);
+            DateTime actualExpirationTime = accessGrant.ExpireTime.Value;
+            //allow for 1 second of wiggle room on expiration time.
+            Assert.IsTrue((approximateExpirationTime - actualExpirationTime).Milliseconds < 1000);
+            Assert.AreEqual("read,write", accessGrant.Scope);
+        }
 	
 
 	    // private helpers
@@ -317,5 +343,32 @@ namespace Spring.Social.OAuth2
 #endif
             return accessGrant;
 	    }
+
+        private AccessGrant AuthenticateClient(bool expectParamBasedClientAuthentication, string responseFile)
+        {
+            OAuth2Template testedOAuth2Template = expectParamBasedClientAuthentication ? oAuth2TemplateParamBasedClientAuthentication : oAuth2Template;
+
+            HttpHeaders responseHeaders = new HttpHeaders();
+            responseHeaders.ContentType = MediaType.APPLICATION_JSON;
+            MockRestServiceServer mockServer = MockRestServiceServer.CreateServer(testedOAuth2Template.RestTemplate);
+            IRequestActions requestActions = mockServer.ExpectNewRequest()
+                .AndExpectUri(ACCESS_TOKEN_URL)
+                .AndExpectMethod(HttpMethod.POST)
+                .AndExpectBody((expectParamBasedClientAuthentication ? "client_id=client_id&client_secret=client_secret&" : "") + "grant_type=client_credentials&scope=read%2Cwrite");
+            if (!expectParamBasedClientAuthentication)
+            {
+                requestActions.AndExpectHeader("Authorization", "Basic Y2xpZW50X2lkOmNsaWVudF9zZWNyZXQ=");
+            }
+            requestActions.AndRespondWith(new AssemblyResource(responseFile, typeof(OAuth2TemplateTests)), responseHeaders);
+
+            OAuth2Parameters parameters = new OAuth2Parameters();
+            parameters.Scope = "read,write";
+#if NET_4_0 || SILVERLIGHT_5
+            AccessGrant accessGrant = testedOAuth2Template.AuthenticateClientAsync("read,write").Result;
+#else
+            AccessGrant accessGrant = testedOAuth2Template.AuthenticateClient("read,write");
+#endif
+            return accessGrant;
+        }
     }
 }

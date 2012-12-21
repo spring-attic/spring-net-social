@@ -115,6 +115,16 @@ namespace Spring.Social.OAuth2
         /// A <code>Task&lt;T&gt;</code> that represents the asynchronous operation that can return the OAuth2 access token.
         /// </returns>
         Task<AccessGrant> RefreshAccessAsync(string refreshToken, string scope, NameValueCollection additionalParameters);
+
+        /// <summary>
+        /// Asynchronously retrieves the client access grant using OAuth 2 client credentials flow.
+        /// </summary>
+        /// <param name="scope">The optional scope to get for the access grant.</param>
+        /// <returns>
+        /// A <code>Task&lt;T&gt;</code> that represents the asynchronous operation that can return 
+        /// the OAuth2 access token when the client is acting on its own behalf.
+        /// </returns>
+        Task<AccessGrant> AuthenticateClientAsync(string scope);
 #else
 #if !SILVERLIGHT
         /// <summary>
@@ -155,6 +165,15 @@ namespace Spring.Social.OAuth2
         /// </param>
         /// <returns>The OAuth2 access token.</returns>
         AccessGrant RefreshAccess(string refreshToken, string scope, NameValueCollection additionalParameters);
+
+        /// <summary>
+        /// Retrieves the client access grant using OAuth 2 client credentials flow.
+        /// </summary>
+        /// <param name="scope">The optional scope to get for the access grant.</param>
+        /// <returns>
+        /// The OAuth2 access token when the client is acting on its own behalf.
+        /// </returns>
+        AccessGrant AuthenticateClient(string scope);
 #endif
         /// <summary>
         /// Asynchronously exchanges the authorization code for an access grant.
@@ -212,6 +231,19 @@ namespace Spring.Social.OAuth2
         /// A <see cref="RestOperationCanceler"/> instance that allows to cancel the asynchronous operation.
         /// </returns>
         RestOperationCanceler RefreshAccessAsync(string refreshToken, string scope, NameValueCollection additionalParameters, Action<RestOperationCompletedEventArgs<AccessGrant>> operationCompleted);
+
+        /// <summary>
+        /// Asynchronously retrieves the client access grant using OAuth 2 client credentials flow.
+        /// </summary>
+        /// <param name="scope">The optional scope to get for the access grant.</param>
+        /// <param name="operationCompleted">
+        /// The <code>Action&lt;T&gt;</code> to perform when the asynchronous request completes. 
+        /// Provides the OAuth2 access token when the client is acting on its own behalf.
+        /// </param>
+        /// <returns>
+        /// A <see cref="RestOperationCanceler"/> instance that allows to cancel the asynchronous operation.
+        /// </returns>
+        RestOperationCanceler AuthenticateClientAsync(string scope, Action<RestOperationCompletedEventArgs<AccessGrant>> operationCompleted);
 #endif
     }
 }

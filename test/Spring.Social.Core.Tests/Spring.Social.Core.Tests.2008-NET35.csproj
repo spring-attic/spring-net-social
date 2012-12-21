@@ -108,6 +108,7 @@
     <EmbeddedResource Include="Social\OAuth2\AccessToken_NoExpiresInOrScope.json" />
     <EmbeddedResource Include="Social\OAuth2\RefreshToken.json" />
     <EmbeddedResource Include="Social\OAuth2\RefreshToken_NoExpiresIn.json" />
+    <EmbeddedResource Include="Social\OAuth2\AccessToken_NoUser.json" />
     <None Include="Spring.Social.Core.Tests.dll.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
