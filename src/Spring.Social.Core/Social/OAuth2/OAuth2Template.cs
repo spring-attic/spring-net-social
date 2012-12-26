@@ -281,10 +281,46 @@ namespace Spring.Social.OAuth2
         /// <returns>
         /// A <code>Task&lt;T&gt;</code> that represents the asynchronous operation that can return the OAuth2 access token.
         /// </returns>
+        [Obsolete("Use the other RefreshAccessAsync method instead. Set the scope via additional parameters if needed.")]
         public Task<AccessGrant> RefreshAccessAsync(string refreshToken, string scope, NameValueCollection additionalParameters)
         {
-            NameValueCollection request = this.CreateRefreshAccessRequest(refreshToken, scope, additionalParameters);
+            if (scope != null)
+            {
+                if (additionalParameters == null)
+                {
+                    additionalParameters = new NameValueCollection();
+                }
+                additionalParameters.Set("scope", scope);
+            }
+            return this.RefreshAccessAsync(refreshToken, additionalParameters);
+        }
+
+        /// <summary>
+        /// Asynchronously refreshes a previous access grant.
+        /// </summary>
+        /// <param name="refreshToken">The refresh token from the previous access grant.</param>
+        /// <param name="additionalParameters">
+        /// Any additional parameters to be sent when refreshing a previous access grant. Should not be encoded.
+        /// </param>
+        /// <returns>
+        /// A <code>Task&lt;T&gt;</code> that represents the asynchronous operation that can return the OAuth2 access token.
+        /// </returns>
+        public Task<AccessGrant> RefreshAccessAsync(string refreshToken, NameValueCollection additionalParameters)
+        {
+            NameValueCollection request = this.CreateRefreshAccessRequest(refreshToken, additionalParameters);
             return this.PostForAccessGrantAsync(this.accessTokenUrl, request);
+        }
+
+        /// <summary>
+        /// Asynchronously retrieves the client access grant using OAuth 2 client credentials flow.
+        /// </summary>
+        /// <returns>
+        /// A <code>Task&lt;T&gt;</code> that represents the asynchronous operation that can return 
+        /// the OAuth2 access token when the client is acting on its own behalf.
+        /// </returns>
+        public Task<AccessGrant> AuthenticateClientAsync()
+        {
+            return this.AuthenticateClientAsync(null);
         }
 
         /// <summary>
@@ -347,10 +383,43 @@ namespace Spring.Social.OAuth2
         /// Any additional parameters to be sent when refreshing a previous access grant. Should not be encoded.
         /// </param>
         /// <returns>The OAuth2 access token.</returns>
+        [Obsolete("Use the other RefreshAccess method instead. Set the scope via additional parameters if needed.")]
         public AccessGrant RefreshAccess(string refreshToken, string scope, NameValueCollection additionalParameters)
         {
-            NameValueCollection request = this.CreateRefreshAccessRequest(refreshToken, scope, additionalParameters);
+            if (scope != null)
+            {
+                if (additionalParameters == null)
+                {
+                    additionalParameters = new NameValueCollection();
+                }
+                additionalParameters.Set("scope", scope);
+            }
+            return this.RefreshAccess(refreshToken, additionalParameters);
+        }
+
+        /// <summary>
+        /// Refreshes a previous access grant.
+        /// </summary>
+        /// <param name="refreshToken">The refresh token from the previous access grant.</param>
+        /// <param name="additionalParameters">
+        /// Any additional parameters to be sent when refreshing a previous access grant. Should not be encoded.
+        /// </param>
+        /// <returns>The OAuth2 access token.</returns>
+        public AccessGrant RefreshAccess(string refreshToken, NameValueCollection additionalParameters)
+        {
+            NameValueCollection request = this.CreateRefreshAccessRequest(refreshToken, additionalParameters);
             return this.PostForAccessGrant(this.accessTokenUrl, request);
+        }
+
+        /// <summary>
+        /// Retrieves the client access grant using OAuth 2 client credentials flow.
+        /// </summary>
+        /// <returns>
+        /// The OAuth2 access token when the client is acting on its own behalf.
+        /// </returns>
+        public AccessGrant AuthenticateClient()
+        {
+            return this.AuthenticateClient(null);
         }
 
         /// <summary>
@@ -429,10 +498,53 @@ namespace Spring.Social.OAuth2
         /// <returns>
         /// A <see cref="RestOperationCanceler"/> instance that allows to cancel the asynchronous operation.
         /// </returns>
+        [Obsolete("Use the other RefreshAccessAsync method instead. Set the scope via additional parameters if needed.")]
         public RestOperationCanceler RefreshAccessAsync(string refreshToken, string scope, NameValueCollection additionalParameters, Action<RestOperationCompletedEventArgs<AccessGrant>> operationCompleted)
         {
-            NameValueCollection request = this.CreateRefreshAccessRequest(refreshToken, scope, additionalParameters);
+            if (scope != null)
+            {
+                if (additionalParameters == null)
+                {
+                    additionalParameters = new NameValueCollection();
+                }
+                additionalParameters.Set("scope", scope);
+            }
+            return this.RefreshAccessAsync(refreshToken, additionalParameters, operationCompleted);
+        }
+
+        /// <summary>
+        /// Asynchronously refreshes a previous access grant.
+        /// </summary>
+        /// <param name="refreshToken">The refresh token from the previous access grant.</param>
+        /// <param name="additionalParameters">
+        /// Any additional parameters to be sent when refreshing a previous access grant. Should not be encoded.
+        /// </param>
+        /// <param name="operationCompleted">
+        /// The <code>Action&lt;T&gt;</code> to perform when the asynchronous request completes. 
+        /// Provides the OAuth2 access token.
+        /// </param>
+        /// <returns>
+        /// A <see cref="RestOperationCanceler"/> instance that allows to cancel the asynchronous operation.
+        /// </returns>
+        public RestOperationCanceler RefreshAccessAsync(string refreshToken, NameValueCollection additionalParameters, Action<RestOperationCompletedEventArgs<AccessGrant>> operationCompleted)
+        {
+            NameValueCollection request = this.CreateRefreshAccessRequest(refreshToken, additionalParameters);
             return this.PostForAccessGrantAsync(this.accessTokenUrl, request, operationCompleted);
+        }
+
+        /// <summary>
+        /// Asynchronously retrieves the client access grant using OAuth 2 client credentials flow.
+        /// </summary>
+        /// <param name="operationCompleted">
+        /// The <code>Action&lt;T&gt;</code> to perform when the asynchronous request completes. 
+        /// Provides the OAuth2 access token when the client is acting on its own behalf.
+        /// </param>
+        /// <returns>
+        /// A <see cref="RestOperationCanceler"/> instance that allows to cancel the asynchronous operation.
+        /// </returns>
+        public RestOperationCanceler AuthenticateClientAsync(Action<RestOperationCompletedEventArgs<AccessGrant>> operationCompleted)
+        {
+            return this.AuthenticateClientAsync(null, operationCompleted);
         }
 
         /// <summary>
@@ -631,7 +743,7 @@ namespace Spring.Social.OAuth2
             return request;
         }
 
-        private NameValueCollection CreateRefreshAccessRequest(string refreshToken, string scope, NameValueCollection additionalParameters)
+        private NameValueCollection CreateRefreshAccessRequest(string refreshToken, NameValueCollection additionalParameters)
         {
             NameValueCollection request = new NameValueCollection();
             if (this.useParametersForClientAuthentication)
@@ -640,10 +752,6 @@ namespace Spring.Social.OAuth2
                 request.Add("client_secret", this.clientSecret);
             }
             request.Add("refresh_token", refreshToken);
-            if (scope != null)
-            {
-                request.Add("scope", scope);
-            }
             request.Add("grant_type", "refresh_token");
             if (additionalParameters != null)
             {

@@ -22,20 +22,7 @@ namespace Spring.OAuth2ConsoleQuickStart
 
                 /* OAuth 'dance' */
 
-                #region Resource Owner Credentials grant flow (aka, "password" grant flow)
-
-                // Client sends user credentials (non-web flow)
-#if NET_4_0
-                AccessGrant oauthAccessToken = doServiceProvider.OAuthOperations.ExchangeCredentialsForAccessAsync("myemail", "mypassword", null).Result;
-#else
-                AccessGrant oauthAccessToken = doServiceProvider.OAuthOperations.ExchangeCredentialsForAccess("myemail", "mypassword", null);
-#endif
-
-                #endregion
-
-                #region Authorization code grant flow
-/*
-                // Client is acting on behalf of a user (server-side flow)
+                // Authentication using the authorization code grant flow
                 OAuth2Parameters parameters = new OAuth2Parameters()
                 {
                     RedirectUrl = "http://localhost/Do/Callback.aspx"
@@ -53,8 +40,6 @@ namespace Spring.OAuth2ConsoleQuickStart
                 AccessGrant oauthAccessToken = doServiceProvider.OAuthOperations.ExchangeForAccess(code, "http://localhost/Do/Callback.aspx", null);
 #endif
                 Console.WriteLine("Done");
-*/
-                #endregion
 
                 /* API */
 

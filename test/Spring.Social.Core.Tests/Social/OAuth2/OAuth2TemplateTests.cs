@@ -337,9 +337,9 @@ namespace Spring.Social.OAuth2
             requestActions.AndRespondWith(new AssemblyResource(responseFile, typeof(OAuth2TemplateTests)), responseHeaders);
 
 #if NET_4_0 || SILVERLIGHT_5
-            AccessGrant accessGrant = testedOAuth2Template.RefreshAccessAsync("r3fr35h_t0k3n", null, null).Result;
+            AccessGrant accessGrant = testedOAuth2Template.RefreshAccessAsync("r3fr35h_t0k3n", null).Result;
 #else
-            AccessGrant accessGrant = testedOAuth2Template.RefreshAccess("r3fr35h_t0k3n", null, null);
+            AccessGrant accessGrant = testedOAuth2Template.RefreshAccess("r3fr35h_t0k3n", null);
 #endif
             return accessGrant;
 	    }

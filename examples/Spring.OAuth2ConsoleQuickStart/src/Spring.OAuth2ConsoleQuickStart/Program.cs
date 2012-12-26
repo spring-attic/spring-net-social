@@ -26,9 +26,9 @@ namespace Spring.OAuth2ConsoleQuickStart
 /*
                 // Client is acting on its own behalf
 #if NET_4_0
-                AccessGrant oauthAccessToken = facebookServiceProvider.OAuthOperations.AuthenticateClientAsync(null).Result;
+                AccessGrant oauthAccessToken = facebookServiceProvider.OAuthOperations.AuthenticateClientAsync().Result;
 #else
-                AccessGrant oauthAccessToken = facebookServiceProvider.OAuthOperations.AuthenticateClient(null);
+                AccessGrant oauthAccessToken = facebookServiceProvider.OAuthOperations.AuthenticateClient();
 #endif
                 string accessToken = oauthAccessToken.AccessToken;
 */

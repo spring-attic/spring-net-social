@@ -54,7 +54,7 @@ namespace Spring.Social.Facebook.Api.Impl
                 {
                     string expires = task.Result["expires"];
                     return new AccessGrant(task.Result["access_token"], null, null, expires != null ? new Nullable<int>(Int32.Parse(expires)) : null);
-                });
+                }, TaskContinuationOptions.ExecuteSynchronously);
         }
 #else
 #if !SILVERLIGHT
