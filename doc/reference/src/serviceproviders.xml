@@ -102,7 +102,7 @@ Response.Redirect(authorizeUrl);
 
 // upon receiving the callback from the provider:
 AccessGrant accessGrant = oauthOperations.ExchangeForAccess(authorizationCode, "https://my-callback-url", null);
-IGitHub gitHubApi = serviceProvider.GetApi(accessGrant);]]></programlisting>
+IGitHub gitHubApi = serviceProvider.GetApi(accessGrant.AccessToken);]]></programlisting>
 		</para>
 		<para>
 			The following example illustrates the client-side "implicit" authorization flow also supported by OAuth2.
@@ -117,8 +117,7 @@ string authorizeUrl = oauthOperations.BuildAuthorizeUrl(GrantType.ImplicitGrant,
 Response.Redirect(authorizeUrl);
 
 // upon receiving the callback from the provider:
-AccessGrant accessGrant = new AccessGrant(accessToken);
-IGitHub gitHubApi = serviceProvider.GetApi(accessGrant);]]></programlisting>
+IGitHub gitHubApi = serviceProvider.GetApi(accessToken);]]></programlisting>
 		</para>
 	</section>
   

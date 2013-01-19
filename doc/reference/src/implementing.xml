@@ -181,7 +181,8 @@
 			</para>
 			<para>
 				For OAuth2, only the access token should be required:
-				<programlisting language="csharp"><![CDATA[public GitHubTemplate(string accessToken) { 
+				<programlisting language="csharp"><![CDATA[public GitHubTemplate(string accessToken) 
+{ 
   ... 
 }]]></programlisting>
 			</para>
@@ -242,7 +243,7 @@ MockRestServer mockServer = MockRestServiceServer.CreateServer(twitter.RestTempl
 				Then, for each test case, record expectations about how the server should be invoked and answer what it should respond with:
 			</para>
 			<programlisting language="csharp"><![CDATA[[Test]
-public void GetUserProfile() 
+public void UpdateStatus() 
 {
   HttpHeaders responseHeaders = new HttpHeaders();
   responseHeaders.ContentType = MediaType.APPLICATION_JSON;
