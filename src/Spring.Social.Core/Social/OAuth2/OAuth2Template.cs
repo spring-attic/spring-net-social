@@ -435,6 +435,7 @@ namespace Spring.Social.OAuth2
             return this.PostForAccessGrant(this.accessTokenUrl, request);
         }
 #endif
+#if !CF_3_5
         /// <summary>
         /// Asynchronously exchanges the authorization code for an access grant.
         /// </summary>
@@ -564,6 +565,7 @@ namespace Spring.Social.OAuth2
             return this.PostForAccessGrantAsync(this.accessTokenUrl, request, operationCompleted);
         }
 #endif
+#endif
 
         #endregion
 
@@ -644,6 +646,7 @@ namespace Spring.Social.OAuth2
             return this.ExtractAccessGrant(this.restTemplate.PostForObject<JsonValue>(accessTokenUrl, request));
         }
 #endif
+#if !CF_3_5
         /// <summary>
         /// Asynchronously posts the request for an access grant to the provider.
         /// </summary>
@@ -682,6 +685,7 @@ namespace Spring.Social.OAuth2
                     }
                 });
         }
+#endif
 #endif
 
         /// <summary>

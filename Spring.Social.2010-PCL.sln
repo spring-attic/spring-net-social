@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spring.Social.Core.2010-PCL", "src\Spring.Social.Core\Spring.Social.Core.2010-PCL.csproj", "{AA2FE9EB-1AA3-12BF-A2C9-01FA5A7236C1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spring.Rest.2010-PCL", "lib\pcl\spring-net-rest\Spring.Rest.2010-PCL.csproj", "{EC250517-15EF-4938-A5AF-17538AC03EBB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AA2FE9EB-1AA3-12BF-A2C9-01FA5A7236C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA2FE9EB-1AA3-12BF-A2C9-01FA5A7236C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA2FE9EB-1AA3-12BF-A2C9-01FA5A7236C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA2FE9EB-1AA3-12BF-A2C9-01FA5A7236C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC250517-15EF-4938-A5AF-17538AC03EBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC250517-15EF-4938-A5AF-17538AC03EBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC250517-15EF-4938-A5AF-17538AC03EBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC250517-15EF-4938-A5AF-17538AC03EBB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = src\Spring.Social.Core\Spring.Social.Core.2010-PCL.csproj
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

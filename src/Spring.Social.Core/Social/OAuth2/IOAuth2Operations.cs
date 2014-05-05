@@ -216,6 +216,7 @@ namespace Spring.Social.OAuth2
         /// </returns>
         AccessGrant AuthenticateClient(string scope);
 #endif
+#if !CF_3_5
         /// <summary>
         /// Asynchronously exchanges the authorization code for an access grant.
         /// </summary>
@@ -314,6 +315,7 @@ namespace Spring.Social.OAuth2
         /// A <see cref="RestOperationCanceler"/> instance that allows to cancel the asynchronous operation.
         /// </returns>
         RestOperationCanceler AuthenticateClientAsync(string scope, Action<RestOperationCompletedEventArgs<AccessGrant>> operationCompleted);
+#endif
 #endif
     }
 }

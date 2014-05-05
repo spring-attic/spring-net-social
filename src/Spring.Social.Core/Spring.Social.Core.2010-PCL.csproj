@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{AA2FE9EB-1AA3-12BF-A2C9-01FA5A7236C1}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Spring</RootNamespace>
+    <AssemblyName>Spring.Social.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Profile104</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+  </PropertyGroup>
+  <!-- This property group is only here to support building this project using the 
+       MSBuild 3.5 toolset. In order to work correctly with this older toolset, it needs 
+       to set the TargetFrameworkVersion to v3.5 -->
+  <PropertyGroup Condition="'$(MSBuildToolsVersion)' == '3.5'">
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>True</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>False</Optimize>
+    <OutputPath>..\..\build\VS2010-SL40\Spring.Social.Core\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;CF_3_5;$(DefineExtraConstants)</DefineConstants>
+    <NoStdLib>True</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>Spring.Social.Core.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>True</Optimize>
+    <OutputPath>..\..\build\VS2010-SL40\Spring.Social.Core\Release\</OutputPath>
+    <DefineConstants>TRACE;CF_3_5;$(DefineExtraConstants)</DefineConstants>
+    <NoStdLib>True</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>Spring.Social.Core.xml</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="mscorlib" />
+    <Reference Include="System.Net" />
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\CommonAssemblyInfo.cs">
+      <Link>Properties\CommonAssemblyInfo.cs</Link>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Social\IApiBinding.cs" />
+    <Compile Include="Social\IServiceProvider.cs" />
+    <Compile Include="Social\OAuth1\AbstractOAuth1ApiBinding.cs" />
+    <Compile Include="Social\OAuth1\AbstractOAuth1ServiceProvider.cs" />
+    <Compile Include="Social\OAuth1\AuthorizedRequestToken.cs" />
+    <Compile Include="Social\OAuth1\IOAuth1Operations.cs" />
+    <Compile Include="Social\OAuth1\IOAuth1ServiceProvider.cs" />
+    <Compile Include="Social\OAuth1\OAuth1Parameters.cs" />
+    <Compile Include="Social\OAuth1\OAuth1RequestInterceptor.cs" />
+    <Compile Include="Social\OAuth1\OAuth1Template.cs" />
+    <Compile Include="Social\OAuth1\OAuth1Version.cs" />
+    <Compile Include="Social\OAuth1\OAuthToken.cs" />
+    <Compile Include="Social\OAuth1\SigningSupport.cs" />
+    <Compile Include="Social\OAuth2\AbstractOAuth2ApiBinding.cs" />
+    <Compile Include="Social\OAuth2\AbstractOAuth2ServiceProvider.cs" />
+    <Compile Include="Social\OAuth2\AccessGrant.cs" />
+    <Compile Include="Social\OAuth2\GrantType .cs" />
+    <Compile Include="Social\OAuth2\IOAuth2Operations.cs" />
+    <Compile Include="Social\OAuth2\IOAuth2ServiceProvider.cs" />
+    <Compile Include="Social\OAuth2\OAuth2Parameters.cs" />
+    <Compile Include="Social\OAuth2\OAuth2RequestInterceptor.cs" />
+    <Compile Include="Social\OAuth2\OAuth2Template.cs" />
+    <Compile Include="Social\OAuth2\OAuth2Version.cs" />
+    <Compile Include="Social\SocialException.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ItemGroup>
+    <ProjectReference Include="..\..\lib\pcl\spring-net-rest\Spring.Rest.2010-PCL.csproj">
+      <Project>{EC250517-15EF-4938-A5AF-17538AC03EBB}</Project>
+      <Name>Spring.Rest.2010-PCL</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

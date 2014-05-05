@@ -284,6 +284,7 @@ namespace Spring.Social.OAuth1
             return this.CreateOAuthToken(response["oauth_token"], response["oauth_token_secret"], response);
         }
 #endif
+#if !CF_3_5
         /// <summary>
         /// Asynchronously begin a new authorization flow by fetching a new request token from this service provider.
         /// </summary>
@@ -366,6 +367,7 @@ namespace Spring.Social.OAuth1
                     }
                 });
         }
+#endif
 #endif
 
         #endregion

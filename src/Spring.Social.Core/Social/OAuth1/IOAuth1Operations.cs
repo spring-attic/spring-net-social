@@ -126,6 +126,7 @@ namespace Spring.Social.OAuth1
         /// <returns>The access token.</returns>
         OAuthToken ExchangeForAccessToken(AuthorizedRequestToken requestToken, NameValueCollection additionalParameters);
 #endif
+#if !CF_3_5
         /// <summary>
         /// Asynchronously begin a new authorization flow by fetching a new request token from this service provider.
         /// </summary>
@@ -165,6 +166,7 @@ namespace Spring.Social.OAuth1
         /// A <see cref="RestOperationCanceler"/> instance that allows to cancel the asynchronous operation.
         /// </returns>
         RestOperationCanceler ExchangeForAccessTokenAsync(AuthorizedRequestToken requestToken, NameValueCollection additionalParameters, Action<RestOperationCompletedEventArgs<OAuthToken>> operationCompleted);
+#endif
 #endif
     }
 }
