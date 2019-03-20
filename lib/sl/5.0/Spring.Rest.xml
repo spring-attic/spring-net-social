@@ -1217,7 +1217,7 @@
             form.Add("field 1", "value 1");
             form.Add("field 2", "value 2");
             form.Add("field 2", "value 3");
-            template.PostForLocation("http://example.com/myForm", form);
+            template.PostForLocation("https://example.com/myForm", form);
             </code>
             </para>
             <para>
@@ -1227,7 +1227,7 @@
             IDictionary&lt;string, object&gt; parts = new Dictionary&lt;string, object&gt;();
             parts.Add("field 1", "value 1");
             parts.Add("file", new FileResource(@"C:\myDir\myFile.jpg"));
-            template.PostForLocation("http://example.com/myFileUpload", parts);
+            template.PostForLocation("https://example.com/myFileUpload", parts);
             </code>
             </para>
             </remarks>
@@ -1814,7 +1814,7 @@
         <member name="T:Spring.Http.HttpEntity">
             <summary>
             Represents an HTTP entity message, as defined in the HTTP specification. 
-            <a href="http://tools.ietf.org/html/rfc2616#section-7">HTTP 1.1, section 7</a>
+            <a href="https://tools.ietf.org/html/rfc2616#section-7">HTTP 1.1, section 7</a>
             </summary>
             <author>Arjen Poutsma</author>
             <author>Bruno Baia</author>
@@ -1985,7 +1985,7 @@
         <member name="T:Spring.Http.HttpMethod">
             <summary>
             Represents an HTTP request method as defined in the HTTP specification. 
-            <a href="http://tools.ietf.org/html/rfc2616#section-5.1.1">HTTP 1.1, section 5.1.1</a>
+            <a href="https://tools.ietf.org/html/rfc2616#section-5.1.1">HTTP 1.1, section 5.1.1</a>
             </summary>
             <remarks>
             HTTP method equality and hashing are case insensitive.
@@ -2098,7 +2098,7 @@
         <member name="T:Spring.Http.HttpResponseMessage">
             <summary>
             Represents an HTTP response message, with no body, as defined in the HTTP specification. 
-            <a href="http://tools.ietf.org/html/rfc2616#section-6">HTTP 1.1, section 6</a>
+            <a href="https://tools.ietf.org/html/rfc2616#section-6">HTTP 1.1, section 6</a>
             </summary>
             <author>Bruno Baia</author>
         </member>
@@ -2135,7 +2135,7 @@
         <member name="T:Spring.Http.HttpResponseMessage`1">
             <summary>
             Represents an HTTP response message, as defined in the HTTP specification. 
-            <a href="http://tools.ietf.org/html/rfc2616#section-6">HTTP 1.1, section 6</a>
+            <a href="https://tools.ietf.org/html/rfc2616#section-6">HTTP 1.1, section 6</a>
             </summary>
             <typeparam name="T">The type of the response body.</typeparam>
             <author>Bruno Baia</author>
@@ -2199,7 +2199,7 @@
         <member name="T:Spring.Http.MediaType">
             <summary>
             Represents an Internet Media Type, as defined in the HTTP specification. 
-            <a href="http://tools.ietf.org/html/rfc2616#section-3.7">HTTP 1.1, section 3.7</a>
+            <a href="https://tools.ietf.org/html/rfc2616#section-3.7">HTTP 1.1, section 3.7</a>
             </summary>
             <remarks>
             Consists of a <see cref="P:Type"/> and a <see cref="P:SubType"/>.  
@@ -2460,7 +2460,7 @@
         <member name="M:Spring.Http.MediaType.SortBySpecificity(System.Collections.Generic.List{Spring.Http.MediaType})">
             <summary>
             Sorts the given list of <see cref="T:Spring.Http.MediaType"/> objects by specificity. 
-            <a href="http://tools.ietf.org/html/rfc2616#section-14.1">HTTP 1.1, section 14.1</a>
+            <a href="https://tools.ietf.org/html/rfc2616#section-14.1">HTTP 1.1, section 14.1</a>
             </summary>
             <remarks>
             <para>
@@ -2945,7 +2945,7 @@
             A JSON array is a list of <see cref="T:Spring.Json.JsonValue"/>s.
             </summary>
             <remarks>
-            Specification details, see http://www.json.org/
+            Specification details, see https://www.json.org/
             </remarks>
             <seealso cref="T:Spring.Json.JsonValue"/>
             <author>Bruno Baia</author>
@@ -2956,7 +2956,7 @@
             Every JSON value types (object, array, string, number, true, false or null) can be accessed via the provided functions.
             </summary>
             <remarks>
-            Specification details, see http://www.json.org/
+            Specification details, see https://www.json.org/
             </remarks>
             <seealso cref="T:Spring.Json.JsonObject"/>
             <seealso cref="T:Spring.Json.JsonArray"/>
@@ -3424,7 +3424,7 @@
             A JSON object is a collection of name/value pairs.
             </summary>
             <remarks>
-            Specification details, see http://www.json.org/
+            Specification details, see https://www.json.org/
             </remarks>
             <seealso cref="T:Spring.Json.JsonValue"/>
             <author>Bruno Baia</author>
@@ -5015,25 +5015,25 @@
             that URL using either a string variable arguments array, or a string dictionary. 
             The string varargs variant expands the given template variables in order, so that 
             <code>
-            string result = restTemplate.GetForObject&lt;string&gt;("http://example.com/hotels/{hotel}/bookings/{booking}", 42, 21);
+            string result = restTemplate.GetForObject&lt;string&gt;("https://example.com/hotels/{hotel}/bookings/{booking}", 42, 21);
             </code>
-            will perform a GET on 'http://example.com/hotels/42/bookings/21'. The map variant expands the template based on
+            will perform a GET on 'https://example.com/hotels/42/bookings/21'. The map variant expands the template based on
             variable name, and is therefore more useful when using many variables, or when a single variable is used multiple
             times. For example:
             <code>
             IDictionary&lt;string, object&gt; vars = new Dictionary&lt;string, object&gt;();
             vars.Add("hotel", 42);
-            string result = restTemplate.GetForObject&lt;string&gt;("http://example.com/hotels/{hotel}/rooms/{hotel}", vars);
+            string result = restTemplate.GetForObject&lt;string&gt;("https://example.com/hotels/{hotel}/rooms/{hotel}", vars);
             </code>
-            will perform a GET on 'http://example.com/hotels/42/rooms/42'. Alternatively, there are URI variant 
+            will perform a GET on 'https://example.com/hotels/42/rooms/42'. Alternatively, there are URI variant 
             methods, which do not allow for URI templates, but allow you to reuse a single, expanded URI multiple times.
             </para>
             <para>
             Furthermore, the string-argument methods assume that the URL String is unencoded. This means that
             <code>
-            restTemplate.GetForObject&lt;string&gt;("http://example.com/hotel list");
+            restTemplate.GetForObject&lt;string&gt;("https://example.com/hotel list");
             </code>
-            will perform a GET on 'http://example.com/hotel%20list'.
+            will perform a GET on 'https://example.com/hotel%20list'.
             </para>
             <para>
             Objects passed to and returned from these methods are converted to and from HTTP messages by 
@@ -6854,13 +6854,13 @@
             </summary>
             <example>
             <code>
-            UriTemplate template = new UriTemplate("http://example.com/hotels/{hotel}/bookings/{booking}");
+            UriTemplate template = new UriTemplate("https://example.com/hotels/{hotel}/bookings/{booking}");
             IDictionary&lt;string, object&gt; uriVariables = new Dictionary&lt;string, object&gt;();
             uriVariables.Add("booking", "42");
             uriVariables.Add("hotel", 1);
             Console.Out.WriteLine(template.Expand(uriVariables));
             </code>
-            will print: <blockquote>http://example.com/hotels/1/bookings/42</blockquote>
+            will print: <blockquote>https://example.com/hotels/1/bookings/42</blockquote>
             </example>
             <param name="uriVariables">The dictionary of URI variables.</param>
             <returns>The expanded URI</returns>
@@ -6872,10 +6872,10 @@
             </summary>
             <example>
             <code>
-            UriTemplate template = new UriTemplate("http://example.com/hotels/{hotel}/bookings/{booking}");
+            UriTemplate template = new UriTemplate("https://example.com/hotels/{hotel}/bookings/{booking}");
             Console.Out.WriteLine(template.Expand(1, "42"));
             </code>
-            will print: <blockquote>http://example.com/hotels/1/bookings/42</blockquote>
+            will print: <blockquote>https://example.com/hotels/1/bookings/42</blockquote>
             </example>
             <param name="uriVariableValues">The array of URI variables.</param>
             <returns>The expanded URI</returns>
@@ -6894,8 +6894,8 @@
             </summary>
             <example>
             <code>
-            UriTemplate template = new UriTemplate("http://example.com/hotels/{hotel}/bookings/{booking}");
-            Console.Out.WriteLine(template.Match("http://example.com/hotels/1/bookings/42"));
+            UriTemplate template = new UriTemplate("https://example.com/hotels/{hotel}/bookings/{booking}");
+            Console.Out.WriteLine(template.Match("https://example.com/hotels/1/bookings/42"));
             </code>
             will print: <blockquote>{hotel=1, booking=42}</blockquote>
             </example>
