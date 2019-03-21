@@ -79,13 +79,13 @@ There is a Visual Studio solution file for each supported version
 
 8. SUPPORT
 
-The user forums at http://forum.springframework.net/ are available for you to submit questions, support requests, and interact with other Spring.NET users.
+The user forums at https://forum.springframework.net/ are available for you to submit questions, support requests, and interact with other Spring.NET users.
 
 Bug, issue and project tracking can be found at https://jira.springsource.org/browse/SPRNETSOCIAL
 
 A source repository browser is located at https://fisheye.springsource.org/changelog/spring-net-social
 
-A continuous intergration and build server is located at http://build.springframework.org/browse/SPRNETSOCIAL
+A continuous intergration and build server is located at https://build.springframework.org/browse/SPRNETSOCIAL
 
 To get the sources, check them out at the git repository at https://github.com/SpringSource/spring-net-social using a git client to deal with line endings.
 
@@ -97,7 +97,7 @@ Follow us on Twitter @SpringForNet
 
 9. Contributing to Spring.NET Social
 
-Github is for social coding: if you want to write code, we encourage contributions through pull requests from forks of this repository (see http://help.github.com/forking/). 
+Github is for social coding: if you want to write code, we encourage contributions through pull requests from forks of this repository (see https://help.github.com/forking/). 
 Before we accept a non-trivial patch or pull request we will need you to sign the contributor's agreement (see https://support.springsource.com/spring_committer_signup). 
 Signing the contributor's agreement does not grant anyone commit rights to the main repository, but it does mean that we can accept your contributions, and you will get an author credit if we do. 
 Active contributors might be asked to join the core team, and given the ability to merge pull requests.

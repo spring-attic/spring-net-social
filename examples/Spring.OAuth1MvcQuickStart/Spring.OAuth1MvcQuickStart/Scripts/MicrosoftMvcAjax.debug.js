@@ -404,5 +404,5 @@ Sys.Mvc.MvcHelpers.registerClass('Sys.Mvc.MvcHelpers');
 Sys.Mvc.AsyncForm.registerClass('Sys.Mvc.AsyncForm');
 
 // ---- Do not remove this footer ----
-// Generated using Script# v0.5.0.0 (http://projects.nikhilk.net)
+// Generated using Script# v0.5.0.0 (https://projects.nikhilk.net)
 // -----------------------------------

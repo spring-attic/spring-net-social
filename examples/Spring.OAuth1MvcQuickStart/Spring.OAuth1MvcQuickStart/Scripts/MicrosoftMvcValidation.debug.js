@@ -873,7 +873,7 @@ Sys.Mvc.FieldContext._validationMessageValidCss = 'field-validation-valid';
 Sys.Mvc.ValidatorRegistry.validators = Sys.Mvc.ValidatorRegistry._getDefaultValidators();
 
 // ---- Do not remove this footer ----
-// Generated using Script# v0.5.0.0 (http://projects.nikhilk.net)
+// Generated using Script# v0.5.0.0 (https://projects.nikhilk.net)
 // -----------------------------------
 
 // register validation

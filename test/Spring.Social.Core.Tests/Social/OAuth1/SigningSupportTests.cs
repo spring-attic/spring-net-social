@@ -51,7 +51,7 @@ namespace Spring.Social.OAuth1
             additionalParameters.Add("a3", "a"); // query parameter
             additionalParameters.Add("c@", ""); // query parameter
             additionalParameters.Add("a2", "r b"); // query parameter
-            string authorizationHeader = signingUtils.BuildAuthorizationHeaderValue(new Uri("http://example.com/request"), tokenParameters, additionalParameters, "9djdj82h48djs9d2", "consumer_secret", "token_secret");
+            string authorizationHeader = signingUtils.BuildAuthorizationHeaderValue(new Uri("https://example.com/request"), tokenParameters, additionalParameters, "9djdj82h48djs9d2", "consumer_secret", "token_secret");
             AssertAuthorizationHeader(authorizationHeader, "%2B8iwuQbJ%2Fa46KYDAFQlzPerVGYk%3D");
         }
 
@@ -60,7 +60,7 @@ namespace Spring.Social.OAuth1
         {
             SigningSupport signingUtils = new SigningSupport();
             signingUtils.TimestampGenerator = new MockTimestampGenerator(123456789, 987654321);
-            Uri uri = new Uri(String.Format("http://example.com/request?b5={0}&a3=a&{1}=&a2={2}", Uri.EscapeDataString("=%3D"), Uri.EscapeDataString("c@"), Uri.EscapeDataString("r b")));
+            Uri uri = new Uri(String.Format("https://example.com/request?b5={0}&a3=a&{1}=&a2={2}", Uri.EscapeDataString("=%3D"), Uri.EscapeDataString("c@"), Uri.EscapeDataString("r b")));
             HttpHeaders headers = new HttpHeaders();
             headers.ContentType = MediaType.APPLICATION_FORM_URLENCODED;
             string authorizationHeader = signingUtils.BuildAuthorizationHeaderValue(uri, HttpMethod.POST, headers,
@@ -86,7 +86,7 @@ namespace Spring.Social.OAuth1
         }
 
         // Tests the buildBaseString() method using the example given in the OAuth 1 spec 
-        // at http://tools.ietf.org/html/rfc5849#section-3.4.1 as the test data.
+        // at https://tools.ietf.org/html/rfc5849#section-3.4.1 as the test data.
         [Test]
         public void BuildBaseString_SpecificationExample()
         {
@@ -103,7 +103,7 @@ namespace Spring.Social.OAuth1
             collectedParameters.Add("oauth_nonce", 1357924680.ToString());
             collectedParameters.Add("oauth_version", "1.0");
             collectedParameters.Add("oauth_token", "kkk9d7dh3k39sjv7");
-            string baseString = SigningSupport.BuildBaseString(HttpMethod.POST, "http://example.com/request", collectedParameters);
+            string baseString = SigningSupport.BuildBaseString(HttpMethod.POST, "https://example.com/request", collectedParameters);
 
             string[] baseStringParts = baseString.Split('&');
             Assert.AreEqual(3, baseStringParts.Length);
@@ -127,7 +127,7 @@ namespace Spring.Social.OAuth1
         }
 
         // Tests the buildBaseString() method using the example given 
-        // at http://dev.twitter.com/pages/auth#signing-requests as the test data.
+        // at https://dev.twitter.com/pages/auth#signing-requests as the test data.
         [Test]
         public void BuildBaseString_TwitterExample()
         {
