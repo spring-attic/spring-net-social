@@ -50,6 +50,6 @@ Sys.Mvc.ValidatorRegistry.getValidator=function(rule){var $0=Sys.Mvc.ValidatorRe
 Sys.Mvc.ValidatorRegistry.$0=function(){return {required:Function.createDelegate(null,Sys.Mvc.RequiredValidator.create),length:Function.createDelegate(null,Sys.Mvc.StringLengthValidator.create),regex:Function.createDelegate(null,Sys.Mvc.RegularExpressionValidator.create),range:Function.createDelegate(null,Sys.Mvc.RangeValidator.create),number:Function.createDelegate(null,Sys.Mvc.NumberValidator.create)};}
 Sys.Mvc.NumberValidator.registerClass('Sys.Mvc.NumberValidator');Sys.Mvc.FormContext.registerClass('Sys.Mvc.FormContext');Sys.Mvc.FieldContext.registerClass('Sys.Mvc.FieldContext');Sys.Mvc.RangeValidator.registerClass('Sys.Mvc.RangeValidator');Sys.Mvc.RegularExpressionValidator.registerClass('Sys.Mvc.RegularExpressionValidator');Sys.Mvc.RequiredValidator.registerClass('Sys.Mvc.RequiredValidator');Sys.Mvc.StringLengthValidator.registerClass('Sys.Mvc.StringLengthValidator');Sys.Mvc._ValidationUtil.registerClass('Sys.Mvc._ValidationUtil');Sys.Mvc.ValidatorRegistry.registerClass('Sys.Mvc.ValidatorRegistry');Sys.Mvc.ValidatorRegistry.validators=Sys.Mvc.ValidatorRegistry.$0();
 // ---- Do not remove this footer ----
-// Generated using Script# v0.5.0.0 (http://projects.nikhilk.net)
+// Generated using Script# v0.5.0.0 (https://projects.nikhilk.net)
 // -----------------------------------
 Sys.Application.add_load(function(){Sys.Application.remove_load(arguments.callee);Sys.Mvc.FormContext._Application_Load();});

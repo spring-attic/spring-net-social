@@ -6123,7 +6123,7 @@ Sys.Net.XMLHttpExecutor = function Sys$Net$XMLHttpExecutor() {
         else if (navigator.userAgent.indexOf('MSIE') !== -1) {
             xml.setProperty('SelectionLanguage', 'XPath');
         }
-        if (xml.documentElement.namespaceURI === "http://www.mozilla.org/newlayout/xml/parsererror.xml" &&
+        if (xml.documentElement.namespaceURI === "https://www.mozilla.org/newlayout/xml/parsererror.xml" &&
             xml.documentElement.tagName === "parsererror") {
             return null;
         }

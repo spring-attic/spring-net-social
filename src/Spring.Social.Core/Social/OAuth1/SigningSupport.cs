@@ -123,7 +123,7 @@ namespace Spring.Social.OAuth1
         }
 
         // Normalizes the collected parameters for baseString calculation
-        // http://tools.ietf.org/html/rfc5849#section-3.4.1.3.2
+        // https://tools.ietf.org/html/rfc5849#section-3.4.1.3.2
         private static string NormalizeParameters(NameValueCollection collectedParameters)
         {
             NameValueCollection sortedEncodedParameters = new NameValueCollection();
@@ -212,7 +212,7 @@ namespace Spring.Social.OAuth1
             return parameters;
         }
 
-        // http://oauth.net/core/1.0a/#rfc.section.9.1.2
+        // https://oauth.net/core/1.0a/#rfc.section.9.1.2
         private static string GetBaseStringUri(Uri uri)
         {
             if (uri.Scheme == "http" && uri.Port == 80 ||
@@ -228,7 +228,7 @@ namespace Spring.Social.OAuth1
 
         private const string UNRESERVED_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_.~";
 
-        // http://oauth.net/core/1.0a/#rfc.section.5.1
+        // https://oauth.net/core/1.0a/#rfc.section.5.1
         private static string OAuthEncode(string data)
         {
             StringBuilder result = new StringBuilder();

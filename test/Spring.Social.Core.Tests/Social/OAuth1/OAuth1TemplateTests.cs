@@ -58,7 +58,7 @@ namespace Spring.Social.OAuth1
 	    public void BuildAuthorizeUrl() 
         {
 		    OAuth1Parameters oauth10Parameters = new OAuth1Parameters();
-            oauth10Parameters.CallbackUrl = "http://www.someclient.com/oauth/callback";
+            oauth10Parameters.CallbackUrl = "https://www.someclient.com/oauth/callback";
 		    Assert.AreEqual(AUTHORIZE_URL + "?oauth_token=request_token", 
                 oauth10a.BuildAuthorizeUrl("request_token", null));
 		    Assert.AreEqual(AUTHORIZE_URL + "?oauth_token=request_token&oauth_callback=http%3A%2F%2Fwww.someclient.com%2Foauth%2Fcallback",
@@ -69,7 +69,7 @@ namespace Spring.Social.OAuth1
         public void BuildAuthorizeUrl_CustomAuthorizeParameters()
         {
             OAuth1Parameters oauth10Parameters = new OAuth1Parameters();
-            oauth10Parameters.CallbackUrl = "http://www.someclient.com/oauth/callback";
+            oauth10Parameters.CallbackUrl = "https://www.someclient.com/oauth/callback";
             Assert.AreEqual(AUTHORIZE_URL + "?oauth_token=request_token&oauth_callback=http%3A%2F%2Fwww.someclient.com%2Foauth%2Fcallback&custom_parameter=custom_parameter_value",
                     customOauth10.BuildAuthorizeUrl("request_token", oauth10Parameters));
         }
@@ -93,9 +93,9 @@ namespace Spring.Social.OAuth1
                 .AndRespondWith(EmbeddedResource("RequestToken.formencoded"), responseHeaders);
 
 #if NET_4_0 || SILVERLIGHT_5
-            OAuthToken requestToken = oauth10a.FetchRequestTokenAsync("http://www.someclient.com/oauth/callback", null).Result;
+            OAuthToken requestToken = oauth10a.FetchRequestTokenAsync("https://www.someclient.com/oauth/callback", null).Result;
 #else
-            OAuthToken requestToken = oauth10a.FetchRequestToken("http://www.someclient.com/oauth/callback", null);
+            OAuthToken requestToken = oauth10a.FetchRequestToken("https://www.someclient.com/oauth/callback", null);
 #endif
             Assert.AreEqual("1234567890", requestToken.Value);
             Assert.AreEqual("abcdefghijklmnop", requestToken.Secret);
@@ -119,9 +119,9 @@ namespace Spring.Social.OAuth1
                 .AndRespondWith(EmbeddedResource("RequestToken.formencoded"), responseHeaders);
 
 #if NET_4_0 || SILVERLIGHT_5
-            OAuthToken requestToken = oauth10.FetchRequestTokenAsync("http://www.someclient.com/oauth/callback", null).Result;
+            OAuthToken requestToken = oauth10.FetchRequestTokenAsync("https://www.someclient.com/oauth/callback", null).Result;
 #else
-            OAuthToken requestToken = oauth10.FetchRequestToken("http://www.someclient.com/oauth/callback", null);
+            OAuthToken requestToken = oauth10.FetchRequestToken("https://www.someclient.com/oauth/callback", null);
 #endif
             Assert.AreEqual("1234567890", requestToken.Value);
             Assert.AreEqual("abcdefghijklmnop", requestToken.Secret);

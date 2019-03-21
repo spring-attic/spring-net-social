@@ -54,7 +54,7 @@ namespace Spring.Social.OAuth2
         public void BuildAuthorizeUrl_CodeResponseType()
         {
             OAuth2Parameters parameters = new OAuth2Parameters();
-            parameters.RedirectUrl = "http://www.someclient.com/connect/foo";
+            parameters.RedirectUrl = "https://www.someclient.com/connect/foo";
             parameters.Scope = "read,write";
             string expected = AUTHORIZE_URL + "?client_id=client_id&response_type=code&redirect_uri=http%3A%2F%2Fwww.someclient.com%2Fconnect%2Ffoo&scope=read%2Cwrite";
             string actual = oAuth2Template.BuildAuthorizeUrl(GrantType.AuthorizationCode, parameters);
@@ -65,7 +65,7 @@ namespace Spring.Social.OAuth2
 	    public void BuildAuthorizeUrl_TokenResponseType() 
         {
             OAuth2Parameters parameters = new OAuth2Parameters();
-            parameters.RedirectUrl = "http://www.someclient.com/connect/foo";
+            parameters.RedirectUrl = "https://www.someclient.com/connect/foo";
             parameters.Scope = "read,write";
             string expected = AUTHORIZE_URL + "?client_id=client_id&response_type=token&redirect_uri=http%3A%2F%2Fwww.someclient.com%2Fconnect%2Ffoo&scope=read%2Cwrite";
 		    string actual = oAuth2Template.BuildAuthorizeUrl(GrantType.ImplicitGrant, parameters);
@@ -76,7 +76,7 @@ namespace Spring.Social.OAuth2
 	    public void BuildAuthorizeUrl_NoScopeInParameters() 
         {
             OAuth2Parameters parameters = new OAuth2Parameters();
-            parameters.RedirectUrl = "http://www.someclient.com/connect/foo";
+            parameters.RedirectUrl = "https://www.someclient.com/connect/foo";
             string expected = AUTHORIZE_URL + "?client_id=client_id&response_type=code&redirect_uri=http%3A%2F%2Fwww.someclient.com%2Fconnect%2Ffoo";
 		    string actual = oAuth2Template.BuildAuthorizeUrl(GrantType.AuthorizationCode, parameters);
 		    Assert.AreEqual(expected, actual);
@@ -86,7 +86,7 @@ namespace Spring.Social.OAuth2
         public void BuildAuthorizeUrl_AdditionalParameters()
         {
             OAuth2Parameters parameters = new OAuth2Parameters();
-            parameters.RedirectUrl = "http://www.someclient.com/connect/foo";
+            parameters.RedirectUrl = "https://www.someclient.com/connect/foo";
             parameters.Scope = "read,write";
             parameters.Add("display", "touch");
             parameters.Add("anotherparam", "somevalue1");
@@ -285,9 +285,9 @@ namespace Spring.Social.OAuth2
             requestActions.AndRespondWith(new AssemblyResource(responseFile, typeof(OAuth2TemplateTests)), responseHeaders);
 
 #if NET_4_0 || SILVERLIGHT_5
-            AccessGrant accessGrant = testedOAuth2Template.ExchangeForAccessAsync("code", "http://www.someclient.com/callback", null).Result;
+            AccessGrant accessGrant = testedOAuth2Template.ExchangeForAccessAsync("code", "https://www.someclient.com/callback", null).Result;
 #else
-            AccessGrant accessGrant = testedOAuth2Template.ExchangeForAccess("code", "http://www.someclient.com/callback", null);
+            AccessGrant accessGrant = testedOAuth2Template.ExchangeForAccess("code", "https://www.someclient.com/callback", null);
 #endif
             return accessGrant;
 	    }

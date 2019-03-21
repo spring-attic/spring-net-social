@@ -21,5 +21,5 @@ Sys.Mvc.AsyncForm.handleClick=function(form,evt){var $0=Sys.Mvc.MvcHelpers.$0(ev
 Sys.Mvc.AsyncForm.handleSubmit=function(form,evt,ajaxOptions){evt.preventDefault();var $0=form.validationCallbacks;if($0){for(var $2=0;$2<$0.length;$2++){var $3=$0[$2];if(!$3()){return;}}}var $1=Sys.Mvc.MvcHelpers.$1(form);Sys.Mvc.MvcHelpers.$2(form.action,form.method||'post',$1,form,ajaxOptions);}
 Sys.Mvc.AjaxContext.registerClass('Sys.Mvc.AjaxContext');Sys.Mvc.AsyncHyperlink.registerClass('Sys.Mvc.AsyncHyperlink');Sys.Mvc.MvcHelpers.registerClass('Sys.Mvc.MvcHelpers');Sys.Mvc.AsyncForm.registerClass('Sys.Mvc.AsyncForm');
 // ---- Do not remove this footer ----
-// Generated using Script# v0.5.0.0 (http://projects.nikhilk.net)
+// Generated using Script# v0.5.0.0 (https://projects.nikhilk.net)
 // -----------------------------------
